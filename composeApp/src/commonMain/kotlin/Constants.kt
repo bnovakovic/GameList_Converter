@@ -23,3 +23,5 @@ const val RETROPIE = "Retropie"
 const val RETRO_ARCH = "RetroArch"
 const val SCREEN_SCRAPPER = "Screen Scrapper"
 const val GAME_LIST_EDITOR = "GameList Editor"
+
+const val HELP_LINK = "https://github.com/bnovakovic/gamelistmanager/blob/main/Documentation/UserManual/UserManual.adoc"

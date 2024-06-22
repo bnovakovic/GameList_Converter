@@ -1,6 +1,7 @@
 package menus.mainscreen
 
 import ENGLISH_LANGUAGE_CODE
+import HELP_LINK
 import LANGUAGE_ENGLISH
 import LANGUAGE_SERBIAN
 import SERBIAN_LANGUAGE_CODE
@@ -9,6 +10,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.MenuBar
 import androidx.compose.ui.window.MenuBarScope
@@ -196,6 +198,7 @@ private fun MenuBarScope.Help(
     menuItemSelected: (MainWindowMenuSelection) -> Unit,
     enabled: Boolean,
 ) {
+    val uriHandler = LocalUriHandler.current
     Menu(stringResource(Res.string.help), mnemonic = 'H', enabled = enabled) {
         Item(
             text = stringResource(resource = Res.string.about),
@@ -205,7 +208,9 @@ private fun MenuBarScope.Help(
         )
         Item(
             stringResource(Res.string.help),
-            onClick = { menuItemSelected(MainWindowMenuSelection.Help) },
+            onClick = {
+                uriHandler.openUri(HELP_LINK)
+            },
             shortcut = KeyShortcut(Key.F1),
             mnemonic = 'H',
             icon = painterResource(Res.drawable.help_24)

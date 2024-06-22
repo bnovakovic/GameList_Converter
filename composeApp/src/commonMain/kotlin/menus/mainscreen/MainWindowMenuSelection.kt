@@ -27,11 +27,6 @@ sealed class MainWindowMenuSelection {
     data object About : MainWindowMenuSelection()
 
     /**
-     * User has selected Help menu option.
-     */
-    data object Help : MainWindowMenuSelection()
-
-    /**
      * User has selected Scan ROMs menu option.
      */
     data object ScanRoms : MainWindowMenuSelection()

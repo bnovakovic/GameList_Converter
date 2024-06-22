@@ -1,5 +1,7 @@
 package app
 
+import HELP_LINK
+import androidx.compose.ui.platform.LocalUriHandler
 import app.contentloader.ContentLoaderViewModel
 import app.contentloader.LoadingType
 import app.settings.GlmPreferences
@@ -20,6 +22,8 @@ import menus.mainscreen.MainScreenUiModel
 import menus.mainscreen.MainWindowMenuSelection
 import screens.export.retroarch.ExportRetroArchScreenViewModel
 import screens.gamelistscreen.GameListScreenViewModel
+import java.awt.Desktop
+import java.net.URI
 import java.util.Locale
 
 class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewModel() {
@@ -85,10 +89,6 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
 
             is MainWindowMenuSelection.About -> {
                 _uiModel.value = _uiModel.value.copy(dialogue = Dialogues.ABOUT)
-            }
-
-            is MainWindowMenuSelection.Help -> {
-                // Not yet implemented
             }
 
             is MainWindowMenuSelection.ScanRoms -> {
