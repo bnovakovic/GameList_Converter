@@ -40,6 +40,7 @@ compose.desktop {
         mainClass = "MainKt"
 
         buildTypes.release.proguard {
+            isEnabled.set(false)
             configurationFiles.from(File(rootDir, "proguard-rules.pro"))
             joinOutputJars.set(true)
         }
