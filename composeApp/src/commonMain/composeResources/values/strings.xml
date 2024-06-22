@@ -1,0 +1,85 @@
+<resources>
+    <!--    Main screen... more or less-->
+    <string name="app_name">GameList Converter</string>
+    <string name="ok">OK</string>
+    <string name="select_system">Select system</string>
+    <string name="search">Search</string>
+    <string name="select_game">Select game</string>
+    <string name="name">Name</string>
+    <string name="region">Region</string>
+    <string name="players">Players</string>
+    <string name="date">Date</string>
+    <string name="rating">Rating</string>
+    <string name="kid_game">Kid game</string>
+    <string name="hidden">Hidden</string>
+    <string name="favorite">Favorite</string>
+    <string name="publisher">Publisher</string>
+    <string name="developer">Developer</string>
+    <string name="genre">Genre</string>
+    <string name="description">Description</string>
+    <string name="export">Export</string>
+    <string name="image_not_found">Image not found</string>
+    <string name="scanning">Scanning...</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="none">None</string>
+    <string name="loading_retroarch_info">Loading RetroArch information</string>
+    <string name="game_list">Game list</string>
+
+    <!--    Export screen-->
+    <string name="select_core">Select core</string>
+    <string name="show_unsupported_cores">Show unsupported cores</string>
+    <string name="categories">Categories</string>
+    <string name="authors">Authors</string>
+    <string name="core_name">Core name</string>
+    <string name="supported_extensions">Supported extensions</string>
+    <string name="license">License</string>
+    <string name="system_name">System name</string>
+    <string name="version">Version</string>
+    <string name="manufacturer">Manufacturer</string>
+    <string name="cheats">Cheats</string>
+    <string name="save_states">Save states</string>
+    <string name="system_id">System ID</string>
+    <string name="notes">Notes</string>
+    <string name="export_path">Export path</string>
+    <string name="select_playlist">Select playlist</string>
+    <string name="browse_button_symbol">...</string>
+    <string name="core_missing_confirm">Core is missing. Please confirm that you still want to use this core.</string>
+    <string name="saving">Saving...</string>
+    <string name="unknown_error">Unknown error happened while trying to save the playlist</string>
+    <string name="no_access">You don't have access rights to save the playlist to the following location</string>
+    <string name="playlist_save_done">Playlist was saved successfully</string>
+
+
+    <!--    Top menu-->
+    <string name="file">File</string>
+    <string name="select_roms_dir">Select ROMs directory</string>
+    <string name="select_retroarch_dir">Select RetroArch directory</string>
+    <string name="exit">Exit</string>
+    <string name="help">Help</string>
+    <string name="about">About</string>
+    <string name="scan">Scan</string>
+    <string name="scan_retroarch_dir">Scan RetroArch directory</string>
+    <string name="scan_roms_dir">Scan ROMs directory</string>
+    <string name="scan_all">Scan all</string>
+    <string name="language">Language</string>
+    <string name="restart_required">Restart needed</string>
+    <string name="restart_dialogue_text">In order to apply language changes, app needs to be restarted.</string>
+    <string name="theme">Theme</string>
+    <string name="dark">Dark</string>
+    <string name="light">Light</string>
+
+    <!--    About dialogue-->
+    <string name="about_game">%1$s is free program made by Bojan Novaković. It is intended to help you convert your game lists from gamelist.xml used in %2$s or %3$s in to %4$s playlist.</string>
+    <string name="ui_inspired">%1$s UI is highly inspired by %2$s, in order to make you feel comfortable while using it. Please note that %3$s cannot edit your gamelist.xml file. We already have super awesome %4$s that can help with that.</string>
+    <string name="open_source">%1$s is open source project created in %2$s.\nSource code can be found here:\n %3$s</string>
+    <string name="github_link">GitHub link: %1$s</string>
+    <string name="should_be_made_using_screen_scrapper">Your gamelist.xml should be created using %1$s for best compatibility.</string>
+
+    <!--    Swing choosers-->
+    <string name="overwrite_message">File already exists, do you want to overwrite it?</string>
+    <string name="overwrite_title">Overwrite existing file</string>
+    <string name="save_retroarch_list_title">Save RetroArch playlist file</string>
+
+</resources>

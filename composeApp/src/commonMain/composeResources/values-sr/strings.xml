@@ -1,0 +1,83 @@
+<resources>
+    <!--    Main screen... more or less-->
+    <string name="ok">OK</string>
+    <string name="select_system">Odaberi sistem</string>
+    <string name="search">Pretraga</string>
+    <string name="select_game">Odaberi igru</string>
+    <string name="name">Naziv</string>
+    <string name="region">Region</string>
+    <string name="players">Broj igrača</string>
+    <string name="date">Datum</string>
+    <string name="rating">Rejting</string>
+    <string name="kid_game">Igra za decu</string>
+    <string name="hidden">Sakrivena</string>
+    <string name="favorite">Omiljena</string>
+    <string name="publisher">Izdavač</string>
+    <string name="developer">Developer</string>
+    <string name="genre">Žanr</string>
+    <string name="description">Opis</string>
+    <string name="export">Konvertuj</string>
+    <string name="image_not_found">Slika nije pronađena</string>
+    <string name="scanning">Skeniram...</string>
+    <string name="cancel">Prekini</string>
+    <string name="yes">Da</string>
+    <string name="no">Ne</string>
+    <string name="none">Nijedno</string>
+    <string name="loading_retroarch_info">Učitavam RetroArch informacije</string>
+    <string name="game_list">Lista igara</string>
+
+    <!--    Export screen-->
+    <string name="select_core">Odaberi core</string>
+    <string name="show_unsupported_cores">Prikaži nepodržane corove</string>
+    <string name="categories">Kategorije</string>
+    <string name="authors">Autori</string>
+    <string name="core_name">Naziv core-a</string>
+    <string name="supported_extensions">Podržane ekstenzije</string>
+    <string name="license">Licence</string>
+    <string name="system_name">Naziv sistema</string>
+    <string name="version">Verzija</string>
+    <string name="manufacturer">Proizvođač</string>
+    <string name="cheats">Šifre</string>
+    <string name="save_states">Snimanje igre</string>
+    <string name="system_id">ID Sistema</string>
+    <string name="notes">Beleške</string>
+    <string name="export_path">Putanja za konvertovanje</string>
+    <string name="select_playlist">Odaberi listu</string>
+    <string name="browse_button_symbol">...</string>
+    <string name="core_missing_confirm">Core za ovaj sistem nije dostupan. Molim da potvrdite da ipak želite da ga koristite.</string>
+    <string name="saving">Snimam...</string>
+    <string name="unknown_error">Dogodila se nepoznata greška tokom snimanja liste</string>
+    <string name="no_access">Snimanje liste je neuspešno. Nemate prava da zapisujete podatke na odabranom direktorijumu</string>
+    <string name="playlist_save_done">Snimanje liste je uspešno završeno</string>
+
+    <!--    About dialogue-->
+    <string name="about_game">%1$s je besplatan program napravljen od strane Bojana Novakovića. Namenjen je da vam pomogne da konvertujete vaše gamelist.xml korišćene sa %2$s i %3$s u %4$s listu.</string>
+    <string name="ui_inspired">%1$s dizajn je inspirisan u velikoj meri od strane %2$s-a. To je urađeno kako bi UI bio poznat. Imajte u vidu da %3$s ne može menjati vaše gamelist.xml fajlove. Za to već imamo odličan %4$s.</string>
+    <string name="open_source">%1$s je open source napravljen u %2$s.\nIzvorni kod možete naći ovde:\n %3$s</string>
+    <string name="github_link">GitHub link: %1$s</string>
+    <string name="should_be_made_using_screen_scrapper">gamelist.xml bi trebalo da bude napravljen korišćenjem %1$s-a za najbolju kompatibilnost.</string>
+
+    <!--    Top menu-->
+    <string name="file">Meni</string>
+    <string name="select_roms_dir">Odaberi ROM direktorijum</string>
+    <string name="select_retroarch_dir">Odaberi RetroArch direktorijum</string>
+    <string name="exit">Izlaz</string>
+    <string name="help">Pomoć</string>
+    <string name="about">O programu</string>
+    <string name="scan">Skeniraj</string>
+    <string name="scan_retroarch_dir">Skeniraj RetroArch direktorijum</string>
+    <string name="scan_roms_dir">Skeniraj ROM direktorijum</string>
+    <string name="scan_all">Skeniraj sve</string>
+    <string name="language">Jezik</string>
+    <string name="restart_required">Restart aplikacije neophodan</string>
+    <string name="restart_dialogue_text">Da bi se primenile promene u jeziku, aplikacija mora biti restartovana.</string>
+    <string name="theme">Tema</string>
+    <string name="dark">Tamna</string>
+    <string name="light">Svetla</string>
+
+    <!--    Swing choosers-->
+    <string name="overwrite_message">Fajl već postoji. Da li želiš da ga prebrišeš?</string>
+    <string name="overwrite_title">Prebriši postojeći fajl</string>
+    <string name="save_retroarch_list_title">Snimi RetroArch listu</string>
+
+</resources>
