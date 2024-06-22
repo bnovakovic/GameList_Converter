@@ -7,8 +7,8 @@ import RETRO_ARCH_LIST_EXTENSION
 import RETRO_ARCH_LIST_SUBDIR
 import app.settings.GlmSettings
 import app.settings.SettingsKeys
-import com.bojan.gamelistmanager.gamelistprovider.domain.interfaces.GameListRepository
 import com.bojan.gamelistmanager.gamelistprovider.domain.data.GameListData
+import com.bojan.gamelistmanager.gamelistprovider.domain.interfaces.GameListRepository
 import com.bojan.gamelistmanager.listexplorer.domain.ConvertGameListUseCase
 import com.bojan.gamelistmanager.listexplorer.domain.GameListConvertConfig
 import com.bojan.gamelistmanager.listexplorer.domain.PlayListWriteResult

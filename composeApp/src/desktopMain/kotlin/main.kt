@@ -1,13 +1,6 @@
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
@@ -31,36 +24,52 @@ import screens.mainscreen.MainScreen
 import theme.GameListTheme
 import theme.basicColorProvider
 import theme.extendedColorsProvider
+import java.io.File
 
-fun main() = application {
-    val state = rememberWindowState(size = DpSize(1280.dp, 760.dp), position = WindowPosition.Aligned(Alignment.Center))
-    val appViewModel = getViewModel(Unit, viewModelFactory { AppViewModel(onRequestApplicationClose = ::exitApplication) })
-    Window(
-        onCloseRequest = ::exitApplication,
-        title = stringResource(Res.string.app_name),
-        resizable = false,
-        state = state,
-        onKeyEvent = {
-            if (it.type == KeyEventType.KeyDown && it.key == Key.Escape) {
-                appViewModel.goBack()
-                return@Window true
-            }
-            return@Window false
-        },
-        icon = painterResource(Res.drawable.launcher_icon_1)
-    ) {
-        val uiModel by appViewModel.uiModel.collectAsState()
-        val inDarkMode = uiModel.inDarkMode
-        GameListTheme(
-            extendedColors = extendedColorsProvider(inDarkMode),
-            basicColors = basicColorProvider(inDarkMode)
+fun main() {
+    nonComposeCrashHandler()
+    application {
+        val state = rememberWindowState(size = DpSize(1280.dp, 760.dp), position = WindowPosition.Aligned(Alignment.Center))
+        val appViewModel = getViewModel(Unit, viewModelFactory { AppViewModel(onRequestApplicationClose = ::exitApplication) })
+        Window(
+            onCloseRequest = ::exitApplication,
+            title = stringResource(Res.string.app_name),
+            resizable = false,
+            state = state,
+            onKeyEvent = {
+                if (it.type == KeyEventType.KeyDown && it.key == Key.Escape) {
+                    appViewModel.goBack()
+                    return@Window true
+                }
+                return@Window false
+            },
+            icon = painterResource(Res.drawable.launcher_icon_1)
         ) {
-            MainWindowMenuBar(
-                onExitApplication = ::exitApplication,
-                enabled = !uiModel.workInProgress,
-                viewModel = appViewModel.mainMenuViewModel
-            )
-            MainScreen(appViewModel)
+            val uiModel by appViewModel.uiModel.collectAsState()
+            val inDarkMode = uiModel.inDarkMode
+            GameListTheme(
+                extendedColors = extendedColorsProvider(inDarkMode),
+                basicColors = basicColorProvider(inDarkMode)
+            ) {
+                MainWindowMenuBar(
+                    onExitApplication = ::exitApplication,
+                    enabled = !uiModel.workInProgress,
+                    viewModel = appViewModel.mainMenuViewModel
+                )
+                MainScreen(appViewModel)
+            }
         }
+    }
+}
+
+private fun nonComposeCrashHandler() {
+    Thread.setDefaultUncaughtExceptionHandler { _, e ->
+        val message = e.message
+        val stacktrace = e.stackTraceToString()
+
+        val combined = "Message: $message\n\n $stacktrace"
+        val currentTime = System.currentTimeMillis()
+        val crashFile = File("Crash_$currentTime.log")
+        crashFile.writeText(combined)
     }
 }

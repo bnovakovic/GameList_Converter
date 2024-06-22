@@ -36,9 +36,13 @@ kotlin {
 
 compose.desktop {
     application {
+        System.getenv("JDK_17")
         mainClass = "MainKt"
         buildTypes.release.proguard {
             configurationFiles.from(File(rootDir, "proguard-rules.pro"))
+        }
+        buildTypes.release.proguard {
+            joinOutputJars.set(true)
         }
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
@@ -48,6 +52,8 @@ compose.desktop {
             copyright = "© 2024 Bojan Novakovic. All rights reserved."
             vendor = "Bojan Novaković"
             licenseFile.set(File(rootDir, "LICENSE"))
+            includeAllModules = true
+
             val iconsFolder = project.file("icons")
             macOS {
                 iconFile.set(iconsFolder.resolve("launcher_icon_1.icns"))
