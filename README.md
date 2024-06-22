@@ -2,7 +2,7 @@
 
 ## Table of content
 - [Overview](#overview)
-- [User Manual](#how-to-use-the-gamelis-converter)
+- [User Manual](#how-to-use-the-gamelist-converter)
 - [Features](#features)
 - [Project Structure](#project-structure)
 - [Modules](#modules)
@@ -28,7 +28,7 @@ For the best results, your `gamelist.xml` should have been created using [Screen
 ![GameList Converter](Documentation/Images/ShowCase_01.png)
 ![GameList Converter](Documentation/Images/ShowCase_02.png)
 
-## How to use the GameLis Converter?
+## How to use the GameList Converter?
 Detailed instruction can be found in our [User Manual](https://github.com/bnovakovic/gamelistmanager/blob/main/Documentation/UserManual/UserManual.adoc)
 
 ## Features
