@@ -56,7 +56,7 @@ The RetroArchInfoLoader module is responsible for loading the RetroArch cores in
 To build and run the project, follow these steps:
 1. Clone the repository.
 2. Open the project in Android Studio or your preferred IDE.
-3. Build the project and run the application on your desired platform. Use `./gradlew run` to run the project, or use gradle task list `Tasks->compose desktop->run`.
+3. Build the project and run the application on your desired platform using green play button in your IDE. If that does not work, you can use `./gradlew run` gradle task to to run the project, or use gradle task list `Tasks->compose desktop->run`.
 
 ## Contributing
 If you would like to contribute to the project, either create the pull request, or contact me in the issues section. If you decide to create pull request, please make sure to follow S.O.L.I.D. and Clean Architecture principles.
