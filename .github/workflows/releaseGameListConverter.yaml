@@ -17,7 +17,7 @@ jobs:
       - name: Build app on Windows
         run: |
           ./gradlew createReleaseDistributable
-          Compress-Archive -Path composeApp\build\compose\binaries\main-release\app\ -DestinationPath .\distributable-windows.zip
+          Compress-Archive -Path composeApp\build\compose\binaries\main-release\app\GameListConverter -DestinationPath .\distributable-windows.zip
 
       - name: Create Release on Windows
         id: create_release_windows
@@ -39,5 +39,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release_windows.outputs.upload_url }}
           asset_path: distributable-windows.zip
-          asset_name: distributable-windows.zip
+          asset_name: GameListConverter-windows.zip
           asset_content_type: application/zip
