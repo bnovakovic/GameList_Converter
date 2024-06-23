@@ -21,15 +21,15 @@ jobs:
           - platform: windows
             runsOn: windows-latest
             zipCommand: 'Compress-Archive -Path composeApp\build\compose\binaries\main-release\app\GameListConverter -DestinationPath .\GameListConverter-Windows.zip'
-            archiveName: distributable-windows.zip
+            archiveName: GameListConverter-Windows.zip
           - platform: linux
             runsOn: ubuntu-latest
             zipCommand: 'tar -czf GameListConverter-Linux.tar.gz -C composeApp/build/compose/binaries/main-release/app .'
-            archiveName: distributable-linux.tar.gz
+            archiveName: GameListConverter-Linux.tar.gz
           - platform: macos
             runsOn: macos-latest
             zipCommand: 'tar -czf GameListConverter-Macos.tar.gz -C composeApp/build/compose/binaries/main-release/app .'
-            archiveName: distributable-macos.tar.gz
+            archiveName: GameListConverter-Macos.tar.gz
 
     runs-on: ${{ matrix.runsOn }}
     steps:
