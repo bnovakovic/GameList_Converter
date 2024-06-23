@@ -17,7 +17,7 @@ jobs:
       - name: Build app on Windows
         run: |
           ./gradlew createReleaseDistributable
-          Compress-Archive -Path build\compose\binaries\main-release\app\ -DestinationPath .\distributable-windows.zip
+          Compress-Archive -Path composeApp\build\compose\binaries\main-release\app\ -DestinationPath .\distributable-windows.zip
 
       - name: Create Release on Windows
         id: create_release_windows
