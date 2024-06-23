@@ -1,0 +1,42 @@
+name: GameList-Converter-Publisher
+on: push
+
+jobs:
+  build-and-publish-windows-release:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 17 on Windows
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+
+      - name: Build app on Windows
+        run: |
+          ./gradlew createReleaseDistributable
+          Compress-Archive -Path build\compose\binaries\main-release\app\ -DestinationPath .\distributable-windows.zip
+
+      - name: Create Release on Windows
+        id: create_release_windows
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v1.0.1
+          release_name: Windows Release v1.0.1
+          body: |
+            This is the release of version 1.0.1 for Windows
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset for Windows
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release_windows.outputs.upload_url }}
+          asset_path: distributable-windows.zip
+          asset_name: distributable-windows.zip
+          asset_content_type: application/zip
