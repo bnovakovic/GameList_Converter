@@ -11,8 +11,8 @@ fun gameListDirToDatabase(dir: String): RetroArchCoreInfo {
     return when (dir) {
         "3do" -> RetroArchCoreInfo("opera_libretro","The 3DO Company - 3DO")
         "64dd" -> RetroArchCoreInfo("parallel_n64_libretro", "Nintendo - Nintendo 64DD")
-        "amiga1200" -> RetroArchCoreInfo("fsuae_libretro", "Commodore - Amiga")
-        "amiga600" -> RetroArchCoreInfo("fsuae_libretro", "Commodore - Amiga")
+        "amiga1200" -> RetroArchCoreInfo("puae_libretro", "Commodore - Amiga")
+        "amiga600" -> RetroArchCoreInfo("puae_libretro", "Commodore - Amiga")
         "amigacd32" -> RetroArchCoreInfo("fsuae_libretro", "Commodore - Amiga")
         "amigacdtv" -> RetroArchCoreInfo("fsuae_libretro", "Commodore - Amiga")
         "amstradcpc" -> RetroArchCoreInfo( "crocods_libretro", "Amstrad - CPC")
@@ -34,7 +34,7 @@ fun gameListDirToDatabase(dir: String): RetroArchCoreInfo {
         "easyrpg" -> RetroArchCoreInfo( "easyrpg_libretro", "RPG Maker")
         "fbneo" -> RetroArchCoreInfo( "fbneo_libretro", "FBNeo - Arcade Games")
         "fds" -> RetroArchCoreInfo( "nestopia_libretro", "Nintendo - Family Computer Disk System")
-        "gamegear" -> RetroArchCoreInfo( "flycast_libretro", "Sega - Dreamcast")
+        "gamegear" -> RetroArchCoreInfo( "picodrive_libretro", "Sega - Game Gear")
         "gb" -> RetroArchCoreInfo( "mgba_libretro", "Nintendo - Game Boy")
         "gba" -> RetroArchCoreInfo( "mgba_libretro", "Nintendo - Game Boy Advance")
         "gbc" -> RetroArchCoreInfo( "mgba_libretro", "Nintendo - Game Boy Color")
@@ -44,7 +44,7 @@ fun gameListDirToDatabase(dir: String): RetroArchCoreInfo {
         "lowresnx" -> RetroArchCoreInfo( "lowresnx_libretro", "LowRes NX")
         "lutro" -> RetroArchCoreInfo( "lutro_libretro", "Lutro")
         "lynx" -> RetroArchCoreInfo( "handy_libretro", "Atari - Lynx")
-        "mame" -> RetroArchCoreInfo( "mame_libretro", "MAME")
+        "mame" -> RetroArchCoreInfo( "mame2003_plus_libretro", "MAME")
         "mastersystem" -> RetroArchCoreInfo( "picodrive_libretro", "Sega - Master System - Mark III")
         "megadrive" -> RetroArchCoreInfo( "picodrive_libretro", "Sega - Mega Drive - Genesis")
         "moonlight" -> RetroArchCoreInfo( "moonlight_libretro", "")
@@ -138,7 +138,7 @@ fun gameListDirToSystemName(dir: String): String {
         "easyrpg" -> "RPG Maker"
         "fbneo" -> "FBNeo - Arcade Games"
         "fds" -> "Nintendo - Family Computer Disk System"
-        "gamegear" -> "Sega Dreamcast"
+        "gamegear" -> "Sega - Game Gear"
         "gb" -> "Nintendo Game Boy"
         "gba" -> "Nintendo Game Boy Advance"
         "gbc" -> "Nintendo Game Boy Color"
