@@ -24,11 +24,11 @@ jobs:
             archiveName: distributable-windows.zip
           - platform: linux
             runsOn: ubuntu-latest
-            zipCommand: 'tar -czf distributable-linux.tar.gz -C composeApp/build/compose/binaries/main-release/app/GameListConverter.app .'
+            zipCommand: 'tar -czf distributable-linux.tar.gz -C composeApp/build/compose/binaries/main-release .'
             archiveName: distributable-linux.tar.gz
           - platform: macos
             runsOn: macos-latest
-            zipCommand: 'tar -czf distributable-macos.tar.gz -C composeApp/build/compose/binaries/main-release/app/GameListConverter.app .'
+            zipCommand: 'tar -czf distributable-macos.tar.gz -C composeApp/build/compose/binaries/main-release .'
             archiveName: distributable-macos.tar.gz
 
     runs-on: ${{ matrix.runsOn }}
