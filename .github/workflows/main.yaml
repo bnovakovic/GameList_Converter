@@ -28,8 +28,8 @@ jobs:
             archiveName: GameListConverter-Linux.tar.gz
           - platform: macos
             runsOn: macos-latest
-            zipCommand: 'tar -czf GameListConverter-Macos.tar.gz -C composeApp/build/compose/binaries/main-release/app .'
-            archiveName: GameListConverter-Macos.tar.gz
+            zipCommand: 'tar -czf GameListConverter-Macos-Not-Notarized.tar.gz -C composeApp/build/compose/binaries/main-release/app .'
+            archiveName: GameListConverter-Macos-Not-Notarized.tar.gz
 
     runs-on: ${{ matrix.runsOn }}
     steps:
