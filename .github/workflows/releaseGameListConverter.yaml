@@ -1,43 +1,60 @@
 name: GameList-Converter-Publisher
-on: push
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 
 jobs:
-  build-and-publish-windows-release:
-    runs-on: windows-latest
+  build:
+    strategy:
+      matrix:
+        platform: [windows, linux, macos]
+        include:
+          - platform: windows
+            runsOn: windows-latest
+            zipCommand: 'Compress-Archive -Path composeApp\build\compose\binaries\main-release\app\GameListConverter -DestinationPath .\distributable-windows.zip'
+            archiveName: distributable-windows.zip
+          - platform: linux
+            runsOn: ubuntu-latest
+            zipCommand: 'tar -czf distributable-linux.tar.gz -C composeApp/build/compose/binaries/main-release .'
+            archiveName: distributable-linux.tar.gz
+          - platform: macos
+            runsOn: macos-latest
+            zipCommand: 'tar -czf distributable-macos.tar.gz -C composeApp/build/compose/binaries/main-release .'
+            archiveName: distributable-macos.tar.gz
 
+    runs-on: ${{ matrix.runsOn }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+        with:
+            # This number needs to be high enough to find previous version tags
+            fetch-depth: 15
 
-      - name: Set up JDK 17 on Windows
+      - name: "Set up JDK 17 for ${{ matrix.platform }}"
         uses: actions/setup-java@v2
         with:
           java-version: 17
           distribution: 'adopt'
 
-      - name: Build app on Windows
+      - name: "Build app for ${{ matrix.platform }}"
         run: |
           ./gradlew createReleaseDistributable
-          Compress-Archive -Path composeApp\build\compose\binaries\main-release\app\GameListConverter -DestinationPath .\distributable-windows.zip
+          ${{ matrix.zipCommand }}
 
-      - name: Create Release on Windows
-        id: create_release_windows
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: "Tag commit and create release ${{ matrix.platform }}"
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: v1.0.1
-          release_name: Windows Release v1.0.1
+          allowUpdates: true
+          tag: v1.0.1
+          artifacts: "${{ matrix.archiveName }}"
           body: |
-            This is the release of version 1.0.1 for Windows
-          draft: false
-          prerelease: false
-
-      - name: Upload Release Asset for Windows
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release_windows.outputs.upload_url }}
-          asset_path: distributable-windows.zip
-          asset_name: GameListConverter-windows.zip
-          asset_content_type: application/zip
+            This is the release of version 1.0.1 for ${{ matrix.platform }}
+        if: github.ref == 'refs/heads/main'
