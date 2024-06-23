@@ -20,10 +20,13 @@ jobs:
         include:
           - platform: windows
             runsOn: windows-latest
+            buildCommandSuffix: 'Compress-Archive -Path composeApp\build\compose\binaries\main-release\app\GameListConverter -DestinationPath .\distributable-windows.zip'
           - platform: linux
             runsOn: ubuntu-latest
+            buildCommandSuffix: 'tar -czf distributable-linux.tar.gz -C composeApp/build/compose/binaries/main-release/app/GameListConverter .'
           - platform: macos
             runsOn: macos-latest
+            buildCommandSuffix: 'tar -czf distributable-macos.tar.gz -C composeApp/build/compose/binaries/main-release/app/GameListConverter .'
 
     runs-on: ${{ matrix.runsOn }}
     steps:
@@ -40,8 +43,7 @@ jobs:
 
       - name: "Build app for ${{ matrix.platform }}"
         run: |
-          ./gradlew createReleaseDistributable
-          Compress-Archive -Path composeApp\build\compose\binaries\main-release\app\GameListConverter -DestinationPath .\distributable-${{ matrix.platform }}.zip
+          ./gradlew createReleaseDistributable ${{ matrix.buildCommandSuffix }}
 
       - name: "Tag commit and create release ${{ matrix.platform }}"
         uses: ncipollo/release-action@v1
