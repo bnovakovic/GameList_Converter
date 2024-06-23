@@ -27,6 +27,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import app.ActiveScreen
 import app.AppViewModel
@@ -38,6 +40,7 @@ import commonui.ScanningPopup
 import commonui.SurfaceText
 import gamelistconverter.composeapp.generated.resources.Res
 import gamelistconverter.composeapp.generated.resources.about_game
+import gamelistconverter.composeapp.generated.resources.about_version
 import gamelistconverter.composeapp.generated.resources.app_name
 import gamelistconverter.composeapp.generated.resources.loading_retroarch_info
 import gamelistconverter.composeapp.generated.resources.open_source
@@ -48,6 +51,8 @@ import ktx.thinOutline
 import org.jetbrains.compose.resources.stringResource
 import screens.export.retroarch.ExportRetroArchScreen
 import screens.gamelistscreen.GameListScreen
+import theme.GlText
+import utils.getVersion
 
 /**
  * Composable used to display the main screen.
@@ -76,6 +81,11 @@ fun MainScreen(appViewModel: AppViewModel) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                 ) {
+                    SurfaceText(
+                        stringResource(Res.string.about_version, getVersion()),
+                        style = GlText.TextOnSurfaceStyle.copy(fontSize = TextUnit(14.0f, TextUnitType.Sp))
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
                     HyperlinkText(
                         fullText = stringResource(Res.string.about_game, appName, RECALBOX, RETROPIE, RETRO_ARCH),
                         modifier = Modifier.fillMaxWidth(),
@@ -90,7 +100,7 @@ fun MainScreen(appViewModel: AppViewModel) {
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     HyperlinkText(
-                        fullText = stringResource(Res.string.ui_inspired, appName, GAME_LIST_EDITOR, appName, GAME_LIST_EDITOR),
+                        fullText = stringResource(Res.string.ui_inspired, GAME_LIST_EDITOR, appName, GAME_LIST_EDITOR),
                         linkText = listOf(GAME_LIST_EDITOR),
                         hyperlinks = listOf(GAME_LIST_EDITOR_LINK)
                     )

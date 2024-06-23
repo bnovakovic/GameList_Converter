@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import ktx.thinOutline
 import theme.GameListTheme
@@ -63,12 +64,13 @@ fun InfoText(text: String, modifier: Modifier = Modifier, useMarquee: Boolean = 
  * @param text Text to show.
  * @param modifier Modifier used to modify the text properties.
  * @param textAlign Alignment for the text.
+ * @param style Style to use with the text.
  */
 @Composable
-fun SurfaceText(text: String, modifier: Modifier = Modifier, textAlign: TextAlign? = null) {
+fun SurfaceText(text: String, modifier: Modifier = Modifier, textAlign: TextAlign? = null, style: TextStyle = GlText.TextOnSurfaceStyle) {
     Text(
         text = text,
-        style = GlText.TextOnSurfaceStyle,
+        style = style,
         color = MaterialTheme.colors.onSurface,
         modifier = modifier,
         textAlign = textAlign
@@ -199,6 +201,6 @@ fun HyperlinkText(
                     uriHandler.openUri(stringAnnotation.item)
                 }
         },
-        style = GlText.TextOnSurfaceStyle.copy(color = MaterialTheme.colors.onSurface, textAlign = TextAlign.Center)
+        style = GlText.TextOnSurfaceStyle.copy(color = MaterialTheme.colors.onSurface, textAlign = TextAlign.Center, fontSize = TextUnit(14.0f, TextUnitType.Sp),)
     )
 }

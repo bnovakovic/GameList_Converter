@@ -51,8 +51,9 @@
     <string name="playlist_save_done">Snimanje liste je uspešno završeno</string>
 
     <!--    About dialogue-->
+    <string name="about_version">Verzija: %1$s</string>
     <string name="about_game">%1$s je besplatan program napravljen od strane Bojana Novakovića. Namenjen je da vam pomogne da konvertujete vaše gamelist.xml korišćene sa %2$s i %3$s u %4$s listu.</string>
-    <string name="ui_inspired">%1$s dizajn je inspirisan u velikoj meri od strane %2$s-a. To je urađeno kako bi UI bio poznat. Imajte u vidu da %3$s ne može menjati vaše gamelist.xml fajlove. Za to već imamo odličan %4$s.</string>
+    <string name="ui_inspired">Dizajn je inspirisan u velikoj meri od strane %1$s-a. To je urađeno kako bi UI bio poznat. Imajte u vidu da %2$s ne može menjati vaše gamelist.xml fajlove. Za to već imamo odličan %3$s.</string>
     <string name="open_source">%1$s je open source napravljen u %2$s.\nIzvorni kod možete naći ovde:\n %3$s</string>
     <string name="github_link">GitHub link: %1$s</string>
     <string name="should_be_made_using_screen_scrapper">gamelist.xml bi trebalo da bude napravljen korišćenjem %1$s-a za najbolju kompatibilnost.</string>

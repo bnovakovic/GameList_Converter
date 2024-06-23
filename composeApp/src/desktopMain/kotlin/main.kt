@@ -24,6 +24,7 @@ import screens.mainscreen.MainScreen
 import theme.GameListTheme
 import theme.basicColorProvider
 import theme.extendedColorsProvider
+import utils.getVersion
 import java.io.File
 
 fun main() {
@@ -31,9 +32,11 @@ fun main() {
     application {
         val state = rememberWindowState(size = DpSize(1280.dp, 760.dp), position = WindowPosition.Aligned(Alignment.Center))
         val appViewModel = getViewModel(Unit, viewModelFactory { AppViewModel(onRequestApplicationClose = ::exitApplication) })
+        val version = getVersion()
+        val title = "${stringResource(Res.string.app_name)} - $version"
         Window(
             onCloseRequest = ::exitApplication,
-            title = stringResource(Res.string.app_name),
+            title = title,
             resizable = false,
             state = state,
             onKeyEvent = {

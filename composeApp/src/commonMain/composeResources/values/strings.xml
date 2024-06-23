@@ -71,8 +71,9 @@
     <string name="light">Light</string>
 
     <!--    About dialogue-->
+    <string name="about_version">Version: %1$s</string>
     <string name="about_game">%1$s is free program made by Bojan Novaković. It is intended to help you convert your game lists from gamelist.xml used in %2$s or %3$s in to %4$s playlist.</string>
-    <string name="ui_inspired">%1$s UI is highly inspired by %2$s, in order to make you feel comfortable while using it. Please note that %3$s cannot edit your gamelist.xml file. We already have super awesome %4$s that can help with that.</string>
+    <string name="ui_inspired">UI is highly inspired by %1$s, in order to make you feel comfortable while using it. Please note that %2$s cannot edit your gamelist.xml file. We already have super awesome %3$s that can help with that.</string>
     <string name="open_source">%1$s is open source project created in %2$s.\nSource code can be found here:\n %3$s</string>
     <string name="github_link">GitHub link: %1$s</string>
     <string name="should_be_made_using_screen_scrapper">Your gamelist.xml should be created using %1$s for best compatibility.</string>

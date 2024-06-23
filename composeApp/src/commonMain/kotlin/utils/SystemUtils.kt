@@ -1,4 +1,3 @@
 package utils
 
-class SystemUtils {
-}
+fun getVersion() = System.getProperty("jpackage.app-version")
