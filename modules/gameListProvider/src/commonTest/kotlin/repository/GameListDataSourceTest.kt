@@ -1,6 +1,7 @@
 package repository
 
 import com.bojan.gamelistmanager.gamelistprovider.repository.GameListDataSource
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -49,5 +50,10 @@ class GameListDataSourceTest {
 
         // THEN
         assert(tested.gameList.value.isEmpty())
+    }
+
+    @After
+    fun cleanup() {
+        tested.clearData()
     }
 }
