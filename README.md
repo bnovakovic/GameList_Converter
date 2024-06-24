@@ -29,7 +29,7 @@ For the best results, your `gamelist.xml` should have been created using [Screen
 ![GameList Converter](Documentation/Images/ShowCase_02.png)
 
 ## How to use the GameList Converter?
-Detailed instruction can be found in our [User Manual](https://github.com/bnovakovic/gamelistmanager/blob/main/Documentation/UserManual/UserManual.adoc)
+Detailed instruction can be found in our [User Manual]([https://github.com/bnovakovic/gamelistmanager/blob/main/Documentation/UserManual/UserManual.adoc](https://github.com/bnovakovic/gamelistmanager/blob/main/Documentation/UserManual/UserManual.adoc))
 
 ## Features
 - Parses the `gamelist.xml` file to extract game information which is then displayed at the main screen.
