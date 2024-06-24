@@ -25,3 +25,7 @@ const val SCREEN_SCRAPPER = "Screen Scrapper"
 const val GAME_LIST_EDITOR = "GameList Editor"
 
 const val HELP_LINK = "https://github.com/bnovakovic/GameList_Converter/blob/main/Documentation/UserManual/UserManual.adoc"
+
+const val EXPORT_SCREEN_CORE_LIST_OFFSET = 12
+const val EXPORT_SCREEN_SYSTEM_LIST_OFFSET = 11
+const val MAIN_SCREEN_GAME_LIST_OFFSET = 26

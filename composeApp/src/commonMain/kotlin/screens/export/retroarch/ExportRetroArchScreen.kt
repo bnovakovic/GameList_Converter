@@ -1,5 +1,7 @@
 package screens.export.retroarch
 
+import EXPORT_SCREEN_CORE_LIST_OFFSET
+import EXPORT_SCREEN_SYSTEM_LIST_OFFSET
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -177,9 +179,9 @@ fun SystemAndCoreList(
     onChangeShowAllCores: (Boolean) -> Unit
 ) {
     Column(modifier = Modifier.then(modifier).fillMaxHeight().padding(8.dp)) {
-        SearchableTextList(Modifier.weight(1.0f), systemViewModel, 11, stringResource(Res.string.select_system))
+        SearchableTextList(Modifier.weight(1.0f), systemViewModel, EXPORT_SCREEN_SYSTEM_LIST_OFFSET, stringResource(Res.string.select_system))
         Spacer(modifier = Modifier.height(8.dp))
-        SearchableTextList(Modifier.weight(1.0f), coreViewModel, 12, stringResource(Res.string.select_core))
+        SearchableTextList(Modifier.weight(1.0f), coreViewModel, EXPORT_SCREEN_CORE_LIST_OFFSET, stringResource(Res.string.select_core))
         Spacer(modifier = Modifier.height(8.dp))
         CheckboxWithTitle(showAllCores, onChangeShowAllCores, stringResource(Res.string.show_unsupported_cores))
     }

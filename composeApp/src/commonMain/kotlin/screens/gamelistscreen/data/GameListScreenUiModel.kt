@@ -11,6 +11,7 @@ data class GameListScreenUiModel(
     val selectedSystem: Int = 0,
     val selectedGame: Int = -1,
     val activeGameInfo: GameInfoUiModel = emptyGameInfo,
+    val activeSystemInfo: GameSystemUiModel = GameSystemUiModel.empty,
     val searchQuery: String = "",
 ) {
     companion object {

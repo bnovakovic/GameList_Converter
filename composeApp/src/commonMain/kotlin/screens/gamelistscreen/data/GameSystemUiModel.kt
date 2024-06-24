@@ -1,5 +1,6 @@
 package screens.gamelistscreen.data
 
+import com.bojan.gamelistmanager.gamelistprovider.domain.data.RetroArchCoreInfo
 import commonui.textlist.SelectableItemUiModel
 import java.io.File
 
@@ -13,4 +14,8 @@ data class GameSystemUiModel(
 ) : SelectableItemUiModel(
     text = "${system.name} (${system.systemPath.name})",
     disabledOrHiddenItem = false
-)
+) {
+    companion object {
+        val empty = GameSystemUiModel(SystemUiModel("", File(""), RetroArchCoreInfo.empty), emptyList(), File(""))
+    }
+}

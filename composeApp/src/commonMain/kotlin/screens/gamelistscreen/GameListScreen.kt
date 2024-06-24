@@ -1,9 +1,11 @@
 package screens.gamelistscreen
 
+import MAIN_SCREEN_GAME_LIST_OFFSET
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,20 +42,23 @@ import gamelistconverter.composeapp.generated.resources.description
 import gamelistconverter.composeapp.generated.resources.developer
 import gamelistconverter.composeapp.generated.resources.export
 import gamelistconverter.composeapp.generated.resources.favorite
+import gamelistconverter.composeapp.generated.resources.game_name
 import gamelistconverter.composeapp.generated.resources.genre
 import gamelistconverter.composeapp.generated.resources.hidden
 import gamelistconverter.composeapp.generated.resources.image_not_found
 import gamelistconverter.composeapp.generated.resources.kid_game
-import gamelistconverter.composeapp.generated.resources.name
+import gamelistconverter.composeapp.generated.resources.number_of_games
 import gamelistconverter.composeapp.generated.resources.players
 import gamelistconverter.composeapp.generated.resources.publisher
 import gamelistconverter.composeapp.generated.resources.rating
 import gamelistconverter.composeapp.generated.resources.region
 import gamelistconverter.composeapp.generated.resources.select_game
 import gamelistconverter.composeapp.generated.resources.select_system
+import gamelistconverter.composeapp.generated.resources.system_name
 import ktx.thinOutline
 import org.jetbrains.compose.resources.stringResource
 import screens.gamelistscreen.data.GameInfoUiModel
+import screens.gamelistscreen.data.GameSystemUiModel
 import screens.gamelistscreen.mappers.toResourceString
 import java.io.File
 import java.io.FileInputStream
@@ -66,15 +71,17 @@ import java.io.FileInputStream
 @Composable
 fun GameListScreen(viewModel: GameListScreenViewModel) {
     val uiModel by viewModel.uiModel.collectAsState()
-    Row(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.surface),) {
+    val activeSystem = uiModel.activeSystemInfo
+    Row(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.surface)) {
         RomsInfo(
             modifier = Modifier.weight(1.0f).fillMaxHeight(),
             viewModel = viewModel
         )
-        GameInfo(
+        GameAndSystemInfo(
             modifier = Modifier.weight(1.0f).fillMaxHeight(),
             gameInfo = uiModel.activeGameInfo,
-            onExportClicked = viewModel::switchToExportScreen
+            onExportClicked = viewModel::switchToExportScreen,
+            systemInfo = activeSystem
         )
     }
 }
@@ -93,9 +100,9 @@ fun RomsInfo(modifier: Modifier, viewModel: GameListScreenViewModel) {
         }
         SearchableTextList(
             modifier = Modifier.weight(1.0f),
-            viewModel.selectableGameListViewModel,
-            26,
-            stringResource(Res.string.select_game)
+            viewModel = viewModel.selectableGameListViewModel,
+            scrollOffset = MAIN_SCREEN_GAME_LIST_OFFSET,
+            listTitle = stringResource(Res.string.select_game)
         )
         Spacer(modifier = Modifier.height(8.dp))
         val activeGameInfo = uiModel.activeGameInfo
@@ -129,13 +136,13 @@ private fun DropdownItems(
 }
 
 @Composable
-fun GameInfo(modifier: Modifier, gameInfo: GameInfoUiModel, onExportClicked: () -> Unit) {
+private fun GameAndSystemInfo(modifier: Modifier, gameInfo: GameInfoUiModel, onExportClicked: () -> Unit, systemInfo: GameSystemUiModel) {
 
     Column(modifier = Modifier.then(modifier).padding(8.dp)) {
-        ImageAndVideoContainer(gameInfo.imagePath, gameInfo.videoPath)
+        SystemAndImageContainer(gameInfo.imagePath, systemInfo)
         Spacer(modifier = Modifier.height(4.dp))
         Row {
-            InfoWithTitle(stringResource(Res.string.name), gameInfo.gameName, containerModifier = Modifier.weight(0.7f))
+            InfoWithTitle(stringResource(Res.string.game_name), gameInfo.gameName, containerModifier = Modifier.weight(0.7f))
             Spacer(modifier = Modifier.width(8.dp))
             InfoWithTitle(stringResource(Res.string.region), gameInfo.region, containerModifier = Modifier.weight(0.3f))
             Spacer(modifier = Modifier.width(8.dp))
@@ -143,15 +150,35 @@ fun GameInfo(modifier: Modifier, gameInfo: GameInfoUiModel, onExportClicked: () 
         }
         Spacer(modifier = Modifier.height(8.dp))
         Row {
-            InfoWithTitle(stringResource(Res.string.date), gameInfo.date, containerModifier = Modifier.weight(1f))
+            InfoWithTitle(
+                title = stringResource(Res.string.date),
+                gameInfo.date,
+                containerModifier = Modifier.weight(1f)
+            )
             Spacer(modifier = Modifier.width(8.dp))
-            InfoWithTitle(stringResource(Res.string.rating), gameInfo.rating, containerModifier = Modifier.weight(1f))
+            InfoWithTitle(
+                title = stringResource(Res.string.rating),
+                gameInfo.rating,
+                containerModifier = Modifier.weight(1f)
+            )
             Spacer(modifier = Modifier.width(8.dp))
-            InfoWithTitle(stringResource(Res.string.kid_game), gameInfo.kidGame.toResourceString(), containerModifier = Modifier.weight(1f))
+            InfoWithTitle(
+                title = stringResource(Res.string.kid_game),
+                gameInfo.kidGame.toResourceString(),
+                containerModifier = Modifier.weight(1f)
+            )
             Spacer(modifier = Modifier.width(8.dp))
-            InfoWithTitle(stringResource(Res.string.hidden), gameInfo.hidden.toResourceString(), containerModifier = Modifier.weight(1f))
+            InfoWithTitle(
+                title = stringResource(Res.string.hidden),
+                gameInfo.hidden.toResourceString(),
+                containerModifier = Modifier.weight(1f)
+            )
             Spacer(modifier = Modifier.width(8.dp))
-            InfoWithTitle(stringResource(Res.string.favorite), gameInfo.favorite.toResourceString(), containerModifier = Modifier.weight(1f))
+            InfoWithTitle(
+                title = stringResource(Res.string.favorite),
+                gameInfo.favorite.toResourceString(),
+                containerModifier = Modifier.weight(1f)
+            )
         }
         Spacer(modifier = Modifier.height(8.dp))
         Row {
@@ -181,8 +208,21 @@ fun GameInfo(modifier: Modifier, gameInfo: GameInfoUiModel, onExportClicked: () 
 }
 
 @Composable
-private fun ImageAndVideoContainer(imagePath: File?, videoFile: File?) {
+private fun SystemAndImageContainer(imagePath: File?, systemInfo: GameSystemUiModel) {
     Row(modifier = Modifier.fillMaxWidth()) {
+        Box(
+            modifier = Modifier
+                .height(300.dp)
+                .weight(1.0f),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
+                InfoWithTitle(stringResource(Res.string.system_name), systemInfo.system.name)
+                Spacer(modifier = Modifier.height(8.dp))
+                InfoWithTitle(stringResource(Res.string.number_of_games), systemInfo.games.size.toString())
+            }
+        }
+        Spacer(modifier = Modifier.width(16.dp))
         Box(
             modifier = Modifier
                 .height(300.dp)
@@ -201,15 +241,6 @@ private fun ImageAndVideoContainer(imagePath: File?, videoFile: File?) {
             if (!imageLoaded) {
                 SurfaceText(stringResource(Res.string.image_not_found))
             }
-        }
-        Spacer(modifier = Modifier.width(16.dp))
-        Box(
-            modifier = Modifier
-                .height(300.dp)
-                .weight(1.0f),
-            contentAlignment = Alignment.Center
-        ) {
-
         }
     }
 }

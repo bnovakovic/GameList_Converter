@@ -25,6 +25,8 @@
     <string name="none">Nijedno</string>
     <string name="loading_retroarch_info">Učitavam RetroArch informacije</string>
     <string name="game_list">Lista igara</string>
+    <string name="number_of_games">Ukupno igara</string>
+    <string name="game_name">Naziv igre</string>
 
     <!--    Export screen-->
     <string name="select_core">Odaberi core</string>

@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import screens.gamelistscreen.data.GameInfoUiModel
 import screens.gamelistscreen.data.GameListScreenUiModel
+import screens.gamelistscreen.data.GameSystemUiModel
 import screens.gamelistscreen.mappers.toGameSystemUiModel
 
 /**
@@ -53,9 +54,21 @@ class GameListScreenViewModel(
     }
 
     fun systemSelected(selectedIndex: Int) {
-        val systemList = _uiModel.value.gameSystems
+        val uiModel = _uiModel.value
+        val systemList = uiModel.gameSystems
+        val selectedSystem = uiModel.selectedSystem
         val selectedGame = if (systemList.isNotEmpty()) 0 else -1
-        _uiModel.value = _uiModel.value.copy(selectedSystem = selectedIndex, selectedGame = selectedGame, searchQuery = "")
+        val activeSystem = if (selectedSystem >= 0 && systemList.size > selectedSystem) {
+            systemList[selectedSystem]
+        } else {
+            GameSystemUiModel.empty
+        }
+        _uiModel.value = _uiModel.value.copy(
+            selectedSystem = selectedIndex,
+            selectedGame = selectedGame,
+            searchQuery = "",
+            activeSystemInfo = activeSystem
+        )
         gameSelected(0)
         showFullGameList()
     }

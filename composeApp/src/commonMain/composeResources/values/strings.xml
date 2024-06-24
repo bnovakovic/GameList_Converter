@@ -26,6 +26,8 @@
     <string name="none">None</string>
     <string name="loading_retroarch_info">Loading RetroArch information</string>
     <string name="game_list">Game list</string>
+    <string name="number_of_games">Number of games</string>
+    <string name="game_name">Game name</string>
 
     <!--    Export screen-->
     <string name="select_core">Select core</string>
