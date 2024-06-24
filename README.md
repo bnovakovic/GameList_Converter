@@ -19,7 +19,7 @@
 ## Overview
 This project is a Kotlin Multiplatform (KMP) application that converts a `gamelist.xml` file to the [RetroArch](https://www.retroarch.com/) playlist format. 
 
-It follows the principles of clean architecture to ensure modularity, maintainability and testability of the code (even though not a single test is written yet :D).
+It follows the principles of clean architecture to ensure modularity, maintainability and testability of the code.
 
 As you can probably see, it is highly inspired by super awesome [GameList Editor](https://github.com/andresdelcampo/GameList_Editor). This project **is not intended** to replace it. This application **cannot** edit, scrape or manage your `gamelist.xml` in any way. It is only used to convert it to the RetroArch playlist.
 
