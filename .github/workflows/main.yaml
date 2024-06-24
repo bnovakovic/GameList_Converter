@@ -53,8 +53,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
-          tag: v1.0.1
+          tag: v1.0.2
           artifacts: "${{ matrix.archiveName }}"
           body: |
-            This is the release of version 1.0.1 for ${{ matrix.platform }}
+            This is the release of version 1.0.2 for ${{ matrix.platform }}
         if: github.ref == 'refs/heads/main'

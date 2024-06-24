@@ -48,7 +48,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "GameListConverter"
-            packageVersion = "1.0.1"
+            packageVersion = "1.0.2"
             description = "Convert your gamelist.xml to RetroArch playlist file"
             copyright = "© 2024 Bojan Novakovic. All rights reserved."
             vendor = "Bojan Novaković"
