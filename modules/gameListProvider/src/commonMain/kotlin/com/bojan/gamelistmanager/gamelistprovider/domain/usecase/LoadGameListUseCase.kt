@@ -11,7 +11,7 @@ import java.io.File
  * UseCase used to scan the provided directory of sub-folders that contain Gamelist.xml file, and populates [GameListRepository] with
  * converted data.
  *
- * @param xmlConverter [XmlConverter] used to convert Gameslit.xml to [GameListData].
+ * @param xmlConverter [XmlConverter] used to convert Gamelist.xml to [GameListData].
  * @param dataSource [GameListRepository] used to store converted information in to the repository.
  */
 class LoadGameListUseCase(private val xmlConverter: XmlConverter, private val dataSource: GameListRepository) {
@@ -24,7 +24,7 @@ class LoadGameListUseCase(private val xmlConverter: XmlConverter, private val da
      *
      * @return List of failed items.
      */
-    suspend operator fun invoke(scanDir: File, update: Channel<Pair<String, Float>>) : List<File> {
+    suspend operator fun invoke(scanDir: File, update: Channel<Pair<String, Float>>?) : List<File> {
 
         val subdirs = scanDir.listFiles { file -> file.isDirectory }
         val numberOfDirs = subdirs?.size ?: -1
@@ -42,7 +42,7 @@ class LoadGameListUseCase(private val xmlConverter: XmlConverter, private val da
                     failedItems.add(gameListFile)
                 }
             }
-            update.send(Pair(directory.toString(), calculateScanPercentage(numberOfDirs, scannedDirs)))
+            update?.send(Pair(directory.toString(), calculateScanPercentage(numberOfDirs, scannedDirs)))
             scannedDirs++
         }
         dataSource.clearData()

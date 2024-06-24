@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<gameList>
+    <provider>
+        <System>Amiga (AGA)</System>
+        <software>Skraper</software>
+        <database>ScreenScraper.fr</database>
+        <web>http://www.screenscraper.fr</web>
+    </provider>
+    <game id="89378" source="ScreenScraper.fr">
+        <path>./1869 (AGA).zip</path>
+        <name>1869 - Erlebte Geschichte Teil I</name>
+        <desc>Desc 1.</desc>
+        <releasedate>19930101T000000</releasedate>
+        <developer>Max Design</developer>
+        <publisher>Max Design</publisher>
+        <genre>Simulation</genre>
+        <players>1-4</players>
+        <hash>7F3B2B60</hash>
+        <image>./media/images/1869 (AGA).png</image>
+        <thumbnail>./media/box3d/1869 (AGA).png</thumbnail>
+        <genreid>1024</genreid>
+        <hidden>false</hidden>
+        <adult>true</adult>
+        <kidgame>false</kidgame>
+        <region>NA</region>
+        <favorite>true</favorite>
+    </game>
+    <game id="172940" source="ScreenScraper.fr">
+        <path>./Action Cat (AGA).zip</path>
+        <name>Action Cat</name>
+        <desc>Desc 2.</desc>
+        <releasedate>19950101T000000</releasedate>
+        <developer>1001 Software</developer>
+        <publisher>1001 Software</publisher>
+        <genre>Action-Platform</genre>
+        <rating>0.7</rating>
+        <hash>6A51F8D0</hash>
+        <video>./media/videos/Action Cat (AGA).mpg</video>
+        <players>1</players>
+        <image>./media/images/Action Cat (AGA).png</image>
+        <thumbnail>./media/box3d/Action Cat (AGA).png</thumbnail>
+        <genreid>257</genreid>
+        <hidden>true</hidden>
+        <adult>false</adult>
+        <kidgame>true</kidgame>
+        <region>EU, NA</region>
+        <favorite>false</favorite>
+    </game>
+</gameList>
