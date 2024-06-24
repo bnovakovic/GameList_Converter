@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
+val softwareVersion: String by extra { "1.0.2" }
+
 kotlin {
     jvm("desktop")
     
@@ -48,7 +50,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "GameListConverter"
-            packageVersion = "1.0.2"
+            packageVersion = softwareVersion
             description = "Convert your gamelist.xml to RetroArch playlist file"
             copyright = "© 2024 Bojan Novakovic. All rights reserved."
             vendor = "Bojan Novaković"
@@ -66,5 +68,11 @@ compose.desktop {
                 iconFile.set(iconsFolder.resolve("launcher_icon_1.ico"))
             }
         }
+    }
+}
+
+tasks.register("getVersionName") {
+    doLast {
+        println(softwareVersion)
     }
 }

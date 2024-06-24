@@ -1,5 +1,8 @@
 name: GameList-Converter-Publisher
 
+env:
+  PACKAGE_VERSION: 1.0.2
+
 on:
   pull_request:
     branches:
@@ -53,8 +56,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
-          tag: v1.0.2
+          tag: v${{ env.PACKAGE_VERSION }}
           artifacts: "${{ matrix.archiveName }}"
           body: |
-            This is the release of version 1.0.2 for ${{ matrix.platform }}
+            This is the release of version v${{ env.PACKAGE_VERSION }} for ${{ matrix.platform }}
         if: github.ref == 'refs/heads/main'
