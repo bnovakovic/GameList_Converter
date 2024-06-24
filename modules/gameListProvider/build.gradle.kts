@@ -13,4 +13,5 @@ dependencies {
     commonMainImplementation(libs.kotlinx.coroutines.core)
     commonMainImplementation(libs.org.json)
     commonMainImplementation(libs.jackson.xml)
+    commonTestImplementation(libs.junit)
 }
