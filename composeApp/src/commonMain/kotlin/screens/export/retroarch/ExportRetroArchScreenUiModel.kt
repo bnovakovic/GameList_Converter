@@ -39,5 +39,6 @@ data class ExportRetroArchScreenUiModel(
     val coreMissing: Boolean = false,
     val confirmCoreMissing: Boolean = false,
     val showAllCores: Boolean = false,
-    val saveFileResult: PlaylistSaveProgress = PlaylistSaveProgress.NONE
+    val saveFileResult: PlaylistSaveProgress = PlaylistSaveProgress.NONE,
+    val numberOfGames: Int = 0,
 )

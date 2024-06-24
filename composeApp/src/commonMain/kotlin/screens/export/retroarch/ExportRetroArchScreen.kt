@@ -55,6 +55,7 @@ import gamelistconverter.composeapp.generated.resources.manufacturer
 import gamelistconverter.composeapp.generated.resources.name
 import gamelistconverter.composeapp.generated.resources.no_access
 import gamelistconverter.composeapp.generated.resources.notes
+import gamelistconverter.composeapp.generated.resources.number_of_games
 import gamelistconverter.composeapp.generated.resources.overwrite_message
 import gamelistconverter.composeapp.generated.resources.overwrite_title
 import gamelistconverter.composeapp.generated.resources.playlist_save_done
@@ -113,7 +114,8 @@ fun ExportRetroArchScreen(viewModel: ExportRetroArchScreenViewModel) {
             },
             onSelectedPlaylistOption = viewModel::selectedPlayListOption,
             onConfirmCheckBoxClicked = viewModel::confirmCoreMissing,
-            confirmedThatCoreIsMissing = uiModel.confirmCoreMissing
+            confirmedThatCoreIsMissing = uiModel.confirmCoreMissing,
+            numberOfGames = uiModel.numberOfGames
         )
     }
     SavingPlaylistPopup(uiModel.saveFileResult, viewModel::confirmPlaylistSaveDone)
@@ -197,6 +199,7 @@ fun InfoAndControls(
     onSelectedPlaylistOption: (Int) -> Unit,
     confirmedThatCoreIsMissing: Boolean,
     onConfirmCheckBoxClicked: (Boolean) -> Unit,
+    numberOfGames: Int
 ) {
     Column(modifier = Modifier.then(modifier).fillMaxHeight().padding(8.dp)) {
         val coreInfo = uiModel.coreInfo
@@ -205,7 +208,7 @@ fun InfoAndControls(
         Row {
             InfoWithTitle(stringResource(Res.string.name), coreInfo.displayName, containerModifier = Modifier.weight(1.0f))
             Spacer(modifier = Modifier.width(8.dp))
-            InfoWithTitle(stringResource(Res.string.categories), coreInfo.categories, containerModifier = Modifier.weight(1.0f))
+            InfoWithTitle(stringResource(Res.string.number_of_games), numberOfGames.toString(), containerModifier = Modifier.weight(1.0f))
             Spacer(modifier = Modifier.width(8.dp))
             InfoWithTitle(stringResource(Res.string.authors), coreInfo.authors, containerModifier = Modifier.weight(1.0f))
         }

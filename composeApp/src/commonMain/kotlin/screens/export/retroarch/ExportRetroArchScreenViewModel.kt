@@ -103,13 +103,17 @@ class ExportRetroArchScreenViewModel(
         _uiModel.value = _uiModel.value.copy(selectedSystem = index)
         displayCoreListForCurrentSystem()
         val coreList = coreListViewModel.uiModel.value.items
+        val availableSystems = systemListViewModel.uiModel.value.items
         if (coreList.size <= 1) {
-            val availableSystems = systemListViewModel.uiModel.value.items
             val selectedSystem = uiModel.value.selectedSystem
             if (availableSystems.size > selectedSystem) {
                 val systemInfo = availableSystems[selectedSystem]
                 _uiModel.value = _uiModel.value.copy(playlistOptions = listOf(systemInfo.system.retroArchCoreInfo.playlistName))
             }
+        }
+        if (availableSystems.size > index && index >= 0) {
+            val systemInfo = availableSystems[index]
+            _uiModel.value = _uiModel.value.copy(numberOfGames = systemInfo.games.size)
         }
         setCorrectPlaylistOption()
     }
