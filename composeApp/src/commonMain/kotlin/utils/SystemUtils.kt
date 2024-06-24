@@ -1,3 +1,3 @@
 package utils
 
-fun getVersion() = System.getProperty("jpackage.app-version")
+fun getVersion() = System.getProperty("jpackage.app-version") ?: "N/A"

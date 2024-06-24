@@ -10,7 +10,7 @@ const val LANGUAGE_SERBIAN = "Srpski"
 const val ENGLISH_LANGUAGE_CODE = "en"
 const val SERBIAN_LANGUAGE_CODE = "sr"
 
-const val GITHUB_LINK = "https://github.com/bnovakovic/gamelistmanager"
+const val GITHUB_LINK = "https://github.com/bnovakovic/GameList_Converter"
 const val RECALBOX_LINK = "https://www.recalbox.com"
 const val RETROPIE_LINK = "https://retropie.org.uk"
 const val RETROARCH_LINK = "https://www.retroarch.com"

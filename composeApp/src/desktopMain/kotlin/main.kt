@@ -69,7 +69,7 @@ private fun nonComposeCrashHandler() {
     Thread.setDefaultUncaughtExceptionHandler { _, e ->
         val message = e.message
         val stacktrace = e.stackTraceToString()
-
+        e.printStackTrace()
         val combined = "Message: $message\n\n $stacktrace"
         val currentTime = System.currentTimeMillis()
         val crashFile = File("Crash_$currentTime.log")
