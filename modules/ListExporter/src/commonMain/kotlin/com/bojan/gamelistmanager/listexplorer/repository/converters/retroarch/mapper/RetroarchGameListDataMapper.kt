@@ -25,16 +25,17 @@ fun GameListData.toRetroArchListObject(config: GameListConvertConfig) : RetroArc
         scanFilterDatContent = false,
         scanOverwritePlaylist = false,
         items = this.games
-            .filter {  gameData -> !gameData.hidden || config.addHidden }
+            .filter {  gameData -> (!gameData.hidden || config.addHidden) && !gameData.name.contains(NOT_GAME_STRING)  }
             .map { gameData ->
-            gameData.toRetroArchGameItem(this.originalPath, config.outputFileName)
+            gameData.toRetroArchGameItem(this.originalPath, gameData.path, config.outputFileName)
         }
     )
 }
 
-fun GameData.toRetroArchGameItem(originalPath: File, filename: String): RetroArchGameItem {
+fun GameData.toRetroArchGameItem(originalPath: File, subpath: File, filename: String): RetroArchGameItem {
+    val formattedPath: String = if (subpath.startsWith(UNWANTED_PATH_START)) subpath.toString().substring(1) else subpath.toString()
     return RetroArchGameItem(
-        path = File(originalPath, path.name).toString(),
+        path = File(originalPath, formattedPath).toString(),
         label = this.name,
         corePath = AUTO_DETECT_VALUE,
         coreName = AUTO_DETECT_VALUE,
@@ -44,3 +45,5 @@ fun GameData.toRetroArchGameItem(originalPath: File, filename: String): RetroArc
 }
 
 const val AUTO_DETECT_VALUE = "DETECT"
+const val UNWANTED_PATH_START = ".\\"
+const val NOT_GAME_STRING = "ZZZ(notgame)"
