@@ -56,10 +56,9 @@ class GameListScreenViewModel(
     fun systemSelected(selectedIndex: Int) {
         val uiModel = _uiModel.value
         val systemList = uiModel.gameSystems
-        val selectedSystem = uiModel.selectedSystem
         val selectedGame = if (systemList.isNotEmpty()) 0 else -1
-        val activeSystem = if (selectedSystem >= 0 && systemList.size > selectedSystem) {
-            systemList[selectedSystem]
+        val activeSystem = if (selectedIndex >= 0 && systemList.size > selectedIndex) {
+            systemList[selectedIndex]
         } else {
             GameSystemUiModel.empty
         }

@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
-val softwareVersion: String by extra { "1.0.4" }
+val softwareVersion: String by extra { "1.0.5" }
 
 kotlin {
     jvm("desktop")
