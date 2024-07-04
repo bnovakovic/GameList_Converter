@@ -15,7 +15,7 @@ fun gameListDirToDatabase(dir: String): RetroArchCoreInfo {
         "amiga600" -> RetroArchCoreInfo("puae_libretro", "Commodore - Amiga")
         "amigacd32" -> RetroArchCoreInfo("fsuae_libretro", "Commodore - Amiga")
         "amigacdtv" -> RetroArchCoreInfo("fsuae_libretro", "Commodore - Amiga")
-        "amstradcpc" -> RetroArchCoreInfo( "crocods_libretro", "Amstrad - CPC")
+        "amstradcpc" -> RetroArchCoreInfo( "cap32_libretro", "Amstrad - CPC")
         "apple2" -> RetroArchCoreInfo.empty
         "apple2gs" -> RetroArchCoreInfo.empty
         "atari2600" -> RetroArchCoreInfo( "stella_libretro", "Atari - 2600")
