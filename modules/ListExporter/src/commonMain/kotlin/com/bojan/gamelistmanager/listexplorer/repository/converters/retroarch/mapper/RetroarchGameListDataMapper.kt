@@ -1,13 +1,13 @@
 package com.bojan.gamelistmanager.listexplorer.repository.converters.retroarch.mapper
 
-import com.bojan.gamelistmanager.gamelistprovider.domain.data.GameData
-import com.bojan.gamelistmanager.gamelistprovider.domain.data.GameListData
 import com.bojan.gamelistmanager.listexplorer.domain.GameListConvertConfig
+import com.bojan.gamelistmanager.listexplorer.domain.data.ExportGameData
+import com.bojan.gamelistmanager.listexplorer.domain.data.ExportGameListData
 import com.bojan.gamelistmanager.listexplorer.repository.converters.retroarch.data.RetroArchGameItem
 import com.bojan.gamelistmanager.listexplorer.repository.converters.retroarch.data.RetroArchListObject
 import java.io.File
 
-fun GameListData.toRetroArchListObject(config: GameListConvertConfig) : RetroArchListObject {
+fun ExportGameListData.toRetroArchListObject(config: GameListConvertConfig) : RetroArchListObject {
     return RetroArchListObject(
         version = config.playlistVersion,
         defaultCorePath = config.corePath?.toString() ?: AUTO_DETECT_VALUE,
@@ -17,7 +17,7 @@ fun GameListData.toRetroArchListObject(config: GameListConvertConfig) : RetroArc
         leftThumbnailMode = 0,
         thumbnailMatchMode = 0,
         sortMode = 0,
-        scanContentDir = this.originalPath.toString(),
+        scanContentDir = this.originalPath,
         scanFileExts = "",
         scanDatFilePath = "",
         scanSearchRecursively = true,
@@ -32,8 +32,8 @@ fun GameListData.toRetroArchListObject(config: GameListConvertConfig) : RetroArc
     )
 }
 
-fun GameData.toRetroArchGameItem(originalPath: File, subpath: File, filename: String): RetroArchGameItem {
-    val formattedPath: String = if (subpath.startsWith(UNWANTED_PATH_START)) subpath.toString().substring(1) else subpath.toString()
+fun ExportGameData.toRetroArchGameItem(originalPath: String, subPath: String, filename: String): RetroArchGameItem {
+    val formattedPath: String = if (subPath.startsWith(UNWANTED_PATH_START)) subPath.substring(1) else subPath
     return RetroArchGameItem(
         path = File(originalPath, formattedPath).toString(),
         label = this.name,

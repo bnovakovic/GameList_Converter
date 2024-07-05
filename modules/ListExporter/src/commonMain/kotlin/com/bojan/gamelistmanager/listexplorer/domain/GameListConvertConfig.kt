@@ -1,6 +1,6 @@
 package com.bojan.gamelistmanager.listexplorer.domain
 
-import com.bojan.gamelistmanager.gamelistprovider.domain.data.GameListData
+import com.bojan.gamelistmanager.listexplorer.domain.data.ExportGameListData
 import java.io.File
 
 /**
@@ -8,7 +8,7 @@ import java.io.File
  *
  * @param outputDir Output directory where we want to save the list. Usually this is %RetroArchDir%/playlists.
  * @param outputFileName FileName of the list. RetroArch identifies system by the filename, so name should be proper for the System.
- * @param gameListData A [GameListData] containing all needed information about the system and the games.
+ * @param gameListData A [ExportGameListData] containing all needed information about the system and the games.
  * @param coreName Name of the core to use. If null, 'DETECT' will be used and RetroArch will detect it manually.
  * @param corePath Path to the core file.
  * @param addHidden If true hidden games will be added, otherwise hidden games will be skipped.
@@ -17,7 +17,7 @@ import java.io.File
 data class GameListConvertConfig(
     val outputDir: File,
     val outputFileName: String,
-    val gameListData: GameListData,
+    val gameListData: ExportGameListData,
     val coreName: String?,
     val corePath: File?,
     val addHidden: Boolean,

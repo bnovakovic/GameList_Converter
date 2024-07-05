@@ -43,7 +43,7 @@ class ConvertGameListUseCaseTest {
             rightThumbnailMode = 0,
             thumbnailMatchMode = 0,
             sortMode = 0,
-            scanContentDir = testGameListData.originalPath.toString(),
+            scanContentDir = testGameListData.originalPath,
             scanFileExts = "",
             scanDatFilePath = "",
             scanSearchRecursively = true,
@@ -97,7 +97,6 @@ class ConvertGameListUseCaseTest {
         val coreName = "Mame2003plus"
         val corePath = File("core/path/")
         val playlistVersion = "1.0"
-        val fullPlaylistPath = File(tempDir, filename)
         val config = GameListConvertConfig(
             outputDir = tempDir,
             outputFileName = filename,

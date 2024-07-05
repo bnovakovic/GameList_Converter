@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ktx.getUserHome
 import screens.export.PlaylistSaveProgress
+import screens.export.retroarch.mapper.toExportGameListData
 import screens.gamelistscreen.data.CoreInfoUiModel
 import screens.gamelistscreen.data.GameSystemUiModel
 import screens.gamelistscreen.data.compatibleWithSystem
@@ -295,7 +296,7 @@ class ExportRetroArchScreenViewModel(
                 val config = GameListConvertConfig(
                     outputDir = uiModel.exportPath,
                     outputFileName = fullPlaylistName,
-                    gameListData = foundSystem,
+                    gameListData = foundSystem.toExportGameListData(),
                     coreName = coreName,
                     corePath = coreFullPath,
                     addHidden = false,
