@@ -98,8 +98,7 @@ class ContentLoaderViewModel(
         val result = loadGameListUseCase.invoke(File(romsDir), channel)
         result.onEmptyList {
             _uiModel.value = _uiModel.value.copy(infoType = InfoType.ROMS_NOT_FOUND)
-        }
-        result.onSuccess {
+        }.onSuccess {
             println("Game list loaded. Unable to convert ${it.size} files")
         }
     }

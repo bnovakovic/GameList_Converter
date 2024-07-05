@@ -5,6 +5,7 @@ import com.bojan.gamelistmanager.gamelistprovider.repository.GameListDataSource
 import com.bojan.gamelistmanager.gamelistprovider.repository.converter.jsonConverter.JsonXmlConverter
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import testutils.fileSeparator
@@ -34,9 +35,38 @@ class LoadGameListUseCaseTest {
         // WHEN
         val failedItems = tested.invoke(romsDir, null)
 
+
+        failedItems
+            .onSuccess {
+                // THEN
+                val actual = dataSource.gameList.value
+                assertEquals(expected, actual)
+                assert(it.contains(brokenXml))
+            }.onEmptyList {
+                throw AssertionError("List should not be emtpy")
+            }
+
+    }
+
+    @Test
+    fun `test empty list conversion`(): Unit = runBlocking {
+        // GIVEN
+        val romsDir = File("src${fileSeparator}commonTest${fileSeparator}testRomsDir${fileSeparator}nes")
+        var emptyListCalled = false
+
         // THEN
-        val actual = dataSource.gameList.value
-        assertEquals(expected, actual)
-        assert(failedItems.contains(brokenXml))
+        assert(dataSource.gameList.value.isEmpty())
+
+        // WHEN
+        val failedItems = tested.invoke(romsDir, null)
+
+
+        failedItems
+            .onSuccess {
+                throw AssertionError("List should not be empty")
+            }.onEmptyList {
+                emptyListCalled = true
+            }
+        assertTrue(emptyListCalled)
     }
 }
