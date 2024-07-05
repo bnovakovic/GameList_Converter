@@ -13,6 +13,7 @@ import RETROPIE_LINK
 import RETRO_ARCH
 import SCREEN_SCRAPPER
 import SCREEN_SCRAPPER_LINK
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,17 +23,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import app.ActiveScreen
 import app.AppViewModel
 import app.Dialogues
+import app.contentloader.InfoType
 import app.contentloader.LoadingType
 import commonui.HyperlinkText
 import commonui.OkOnlyPopup
@@ -42,6 +50,9 @@ import gamelistconverter.composeapp.generated.resources.Res
 import gamelistconverter.composeapp.generated.resources.about_game
 import gamelistconverter.composeapp.generated.resources.about_version
 import gamelistconverter.composeapp.generated.resources.app_name
+import gamelistconverter.composeapp.generated.resources.list_emtpy_tip1
+import gamelistconverter.composeapp.generated.resources.list_emtpy_tip2
+import gamelistconverter.composeapp.generated.resources.list_emtpy_title
 import gamelistconverter.composeapp.generated.resources.loading_retroarch_info
 import gamelistconverter.composeapp.generated.resources.open_source
 import gamelistconverter.composeapp.generated.resources.restart_dialogue_text
@@ -51,6 +62,7 @@ import ktx.thinOutline
 import org.jetbrains.compose.resources.stringResource
 import screens.export.retroarch.ExportRetroArchScreen
 import screens.gamelistscreen.GameListScreen
+import theme.GameListTheme
 import theme.GlText
 import utils.getVersion
 
@@ -120,29 +132,49 @@ fun MainScreen(appViewModel: AppViewModel) {
             }
         }
 
+        Dialogues.NO_ROMS_FOUND -> {
+            OkOnlyPopup(onOk = { appViewModel.resetDialogue() }) {
+                Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+                    Image(
+                        Icons.Default.Warning,
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(GameListTheme.colors.warning),
+                        modifier = Modifier.size(80.dp)
+                    )
+                    SurfaceText(
+                        stringResource(Res.string.list_emtpy_title),
+                        style = GlText.TitleOnSurfaceStyle,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    SurfaceText(stringResource(Res.string.list_emtpy_tip1))
+                    Spacer(modifier = Modifier.height(4.dp))
+                    SurfaceText(stringResource(Res.string.list_emtpy_tip2))
+                }
+            }
+        }
+
         Dialogues.NONE -> {
             // We show no dialogue
         }
     }
 
-    val contentLoaderUiModel by appViewModel.contentLoader.uiModel.collectAsState()
-    when (contentLoaderUiModel.loadingType) {
-        LoadingType.ROMS -> {
+    when (val loadingStatus = uiModel.loadingType) {
+        is LoadingType.Roms -> {
             ScanningPopup(
-                text = contentLoaderUiModel.updateInfo,
-                percentage = contentLoaderUiModel.loadingProgress,
+                text = loadingStatus.info,
+                percentage = loadingStatus.progress,
                 onCancel = { appViewModel.cancelLoad() }
             )
         }
 
-        LoadingType.RETRO_ARCH -> {
+        is LoadingType.RetroArch -> {
             ScanningPopup(
                 text = stringResource(Res.string.loading_retroarch_info),
-                percentage = contentLoaderUiModel.loadingProgress,
+                percentage = -1.0f,
                 onCancel = { appViewModel.cancelLoad() })
         }
 
-        LoadingType.NONE -> { // ignore }
-        }
+        is LoadingType.None -> { /* ignore */ }
     }
 }

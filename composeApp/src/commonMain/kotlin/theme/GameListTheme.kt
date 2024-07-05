@@ -17,7 +17,8 @@ data class ExtendedColors(
     val accept: Color,
     val popupOutline: Color,
     val listDisabledText: Color,
-    val listSelection: Color
+    val listSelection: Color,
+    val warning: Color,
 )
 
 val LocalExtendedColors = staticCompositionLocalOf {
@@ -28,7 +29,8 @@ val LocalExtendedColors = staticCompositionLocalOf {
         accept = Color.Unspecified,
         popupOutline = Color.Unspecified,
         listDisabledText = Color.Unspecified,
-        listSelection = Color.Unspecified
+        listSelection = Color.Unspecified,
+        warning = Color.Unspecified
     )
 }
 
@@ -36,9 +38,9 @@ val LocalExtendedColors = staticCompositionLocalOf {
 fun GameListTheme(basicColors: Colors = MaterialTheme.colors, extendedColors: ExtendedColors, content: @Composable () -> Unit) {
     CompositionLocalProvider(LocalExtendedColors provides extendedColors) {
         MaterialTheme(
-            colors = basicColors, content = content, typography = Typography(
-
-            )
+            colors = basicColors,
+            content = content,
+            typography = Typography()
         )
     }
 }

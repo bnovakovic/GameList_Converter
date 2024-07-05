@@ -17,4 +17,18 @@ object GlText {
         lineHeight = 17.sp,
         letterSpacing = 0.15.sp
     )
+
+    val TextOnSurfaceThin = TextStyle(
+        fontWeight = FontWeight.Thin,
+        fontSize = 15.sp,
+        lineHeight = 21.sp,
+        letterSpacing = 0.15.sp
+    )
+
+    val TitleOnSurfaceStyle = TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 18.sp,
+        lineHeight = 21.sp,
+        letterSpacing = 0.15.sp
+    )
 }

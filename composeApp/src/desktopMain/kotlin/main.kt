@@ -56,7 +56,7 @@ fun main() {
             ) {
                 MainWindowMenuBar(
                     onExitApplication = ::exitApplication,
-                    enabled = !uiModel.workInProgress,
+                    enabled = !uiModel.disableMenus,
                     viewModel = appViewModel.mainMenuViewModel
                 )
                 MainScreen(appViewModel)

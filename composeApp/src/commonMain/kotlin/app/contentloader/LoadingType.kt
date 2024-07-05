@@ -3,19 +3,21 @@ package app.contentloader
 /**
  * Represents current loading type.
  */
-enum class LoadingType {
+sealed class LoadingType {
     /**
      * ROMs are being loaded.
+     * @param info Current info on what is loaded.
+     * @param progress Current loading progress.
      */
-    ROMS,
+    data class Roms(val info: String, val progress: Float) : LoadingType()
 
     /**
      * RetroArch is being loaded.
      */
-    RETRO_ARCH,
+    data object RetroArch : LoadingType()
 
     /**
      * Nothing is being loaded at the moment.
      */
-    NONE
+    data object None : LoadingType()
 }

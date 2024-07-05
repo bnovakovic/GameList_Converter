@@ -20,7 +20,7 @@ class ContentLoaderViewModel(
     private val loadGameListUseCase: LoadGameListUseCase,
     private val loadRetroArchInfoUseCase: LoadRetroArchInfoUseCase,
 ) : ViewModel() {
-    private val _uiModel = MutableStateFlow(ContentLoaderUiModel())
+    private val _uiModel = MutableStateFlow(ContentLoaderUiModel(infoType = InfoType.NONE))
     val uiModel = _uiModel.asStateFlow()
     private val channel = Channel<Pair<String, Float>>()
     private var loadJob: Job? = null
@@ -31,13 +31,9 @@ class ContentLoaderViewModel(
             for (update in channel) {
                 val progress = update.second
                 if (progress < 1.0f && !cancelingJob) {
-                    _uiModel.value = _uiModel.value.copy(
-                        loadingType = LoadingType.ROMS,
-                        updateInfo = update.first,
-                        loadingProgress = progress,
-                    )
+                    _uiModel.value = _uiModel.value.copy(loadingType = LoadingType.Roms(update.first, progress))
                 } else {
-                    _uiModel.value = ContentLoaderUiModel()
+                    _uiModel.value = _uiModel.value.copy(loadingType = LoadingType.None)
                 }
             }
         }
@@ -52,12 +48,9 @@ class ContentLoaderViewModel(
         retroArchDir?.let { retroDir ->
             loadJob = viewModelScope.launch {
                 cancelingJob = false
-                _uiModel.value = _uiModel.value.copy(
-                    loadingType = LoadingType.RETRO_ARCH,
-                    loadingProgress = 0.0f,
-                )
+                _uiModel.value = _uiModel.value.copy(loadingType = LoadingType.RetroArch)
                 loadRetroArchInfoUseCase.invoke(File(retroDir))
-                _uiModel.value = ContentLoaderUiModel()
+                _uiModel.value = _uiModel.value.copy(loadingType = LoadingType.None)
             }
         }
     }
@@ -71,9 +64,8 @@ class ContentLoaderViewModel(
     fun loadRomsInfo(scanDir: String?) {
         scanDir?.let { romsDir ->
             loadJob = viewModelScope.launch {
-                cancelingJob = false
-                loadGameListUseCase.invoke(File(romsDir), channel)
-                _uiModel.value = ContentLoaderUiModel()
+                _uiModel.value = _uiModel.value.copy(loadingType = LoadingType.None)
+                loadRoms(scanDir)
             }
         }
     }
@@ -89,17 +81,31 @@ class ContentLoaderViewModel(
         loadJob = viewModelScope.launch {
             cancelingJob = false
             if (romsDir != null) {
-                loadGameListUseCase.invoke(File(romsDir), channel)
+                loadRoms(romsDir)
             }
             if (retroArchDir != null) {
                 _uiModel.value = _uiModel.value.copy(
-                    loadingType = LoadingType.RETRO_ARCH,
-                    loadingProgress = 0.0f,
+                    loadingType = LoadingType.RetroArch,
                 )
                 loadRetroArchInfoUseCase.invoke(File(retroArchDir))
             }
-            _uiModel.value = ContentLoaderUiModel()
+            _uiModel.value = _uiModel.value.copy(loadingType = LoadingType.None)
         }
+    }
+
+    private suspend fun loadRoms(romsDir: String) {
+        cancelingJob = false
+        val result = loadGameListUseCase.invoke(File(romsDir), channel)
+        result.onEmptyList {
+            _uiModel.value = _uiModel.value.copy(infoType = InfoType.ROMS_NOT_FOUND)
+        }
+        result.onSuccess {
+            println("Game list loaded. Unable to convert ${it.size} files")
+        }
+    }
+
+    fun resetInfoType() {
+        _uiModel.value = _uiModel.value.copy(infoType = InfoType.NONE)
     }
 
     /**
@@ -108,6 +114,6 @@ class ContentLoaderViewModel(
     fun cancelLoadJob() {
         cancelingJob = true
         loadJob?.cancel()
-        _uiModel.value = ContentLoaderUiModel()
+        _uiModel.value = _uiModel.value.copy(loadingType = LoadingType.None)
     }
 }

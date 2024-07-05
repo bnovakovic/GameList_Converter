@@ -1,6 +1,7 @@
 package app
 
 import app.contentloader.ContentLoaderViewModel
+import app.contentloader.InfoType
 import app.contentloader.LoadingType
 import app.settings.GlmPreferences
 import app.settings.GlmSettings
@@ -31,9 +32,9 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
         dataSource = coreInfoDataSource
     )
     private val appSettings: GlmSettings = GlmPreferences()
+    private val contentLoader = ContentLoaderViewModel(loadGameListUseCase, loadRetroArchInfoUseCase)
 
     val mainMenuViewModel = MainScreenMenuViewModel(settings = appSettings, menuItemSelected = ::mainScreenMenuItemSelected)
-    val contentLoader = ContentLoaderViewModel(loadGameListUseCase, loadRetroArchInfoUseCase)
     val gameListScreenViewModel = GameListScreenViewModel(
         dataSource = gameListDataSource,
         onExport = { _uiModel.value = _uiModel.value.copy(activeScreen = ActiveScreen.EXPORT_SCREEN) }
@@ -64,7 +65,12 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
 
         viewModelScope.launch {
             contentLoader.uiModel.collect {
-                _uiModel.value = _uiModel.value.copy(workInProgress = it.loadingType != LoadingType.NONE)
+                val uiModelValue = _uiModel.value
+                _uiModel.value = uiModelValue.copy(
+                    disableMenus = it.loadingType != LoadingType.None,
+                    loadingType = it.loadingType,
+                    dialogue = if (it.infoType == InfoType.ROMS_NOT_FOUND) Dialogues.NO_ROMS_FOUND else uiModelValue.dialogue
+                )
             }
         }
         contentLoader.loadEverything(retroArchDir, romsDir)
@@ -136,8 +142,10 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
 
     fun resetDialogue() {
         _uiModel.value = _uiModel.value.copy(dialogue = Dialogues.NONE)
+        contentLoader.resetInfoType()
     }
 }
 
 enum class ActiveScreen { GAME_LIST_SCREEN, EXPORT_SCREEN }
-enum class Dialogues { ABOUT, RESTART, NONE }
+
+enum class Dialogues { ABOUT, RESTART, NONE, NO_ROMS_FOUND }

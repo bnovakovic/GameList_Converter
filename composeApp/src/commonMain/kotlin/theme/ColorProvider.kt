@@ -16,7 +16,8 @@ fun extendedColorsProvider(inDarkMode: Boolean): ExtendedColors {
             accept = GlColors.AcceptDark,
             popupOutline = GlColors.PopupOutlineDark,
             listDisabledText = GlColors.DisabledListItemDark,
-            listSelection = Color.DarkGray
+            listSelection = Color.DarkGray,
+            warning = GlColors.WarningDark
         )
     } else {
         ExtendedColors(
@@ -26,7 +27,8 @@ fun extendedColorsProvider(inDarkMode: Boolean): ExtendedColors {
             accept = GlColors.AcceptLight,
             popupOutline = GlColors.PopupOutlineLight,
             listDisabledText = Color.Gray,
-            listSelection = Color.LightGray
+            listSelection = Color.LightGray,
+            warning = GlColors.WarningLight
         )
     }
 }

@@ -10,4 +10,6 @@ object GlColors {
     val PopupOutlineLight = Color(0xFFf5f5f5)
     val DisabledListItemDark = Color(0xFF919191)
     val PrimaryDark = Color(0xFF18191a)
+    val WarningLight = Color(0xFFe8b931)
+    val WarningDark = Color(0xFFc99f27)
 }

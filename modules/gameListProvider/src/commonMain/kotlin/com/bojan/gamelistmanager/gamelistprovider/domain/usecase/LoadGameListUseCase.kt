@@ -1,5 +1,6 @@
 package com.bojan.gamelistmanager.gamelistprovider.domain.usecase
 
+import LoadReadResult
 import com.bojan.gamelistmanager.gamelistprovider.GAMELIST_FILE_NAME
 import com.bojan.gamelistmanager.gamelistprovider.domain.data.GameListData
 import com.bojan.gamelistmanager.gamelistprovider.domain.interfaces.GameListRepository
@@ -22,9 +23,9 @@ class LoadGameListUseCase(private val xmlConverter: XmlConverter, private val da
      * @param scanDir Directory to scan.
      * @param update [Channel] used to update the invoker about the currently scanned directory.
      *
-     * @return List of failed items.
+     * @return custom result with List of failed items. Returns [LoadReadResult.EmptyList] in case no games were found.
      */
-    suspend operator fun invoke(scanDir: File, update: Channel<Pair<String, Float>>?) : List<File> {
+    suspend operator fun invoke(scanDir: File, update: Channel<Pair<String, Float>>?) : LoadReadResult {
 
         val subdirs = scanDir.listFiles { file -> file.isDirectory }
         val numberOfDirs = subdirs?.size ?: -1
@@ -47,7 +48,11 @@ class LoadGameListUseCase(private val xmlConverter: XmlConverter, private val da
         }
         dataSource.clearData()
         dataSource.loadGames(gameListContainers.toList())
-        return failedItems
+        return if (gameListContainers.isEmpty()) {
+            LoadReadResult.EmptyList
+        } else {
+            LoadReadResult.Success(failedItems)
+        }
     }
 
     private fun calculateScanPercentage(dirsSize: Int, currentDir: Int) =
