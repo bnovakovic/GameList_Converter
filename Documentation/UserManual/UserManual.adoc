@@ -8,6 +8,7 @@ GameList converter is application that converts a `gamelist.xml` file to the Ret
 
 === Prerequisites
 - Correctly structured ROM directory used for your RecalBox or Retropie
+- `gamelist.xml` *must be* in your systems root directory. For example `roms/atari2600/gamelist.xml`, `roms/fbneo/gamelist.xml`, `roms/nes/gamelist.xml`... etc.
 - RetroArch installed (https://www.retroarch.com)
 
 === What this program can do?
