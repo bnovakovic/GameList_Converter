@@ -12,6 +12,7 @@ import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import app.AppViewModel
+import app.Dialogues
 import dev.icerock.moko.mvvm.compose.getViewModel
 import dev.icerock.moko.mvvm.compose.viewModelFactory
 import gamelistconverter.composeapp.generated.resources.Res
@@ -56,7 +57,7 @@ fun main() {
             ) {
                 MainWindowMenuBar(
                     onExitApplication = ::exitApplication,
-                    enabled = !uiModel.disableMenus,
+                    enabled = !uiModel.disableMenus && uiModel.dialogue == Dialogues.NONE,
                     viewModel = appViewModel.mainMenuViewModel
                 )
                 MainScreen(appViewModel)
