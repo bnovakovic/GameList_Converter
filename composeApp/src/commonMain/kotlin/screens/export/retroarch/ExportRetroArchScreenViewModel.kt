@@ -31,6 +31,7 @@ import screens.gamelistscreen.data.compatibleWithSystem
 import screens.gamelistscreen.mappers.toCoreInfoUiModel
 import screens.gamelistscreen.mappers.toGameSystemUiModel
 import java.io.File
+import kotlin.random.Random
 
 /**
  * ViewModel of the export RetroArch list screen.
@@ -123,7 +124,11 @@ class ExportRetroArchScreenViewModel(
         }
         if (availableSystems.size > index && index >= 0) {
             val systemInfo = availableSystems[index]
-            _uiModel.value = _uiModel.value.copy(numberOfGames = systemInfo.games.size, isRunAvailable = isRunAvailable())
+            _uiModel.value = _uiModel.value.copy(
+                numberOfGames = systemInfo.games.size,
+                isRunAvailable = isRunAvailable(),
+                systemInfo = systemInfo
+            )
         }
         setCorrectPlaylistOption()
     }
@@ -239,12 +244,20 @@ class ExportRetroArchScreenViewModel(
         val retroArchDirectory = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
 
         if (isRunAvailable() && retroArchDirectory != null) {
-            val config = ExecConfiguration.RunRom(
-                romPath = "E:\\Emulation\\roms\\nes\\1942.nes",
-                coreFileName = core.filename,
-                retroArchDir = retroArchDirectory
-            )
-            executeCommandUseCase.invoke(config)
+            val systemInfo = uiModelValue.systemInfo
+            val games = systemInfo.games
+            if (games.isNotEmpty()) {
+                val sysPath = systemInfo.path
+                val randomItem = games[Random.nextInt(games.size)]
+                val randomFileName = File(randomItem.romPath).name
+                val fullRomPath = File(sysPath, randomFileName)
+                val config = ExecConfiguration.RunRom(
+                    romPath = fullRomPath.toString(),
+                    coreFileName = core.filename,
+                    retroArchDir = retroArchDirectory
+                )
+                executeCommandUseCase.invoke(config)
+            }
         }
     }
 
@@ -297,8 +310,8 @@ class ExportRetroArchScreenViewModel(
         val uiModelValue = _uiModel.value
         val core = uiModelValue.coreInfo
         val retroArchDirectory = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
-        val allGood = core != CoreInfoUiModel.none && retroArchDirectory != null
-        return allGood
+        val system = uiModelValue.systemInfo
+        return core != CoreInfoUiModel.none && retroArchDirectory != null && system != GameSystemUiModel.empty && system.games.isNotEmpty()
     }
 
     private fun getActiveSystem(): GameSystemUiModel {

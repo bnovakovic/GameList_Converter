@@ -8,6 +8,7 @@ import com.bojan.gamelistmanager.commandexecutor.domain.CommandExecutor
 class ProcessBuilderExecutor : CommandExecutor {
 
     override fun executeCommand(args: List<String>) {
+        println("Executing command $args")
         val processBuilder = ProcessBuilder(args)
         processBuilder.start()
     }

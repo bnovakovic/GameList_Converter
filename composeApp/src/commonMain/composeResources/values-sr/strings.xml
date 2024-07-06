@@ -52,6 +52,7 @@
     <string name="browse_button_symbol">...</string>
     <string name="core_missing_confirm">Core za ovaj sistem nije dostupan. Molim da potvrdite da ipak želite da ga koristite.</string>
     <string name="saving">Snimam...</string>
+    <string name="test_game">Testiraj igru</string>
     <string name="unknown_error">Dogodila se nepoznata greška tokom snimanja liste</string>
     <string name="no_access">Snimanje liste je neuspešno. Nemate prava da zapisujete podatke na odabranom direktorijumu</string>
     <string name="playlist_save_done">Snimanje liste je uspešno završeno</string>
