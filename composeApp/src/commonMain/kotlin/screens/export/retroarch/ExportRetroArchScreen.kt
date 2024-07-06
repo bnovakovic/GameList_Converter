@@ -70,6 +70,7 @@ import gamelistconverter.composeapp.generated.resources.show_unsupported_cores
 import gamelistconverter.composeapp.generated.resources.supported_extensions
 import gamelistconverter.composeapp.generated.resources.system_id
 import gamelistconverter.composeapp.generated.resources.system_name
+import gamelistconverter.composeapp.generated.resources.test_game
 import gamelistconverter.composeapp.generated.resources.unknown_error
 import gamelistconverter.composeapp.generated.resources.version
 import ktx.thinOutline
@@ -115,7 +116,8 @@ fun ExportRetroArchScreen(viewModel: ExportRetroArchScreenViewModel) {
             onSelectedPlaylistOption = viewModel::selectedPlayListOption,
             onConfirmCheckBoxClicked = viewModel::confirmCoreMissing,
             confirmedThatCoreIsMissing = uiModel.confirmCoreMissing,
-            numberOfGames = uiModel.numberOfGames
+            numberOfGames = uiModel.numberOfGames,
+            onRunGame = viewModel::testSelectedGame
         )
     }
     SavingPlaylistPopup(uiModel.saveFileResult, viewModel::confirmPlaylistSaveDone)
@@ -199,7 +201,8 @@ fun InfoAndControls(
     onSelectedPlaylistOption: (Int) -> Unit,
     confirmedThatCoreIsMissing: Boolean,
     onConfirmCheckBoxClicked: (Boolean) -> Unit,
-    numberOfGames: Int
+    numberOfGames: Int,
+    onRunGame: () -> Unit,
 ) {
     Column(modifier = Modifier.then(modifier).fillMaxHeight().padding(8.dp)) {
         val coreInfo = uiModel.coreInfo
@@ -303,7 +306,12 @@ fun InfoAndControls(
         }
         Spacer(modifier = Modifier.height(8.dp))
         Row {
-            Spacer(modifier = Modifier.weight(1.0f))
+            Button(
+                onClick = onRunGame,
+                modifier = Modifier.weight(1.0f),
+                enabled = uiModel.isRunAvailable
+            ) { Text(stringResource(Res.string.test_game)) }
+            Spacer(modifier = Modifier.width(8.dp))
             Button(onClick = backClicked, modifier = Modifier.weight(1.0f)) { Text(stringResource(Res.string.game_list)) }
             Spacer(modifier = Modifier.width(8.dp))
             val title = stringResource(Res.string.save_retroarch_list_title)

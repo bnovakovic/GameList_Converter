@@ -26,6 +26,7 @@
     <string name="none">None</string>
     <string name="loading_retroarch_info">Loading RetroArch information</string>
     <string name="game_list">Game list</string>
+    <string name="test_game">Test game</string>
     <string name="number_of_games">Number of games</string>
     <string name="game_name">Game name</string>
     <string name="list_emtpy_title">Scan did not return any results. Please go through this checklist.</string>

@@ -26,6 +26,8 @@ kotlin {
             implementation(projects.gameListProvider)
             implementation(projects.listExporter)
             implementation(projects.retroArchInfoLoader)
+            implementation(projects.commandexecutor)
+            implementation(projects.utils)
             implementation(libs.kotlinx.coroutines.core)
         }
         desktopMain.dependencies {

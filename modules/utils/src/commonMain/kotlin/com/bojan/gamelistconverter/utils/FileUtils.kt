@@ -1,4 +1,4 @@
-package ktx
+package com.bojan.gamelistconverter.utils
 
 import java.io.File
 
@@ -26,3 +26,21 @@ fun getOs(): JvmOs {
 enum class JvmOs { WINDOWS, LINUX, MAC }
 
 fun getFileSeparator(): String = System.getProperty("file.separator")
+
+fun getCoreExtension(): String = when (getOs()) {
+    JvmOs.LINUX -> { SO_EXTENSION }
+    JvmOs.MAC -> { SO_EXTENSION }
+    JvmOs.WINDOWS -> { DLL_EXTENSION }
+}
+
+fun getExecutableExtension() : String = when(getOs()) {
+    JvmOs.LINUX -> { LINUX_EXECUTABLE_EXTENSION }
+    JvmOs.MAC -> { MACOS_EXECUTABLE_EXTENSION }
+    JvmOs.WINDOWS -> { WINDOWS_EXECUTABLE_EXTENSION }
+}
+
+const val SO_EXTENSION = "so"
+const val DLL_EXTENSION = "dll"
+const val WINDOWS_EXECUTABLE_EXTENSION = "exe"
+const val MACOS_EXECUTABLE_EXTENSION = "app"
+const val LINUX_EXECUTABLE_EXTENSION = "sh"

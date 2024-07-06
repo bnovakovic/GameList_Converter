@@ -7,6 +7,10 @@ import RETRO_ARCH_LIST_EXTENSION
 import RETRO_ARCH_LIST_SUBDIR
 import app.settings.GlmSettings
 import app.settings.SettingsKeys
+import com.bojan.gamelistconverter.utils.getUserHome
+import com.bojan.gamelistmanager.commandexecutor.domain.ExecuteCommandUseCase
+import com.bojan.gamelistmanager.commandexecutor.domain.config.ExecConfiguration
+import com.bojan.gamelistmanager.commandexecutor.repository.ProcessBuilderExecutor
 import com.bojan.gamelistmanager.gamelistprovider.domain.data.GameListData
 import com.bojan.gamelistmanager.gamelistprovider.domain.interfaces.GameListRepository
 import com.bojan.gamelistmanager.listexplorer.domain.ConvertGameListUseCase
@@ -19,7 +23,6 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import ktx.getUserHome
 import screens.export.PlaylistSaveProgress
 import screens.export.retroarch.mapper.toExportGameListData
 import screens.gamelistscreen.data.CoreInfoUiModel
@@ -46,6 +49,7 @@ class ExportRetroArchScreenViewModel(
     private val settings: GlmSettings,
     private val onBack: () -> Unit,
     private val convertGameListUseCase: ConvertGameListUseCase = ConvertGameListUseCase(RetroArchListConverter()),
+    private val executeCommandUseCase: ExecuteCommandUseCase = ExecuteCommandUseCase(ProcessBuilderExecutor()),
     val systemListViewModel: SelectableListViewModel<GameSystemUiModel> = SelectableListViewModel(),
     val coreListViewModel: SelectableListViewModel<CoreInfoUiModel> = SelectableListViewModel(),
 ) : ViewModel() {
@@ -72,7 +76,8 @@ class ExportRetroArchScreenViewModel(
                     val retroArchFolder = if (retroArchDirectory != null) File(retroArchDirectory) else getUserHome()
                     _uiModel.value = _uiModel.value.copy(
                         exportPath = File(retroArchFolder, RETRO_ARCH_LIST_SUBDIR),
-                        exportAllowed = shouldAllowExport(infoList.isNotEmpty())
+                        exportAllowed = shouldAllowExport(infoList.isNotEmpty()),
+                        isRunAvailable = isRunAvailable()
                     )
                 }
                 displayCoreListForCurrentSystem()
@@ -109,12 +114,16 @@ class ExportRetroArchScreenViewModel(
             val selectedSystem = uiModel.value.selectedSystem
             if (availableSystems.size > selectedSystem) {
                 val systemInfo = availableSystems[selectedSystem]
-                _uiModel.value = _uiModel.value.copy(playlistOptions = listOf(systemInfo.system.retroArchCoreInfo.playlistName))
+                _uiModel.value = _uiModel.value.copy(
+                    playlistOptions = listOf(systemInfo.system.retroArchCoreInfo.playlistName),
+                    systemInfo = systemInfo,
+                    isRunAvailable = isRunAvailable()
+                )
             }
         }
         if (availableSystems.size > index && index >= 0) {
             val systemInfo = availableSystems[index]
-            _uiModel.value = _uiModel.value.copy(numberOfGames = systemInfo.games.size)
+            _uiModel.value = _uiModel.value.copy(numberOfGames = systemInfo.games.size, isRunAvailable = isRunAvailable())
         }
         setCorrectPlaylistOption()
     }
@@ -182,7 +191,8 @@ class ExportRetroArchScreenViewModel(
                 saveFileName = fileName,
                 coreMissing = coreMissing,
                 exportAllowed = shouldAllowExport(!coreMissing),
-                confirmCoreMissing = !coreMissing
+                confirmCoreMissing = !coreMissing,
+                isRunAvailable = isRunAvailable()
             )
             setCorrectPlaylistOption()
         }
@@ -215,8 +225,27 @@ class ExportRetroArchScreenViewModel(
         val uiModel = _uiModel.value
         _uiModel.value = uiModel.copy(
             selectedPlayListOption = index,
-            saveFileName = uiModel.playlistOptions[index]
+            saveFileName = uiModel.playlistOptions[index],
+            isRunAvailable = isRunAvailable()
         )
+    }
+
+    /**
+     * Tests selected game by running it in RetroArch.
+     */
+    fun testSelectedGame() {
+        val uiModelValue = _uiModel.value
+        val core = uiModelValue.coreInfo
+        val retroArchDirectory = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
+
+        if (isRunAvailable() && retroArchDirectory != null) {
+            val config = ExecConfiguration.RunRom(
+                romPath = "E:\\Emulation\\roms\\nes\\1942.nes",
+                coreFileName = core.filename,
+                retroArchDir = retroArchDirectory
+            )
+            executeCommandUseCase.invoke(config)
+        }
     }
 
     /**
@@ -232,7 +261,7 @@ class ExportRetroArchScreenViewModel(
      * @param newFolder newly selected folder.
      */
     fun playlistFolderSelected(newFolder: File) {
-        _uiModel.value = _uiModel.value.copy(exportPath = newFolder)
+        _uiModel.value = _uiModel.value.copy(exportPath = newFolder, isRunAvailable = isRunAvailable())
         settings.putString(SettingsKeys.PLAYLIST_CUSTOM_DIR_KEY, newFolder.toString())
     }
 
@@ -244,7 +273,11 @@ class ExportRetroArchScreenViewModel(
      */
     fun confirmCoreMissing(confirm: Boolean) {
         val uiModel = _uiModel.value
-        _uiModel.value = uiModel.copy(confirmCoreMissing = confirm, exportAllowed = shouldAllowExport(confirm))
+        _uiModel.value = uiModel.copy(
+            confirmCoreMissing = confirm,
+            exportAllowed = shouldAllowExport(confirm),
+            isRunAvailable = isRunAvailable()
+        )
     }
 
     private fun shouldAllowExport(attempt: Boolean): Boolean {
@@ -258,6 +291,14 @@ class ExportRetroArchScreenViewModel(
         val selectedCore = coreListUiModel.selectedItem
 
         return listOfCores.isNotEmpty() && listOfGameList.isNotEmpty() && selectedCore >= 0 && selectedGame >= 0 && attempt
+    }
+
+    private fun isRunAvailable(): Boolean {
+        val uiModelValue = _uiModel.value
+        val core = uiModelValue.coreInfo
+        val retroArchDirectory = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
+        val allGood = core != CoreInfoUiModel.none && retroArchDirectory != null
+        return allGood
     }
 
     private fun getActiveSystem(): GameSystemUiModel {
@@ -333,7 +374,7 @@ class ExportRetroArchScreenViewModel(
      * @param shouldShow True if all cores should be shown, false it it should not.
      */
     fun changeShowAllCores(shouldShow: Boolean) {
-        _uiModel.value = _uiModel.value.copy(showAllCores = shouldShow)
+        _uiModel.value = _uiModel.value.copy(showAllCores = shouldShow, isRunAvailable = isRunAvailable())
         displayCoreListForCurrentSystem()
     }
 }

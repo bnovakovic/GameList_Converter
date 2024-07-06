@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.MenuBar
 import androidx.compose.ui.window.MenuBarScope
+import com.bojan.gamelistconverter.utils.getUserHome
 import gamelistconverter.composeapp.generated.resources.Res
 import gamelistconverter.composeapp.generated.resources.about
 import gamelistconverter.composeapp.generated.resources.about_24dp
@@ -36,7 +37,6 @@ import gamelistconverter.composeapp.generated.resources.search_24dp
 import gamelistconverter.composeapp.generated.resources.select_retroarch_dir
 import gamelistconverter.composeapp.generated.resources.select_roms_dir
 import gamelistconverter.composeapp.generated.resources.theme
-import ktx.getUserHome
 import menus.swingchoosers.folderSwingChooser
 import menus.swingchoosers.retroArchSwingChooser
 import org.jetbrains.compose.resources.painterResource

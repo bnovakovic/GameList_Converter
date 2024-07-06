@@ -43,6 +43,13 @@ class SelectableListViewModel<T : SelectableItemUiModel>(private var initialItem
         _uiModel.value = uiModel.value.copy(selectedItem = index)
     }
 
+    fun getSelectedItem(): T? {
+        val uiModel = uiModel.value
+        val items = uiModel.items
+        val selected = uiModel.selectedItem
+        return null
+    }
+
     fun search(searchQuery: String) {
         if (searchQuery == "") {
             resetUiData()

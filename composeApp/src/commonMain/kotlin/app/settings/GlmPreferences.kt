@@ -1,6 +1,6 @@
 package app.settings
 
-import ktx.getWorkingDirectory
+import com.bojan.gamelistconverter.utils.getWorkingDirectory
 import java.io.File
 import java.util.Properties
 
