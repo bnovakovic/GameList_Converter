@@ -42,11 +42,11 @@ import commonui.textlist.SelectableListViewModel
 import gamelistconverter.composeapp.generated.resources.Res
 import gamelistconverter.composeapp.generated.resources.authors
 import gamelistconverter.composeapp.generated.resources.browse_button_symbol
-import gamelistconverter.composeapp.generated.resources.categories
 import gamelistconverter.composeapp.generated.resources.cheats
 import gamelistconverter.composeapp.generated.resources.core_missing_confirm
 import gamelistconverter.composeapp.generated.resources.core_name
 import gamelistconverter.composeapp.generated.resources.description
+import gamelistconverter.composeapp.generated.resources.error_running_retroarch
 import gamelistconverter.composeapp.generated.resources.export
 import gamelistconverter.composeapp.generated.resources.export_path
 import gamelistconverter.composeapp.generated.resources.game_list
@@ -82,6 +82,7 @@ import screens.gamelistscreen.data.CoreInfoUiModel
 import screens.gamelistscreen.data.GameSystemUiModel
 import screens.gamelistscreen.mappers.toResourceString
 import theme.GameListTheme
+import theme.GlText
 import java.io.File
 
 /**
@@ -92,6 +93,7 @@ import java.io.File
 @Composable
 fun ExportRetroArchScreen(viewModel: ExportRetroArchScreenViewModel) {
     val uiModel by viewModel.uiModel.collectAsState()
+    println("Um = ${uiModel.executeResult}")
     val title = stringResource(Res.string.select_retroarch_dir)
     Row(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.surface)) {
         SystemAndCoreList(
@@ -305,6 +307,12 @@ fun InfoAndControls(
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
+        val execText = when (uiModel.executeResult) {
+            0 -> { "" }
+            -1 -> { "" }
+            else -> { stringResource(Res.string.error_running_retroarch) }
+        }
+        SurfaceText(execText, style = GlText.TextOnSurfaceStyle.copy(color = MaterialTheme.colors.error))
         Row {
             Button(
                 onClick = onRunGame,

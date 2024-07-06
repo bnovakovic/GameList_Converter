@@ -25,5 +25,10 @@ data class ExportRetroArchScreenUiModel(
     val showAllCores: Boolean = false,
     val saveFileResult: PlaylistSaveProgress = PlaylistSaveProgress.NONE,
     val numberOfGames: Int = 0,
-    val isRunAvailable: Boolean = false
-)
+    val isRunAvailable: Boolean = false,
+    val executeResult: Int = execResultNone
+) {
+    companion object {
+        const val execResultNone = -1
+    }
+}

@@ -32,6 +32,7 @@
     <string name="list_emtpy_title">Scan did not return any results. Please go through this checklist.</string>
     <string name="list_emtpy_tip1">1) Selected ROMs directory. For example: "d:/emulation/roms". Please do not select system specific directory like "d:/emulation/roms/atari2600".</string>
     <string name="list_emtpy_tip2">2) Make sure your "gamelist.xml" is located in every system directory. For example: "d:/emulation/roms/atari2600/gamelist.xml", "d:/emulation/roms/fbneo/gamelist.xml", "d:/emulation/roms/nes/gamelist.xml"... etc.</string>
+    <string name="error_running_retroarch">There was an error. Try to run the game directly from the RetroArch</string>
 
     <!--    Export screen-->
     <string name="select_core">Select core</string>

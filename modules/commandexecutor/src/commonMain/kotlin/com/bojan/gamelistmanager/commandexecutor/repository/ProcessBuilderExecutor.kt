@@ -7,9 +7,9 @@ import com.bojan.gamelistmanager.commandexecutor.domain.CommandExecutor
  */
 class ProcessBuilderExecutor : CommandExecutor {
 
-    override fun executeCommand(args: List<String>) {
+    override suspend fun executeCommand(args: List<String>): Int {
         println("Executing command $args")
         val processBuilder = ProcessBuilder(args)
-        processBuilder.start()
+        return processBuilder.start().waitFor()
     }
 }

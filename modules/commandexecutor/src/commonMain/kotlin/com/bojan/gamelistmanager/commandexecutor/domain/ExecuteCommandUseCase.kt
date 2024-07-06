@@ -13,12 +13,13 @@ import java.io.File
 class ExecuteCommandUseCase(private val executor: CommandExecutor) {
 
     /**
-     * Execute provided command.
+     * Execute provided command. Causes the current thread to wait, if necessary, until the process represented by this Process object has
+     * terminated. This method returns immediately if the process has already terminated. If the process has not yet terminated,
+     * the calling thread will be blocked until the process exits.
      *
      * @param execConfig Configuration used for executing command.
      */
-    operator fun invoke(execConfig: ExecConfiguration) {
-
+    suspend operator fun invoke(execConfig: ExecConfiguration): Int {
         when (execConfig) {
             is ExecConfiguration.RunRom -> {
                 val retroArchDir = execConfig.retroArchDir
@@ -27,7 +28,7 @@ class ExecuteCommandUseCase(private val executor: CommandExecutor) {
                 val param = LIBERTO_FILE_ARGUMENT
                 val corePath = "${retroArchDir}${separator}$CORES_DIR${separator}${execConfig.coreFileName}.${getCoreExtension()}"
                 val gamePath = execConfig.romPath
-                executor.executeCommand(listOf(exePath, param, corePath, gamePath))
+                return executor.executeCommand(listOf(exePath, param, corePath, gamePath))
             }
         }
     }
