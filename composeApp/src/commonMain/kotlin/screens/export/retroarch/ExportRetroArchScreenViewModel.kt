@@ -20,10 +20,12 @@ import com.bojan.gamelistmanager.listexplorer.repository.converters.retroarch.Re
 import com.bojan.gamelistmanager.retroarchinfoloader.domain.interfaces.RetroArchInfoDataRepository
 import commonui.textlist.SelectableListViewModel
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import screens.export.PlaylistSaveProgress
 import screens.export.retroarch.mapper.toExportGameListData
 import screens.gamelistscreen.data.CoreInfoUiModel
@@ -265,8 +267,9 @@ class ExportRetroArchScreenViewModel(
                         coreFileName = core.filename,
                         retroArchDir = retroArchDirectory
                     )
-                    val result = executeCommandUseCase.invoke(config)
-
+                    val result = withContext(Dispatchers.IO) {
+                        executeCommandUseCase.invoke(config)
+                    }
                     _uiModel.value = _uiModel.value.copy(executeResult = result)
                 }
             }

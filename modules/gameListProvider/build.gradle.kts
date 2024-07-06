@@ -8,7 +8,6 @@ kotlin {
 }
 
 dependencies {
-    commonMainImplementation(libs.kotlinx.coroutines.core)
     commonMainImplementation(libs.kotlin.serialization)
     commonMainImplementation(libs.kotlinx.coroutines.core)
     commonMainImplementation(libs.org.json)
