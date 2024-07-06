@@ -29,7 +29,7 @@ fun getFileSeparator(): String = System.getProperty("file.separator")
 
 fun getCoreExtension(): String = when (getOs()) {
     JvmOs.LINUX -> { SO_EXTENSION }
-    JvmOs.MAC -> { SO_EXTENSION }
+    JvmOs.MAC -> { DYLIB_EXTENSION }
     JvmOs.WINDOWS -> { DLL_EXTENSION }
 }
 
@@ -41,6 +41,7 @@ fun getExecutableExtension() : String = when(getOs()) {
 
 const val SO_EXTENSION = "so"
 const val DLL_EXTENSION = "dll"
+const val DYLIB_EXTENSION = "dylib"
 const val WINDOWS_EXECUTABLE_EXTENSION = "exe"
 const val MACOS_EXECUTABLE_EXTENSION = "app"
 const val LINUX_EXECUTABLE_EXTENSION = "sh"

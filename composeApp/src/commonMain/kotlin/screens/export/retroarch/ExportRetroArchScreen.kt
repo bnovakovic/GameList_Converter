@@ -93,7 +93,6 @@ import java.io.File
 @Composable
 fun ExportRetroArchScreen(viewModel: ExportRetroArchScreenViewModel) {
     val uiModel by viewModel.uiModel.collectAsState()
-    println("Um = ${uiModel.executeResult}")
     val title = stringResource(Res.string.select_retroarch_dir)
     Row(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.surface)) {
         SystemAndCoreList(
