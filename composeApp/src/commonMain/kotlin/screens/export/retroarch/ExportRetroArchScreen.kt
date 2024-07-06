@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import commonui.CheckboxWithTitle
 import commonui.DropDownMenu
+import commonui.ErrorSurfaceText
 import commonui.InfoWithTitle
 import commonui.OkOnlyPopup
 import commonui.SurfaceText
@@ -82,7 +83,6 @@ import screens.gamelistscreen.data.CoreInfoUiModel
 import screens.gamelistscreen.data.GameSystemUiModel
 import screens.gamelistscreen.mappers.toResourceString
 import theme.GameListTheme
-import theme.GlText
 import java.io.File
 
 /**
@@ -311,7 +311,7 @@ fun InfoAndControls(
             -1 -> { "" }
             else -> { stringResource(Res.string.error_running_retroarch) }
         }
-        SurfaceText(execText, style = GlText.TextOnSurfaceStyle.copy(color = MaterialTheme.colors.error))
+        ErrorSurfaceText(execText)
         Row {
             Button(
                 onClick = onRunGame,

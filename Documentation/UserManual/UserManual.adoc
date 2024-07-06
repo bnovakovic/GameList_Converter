@@ -67,6 +67,19 @@ Only thing that is left is to click on the export button and save the playlist.
 
 image:Images/tutorial_05.png[title="Select export options", align=center]
 
+=== Testing selected system and core
+Before you save playlist, you can test if combination of selected core and system will work. You can use `Test game` button. Please note that you will be unable to choose which game is to be tested. Random game from the list will be selected. So, if one game does not work, try again. Maybe it's just a ROM issue. If test fails, you will see the message in the UI letting you know execution failed. RetroArch directory must be selected in order for this functionality to work.
+
+Q: Why can't I pick which game to test?
+
+A: Because I would have to bring whole game list in this UI, which will take a lots of space unnecessarily. If advanced tests are needed, then it can be done through RetroArch directly.
+
+Q: Test button is disabled
+
+A: Either you haven't selected RetroArch director, core is missing in RetroArch, System is not supported in RetroArch or game list is empty.
+
+image:Images/tutorial_10.png[title="Test core and system", align=center]
+
 === Showing all cores
 In case you want to see the list of all cores, you can select the option to show the all cores.
 This will display all the cores, but will gray out the ones that are not supported for the current system. You can still use them to create your playlist, but it is not recommended, as it will not work properly in RetroArch.

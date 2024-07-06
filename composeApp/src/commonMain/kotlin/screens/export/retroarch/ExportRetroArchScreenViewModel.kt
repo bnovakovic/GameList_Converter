@@ -2,11 +2,11 @@ package screens.export.retroarch
 
 import PLAYLIST_VERSION
 import RETRO_ARCH_CORES_SUBDIR
-import RETRO_ARCH_CORE_EXTENSION
 import RETRO_ARCH_LIST_EXTENSION
 import RETRO_ARCH_LIST_SUBDIR
 import app.settings.GlmSettings
 import app.settings.SettingsKeys
+import com.bojan.gamelistconverter.utils.getCoreExtension
 import com.bojan.gamelistconverter.utils.getUserHome
 import com.bojan.gamelistmanager.commandexecutor.domain.ExecuteCommandUseCase
 import com.bojan.gamelistmanager.commandexecutor.domain.config.ExecConfiguration
@@ -170,6 +170,23 @@ class ExportRetroArchScreenViewModel(
         }
     }
 
+    private fun isCoreMissing(): Boolean {
+        val uiModel = coreListViewModel.uiModel.value
+
+        val retroArchDirectory = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
+        if (retroArchDirectory != null) {
+            val coreList = uiModel.items
+            val index = uiModel.selectedItem
+            if (coreList.size > index) {
+                val coreInfo = coreList[index]
+                val coresDir = File(retroArchDirectory, RETRO_ARCH_CORES_SUBDIR)
+                val fullCorePath = File(coresDir, "${coreInfo.filename}.${getCoreExtension()}")
+                return !fullCorePath.exists() && coreInfo != CoreInfoUiModel.none
+            }
+        }
+        return false
+    }
+
     private fun selectedCore(index: Int) {
         val coreList = coreListViewModel.uiModel.value.items
         val availableSystems = systemListViewModel.uiModel.value.items
@@ -178,16 +195,7 @@ class ExportRetroArchScreenViewModel(
         if (coreList.size > index && availableSystems.size > selectedSystem) {
             val coreInfo = coreList[index]
             val systemInfo = availableSystems[selectedSystem].system
-
-            var coreMissing = false
-            val retroArchDirectory = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
-            if (retroArchDirectory != null) {
-                val coresDir = File(retroArchDirectory, RETRO_ARCH_CORES_SUBDIR)
-                val fullCorePath = File(coresDir, "${coreInfo.filename}.$RETRO_ARCH_CORE_EXTENSION")
-                coreMissing = !fullCorePath.exists() && coreInfo != CoreInfoUiModel.none
-            }
-
-
+            val coreMissing = isCoreMissing()
             val playlists = if (coreInfo != CoreInfoUiModel.none) {
                 coreInfo.database.split("|")
             } else {
@@ -254,7 +262,7 @@ class ExportRetroArchScreenViewModel(
 
         execJob?.cancel()
         execJob = viewModelScope.launch {
-            if (isRunAvailable() && retroArchDirectory != null) {
+            if (isRunAvailable() && retroArchDirectory != null && !isCoreMissing()) {
                 val systemInfo = uiModelValue.systemInfo
                 val games = systemInfo.games
                 if (games.isNotEmpty()) {
@@ -331,7 +339,11 @@ class ExportRetroArchScreenViewModel(
         val core = uiModelValue.coreInfo
         val retroArchDirectory = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
         val system = uiModelValue.systemInfo
-        return core != CoreInfoUiModel.none && retroArchDirectory != null && system != GameSystemUiModel.empty && system.games.isNotEmpty()
+        return core != CoreInfoUiModel.none &&
+                retroArchDirectory != null &&
+                system != GameSystemUiModel.empty &&
+                system.games.isNotEmpty() &&
+                !isCoreMissing()
     }
 
     private fun getActiveSystem(): GameSystemUiModel {
@@ -364,7 +376,7 @@ class ExportRetroArchScreenViewModel(
                 var coreFullPath: File? = null
                 if (selectedCore != CoreInfoUiModel.none) {
                     coreName = selectedCore.displayName
-                    coreFullPath = File(corePath, "${selectedCore.filename}.$RETRO_ARCH_CORE_EXTENSION")
+                    coreFullPath = File(corePath, "${selectedCore.filename}.${getCoreExtension()}")
                 }
 
                 val config = GameListConvertConfig(

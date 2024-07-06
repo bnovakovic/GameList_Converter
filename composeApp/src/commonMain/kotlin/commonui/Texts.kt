@@ -67,11 +67,32 @@ fun InfoText(text: String, modifier: Modifier = Modifier, useMarquee: Boolean = 
  * @param style Style to use with the text.
  */
 @Composable
-fun SurfaceText(text: String, modifier: Modifier = Modifier, textAlign: TextAlign? = null, style: TextStyle = GlText.TextOnSurfaceStyle) {
+fun SurfaceText(
+    text: String,
+    modifier: Modifier = Modifier,
+    textAlign: TextAlign? = null,
+    style: TextStyle = GlText.TextOnSurfaceStyle,
+) {
     Text(
         text = text,
         style = style,
         color = MaterialTheme.colors.onSurface,
+        modifier = modifier,
+        textAlign = textAlign
+    )
+}
+
+@Composable
+fun ErrorSurfaceText(
+    text: String,
+    modifier: Modifier = Modifier,
+    textAlign: TextAlign? = null,
+    style: TextStyle = GlText.TextOnSurfaceStyle,
+) {
+    Text(
+        text = text,
+        style = style,
+        color = MaterialTheme.colors.error,
         modifier = modifier,
         textAlign = textAlign
     )

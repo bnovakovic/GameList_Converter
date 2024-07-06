@@ -1,4 +1,3 @@
-const val RETRO_ARCH_CORE_EXTENSION = "dll"
 const val RETRO_ARCH_LIST_SUBDIR = "playlists"
 const val RETRO_ARCH_CORES_SUBDIR = "cores"
 const val RETRO_ARCH_LIST_EXTENSION = "lpl"
