@@ -49,7 +49,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # This number needs to be high enough to find previous version tags
+          # This number needs to be high enough to find previous version tags.
           fetch-depth: 15
 
       - name: "Set up JDK 17 for ${{ matrix.platform }}"
