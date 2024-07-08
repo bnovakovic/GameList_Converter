@@ -63,7 +63,7 @@ jobs:
 
       - name: "Print version"
         run: |
-          echo "The version is v${{ needs.getVersion.outputs.version }}"
+          echo "The version is ${{ needs.getVersion.outputs.version }}"
 
       - name: "Tag commit and create release ${{ matrix.platform }}"
         uses: ncipollo/release-action@v1
