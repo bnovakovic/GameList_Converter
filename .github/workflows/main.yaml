@@ -60,14 +60,8 @@ jobs:
 
       - name: "Build and run tests"
         run: |
-          if (! ./gradlew build); then
-            echo "Build failed. Exiting the workflow."
-            exit 1
-          fi
-          if (! ./gradlew allTests); then
-            echo "Test failed. Exiting the workflow."
-            exit 1
-          fi        
+          ./gradlew build
+          ./gradlew allTests
 
       - name: "Build app for ${{ matrix.platform }}"
         run: |
