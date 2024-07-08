@@ -1,8 +1,5 @@
 name: GameList-Converter-Publisher
 
-env:
-  PACKAGE_VERSION: 1.0.7
-
 on:
   pull_request:
     branches:
@@ -15,7 +12,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  getVersion:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.create-environment-variables.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate env vars
+        id: create-environment-variables
+        run: |
+          echo "version=$(${{github.workspace}}/gradlew -q getVersionName)" >> $GITHUB_OUTPUT
+
   build:
+    env:
+      VersionNumber: ${{ needs.getVersion.outputs.version }}
     strategy:
       matrix:
         platform: [windows, linux, macos]
@@ -34,11 +45,12 @@ jobs:
             archiveName: GameListConverter-Macos-Not-Notarized.tar.gz
 
     runs-on: ${{ matrix.runsOn }}
+    needs: getVersion
     steps:
       - uses: actions/checkout@v4
         with:
-            # This number needs to be high enough to find previous version tags
-            fetch-depth: 15
+          # This number needs to be high enough to find previous version tags.
+          fetch-depth: 15
 
       - name: "Set up JDK 17 for ${{ matrix.platform }}"
         uses: actions/setup-java@v2
@@ -46,17 +58,23 @@ jobs:
           java-version: 17
           distribution: 'adopt'
 
+      - name: "Build and run tests"
+        run: |
+          ./gradlew build
+          ./gradlew allTests
+        if: matrix.platform == 'windows'
+
       - name: "Build app for ${{ matrix.platform }}"
         run: |
           ./gradlew createReleaseDistributable
           ${{ matrix.zipCommand }}
 
-      - name: "Tag commit and create release ${{ matrix.platform }}"
+      - name: "Tag commit and create release v${{ env.VersionNumber }} for ${{ matrix.platform }}"
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
-          tag: v${{ env.PACKAGE_VERSION }}
+          tag: ${{ env.VersionNumber }}
           artifacts: "${{ matrix.archiveName }}"
           body: |
-            This is the release of version v${{ env.PACKAGE_VERSION }} for ${{ matrix.platform }}
+            This is the release of version v${{ env.VersionNumber }} for ${{ matrix.platform }}
         if: github.ref == 'refs/heads/main'
