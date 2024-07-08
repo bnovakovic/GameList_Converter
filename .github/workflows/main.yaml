@@ -1,8 +1,5 @@
 name: GameList-Converter-Publisher
 
-env:
-  PACKAGE_VERSION: 1.0.7
-
 on:
   pull_request:
     branches:
@@ -16,6 +13,18 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  getVersion:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.create-environment-variables.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate env vars
+        id: create-environment-variables
+        run: |
+          echo "version=1.0.7" >> "$GITHUB_OUTPUT"
+
   build:
     strategy:
       matrix:
@@ -35,29 +44,10 @@ jobs:
             archiveName: GameListConverter-Macos-Not-Notarized.tar.gz
 
     runs-on: ${{ matrix.runsOn }}
+    needs: getVersion
     steps:
       - uses: actions/checkout@v4
-        with:
-            # This number needs to be high enough to find previous version tags
-            fetch-depth: 15
 
-      - name: "Set up JDK 17 for ${{ matrix.platform }}"
-        uses: actions/setup-java@v2
-        with:
-          java-version: 17
-          distribution: 'adopt'
-
-      - name: "Build app for ${{ matrix.platform }}"
+      - name: Generate env vars
         run: |
-          ./gradlew createReleaseDistributable
-          ${{ matrix.zipCommand }}
-
-      - name: "Tag commit and create release ${{ matrix.platform }}"
-        uses: ncipollo/release-action@v1
-        with:
-          allowUpdates: true
-          tag: v${{ env.PACKAGE_VERSION }}
-          artifacts: "${{ matrix.archiveName }}"
-          body: |
-            This is the release of version v${{ env.PACKAGE_VERSION }} for ${{ matrix.platform }}
-        if: github.ref == 'refs/heads/main'
+          echo ${{ needs.getVersion.outputs.version }}
