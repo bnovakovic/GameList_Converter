@@ -60,11 +60,11 @@ jobs:
 
       - name: "Build and run tests"
         run: |
-          if [! ./gradlew build]; then
+          if (! ./gradlew build); then
             echo "Build failed. Exiting the workflow."
             exit 1
           fi
-          if [! ./gradlew allTests]; then
+          if (! ./gradlew allTests); then
             echo "Test failed. Exiting the workflow."
             exit 1
           fi        
