@@ -74,6 +74,7 @@ fun gameListDirToDatabase(dir: String): RetroArchCoreInfo {
         "ports" -> RetroArchCoreInfo.empty
         "psp" -> RetroArchCoreInfo( "ppsspp_libretro", "Sony - PlayStation Portable")
         "psx" -> RetroArchCoreInfo( "pcsx_rearmed_libretro", "Sony - PlayStation")
+        "ps2" -> RetroArchCoreInfo( "play_libretro", "Sony - PlayStation 2")
         "samcoupe" -> RetroArchCoreInfo( "simcp_libretro", "SAM coupe")
         "satellaview" -> RetroArchCoreInfo( "snes9x_libretro", "Nintendo - Satellaview")
         "scummvm" -> RetroArchCoreInfo( "scummvm_libretro", "ScummVM")
@@ -179,6 +180,7 @@ fun gameListDirToSystemName(dir: String): String {
         "ports" -> "Ports"
         "psp" -> "Sony PlayStation Portable"
         "psx" -> "Sony PlayStation"
+        "ps2" -> "Sony PlayStation 2"
         "samcoupe" -> "SAM coupe"
         "satellaview" -> "Nintendo Satellaview"
         "scummvm" -> "ScummVM"
