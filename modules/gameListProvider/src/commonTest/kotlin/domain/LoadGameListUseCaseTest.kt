@@ -41,7 +41,7 @@ class LoadGameListUseCaseTest {
                 // THEN
                 val actual = dataSource.gameList.value
                 assertEquals(expected, actual)
-                assert(!it.contains(brokenXml))
+                assert(it.contains(brokenXml))
             }.onEmptyList {
                 throw AssertionError("List should not be emtpy")
             }

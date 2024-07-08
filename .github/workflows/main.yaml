@@ -63,12 +63,12 @@ jobs:
           ./gradlew createReleaseDistributable
           ${{ matrix.zipCommand }}
 
-      - name: "Tag commit and create release v$VersionNumber for ${{ matrix.platform }}"
+      - name: "Tag commit and create release v${{ env.VersionNumber }} for ${{ matrix.platform }}"
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
-          tag: $VersionNumber
+          tag: ${{ env.VersionNumber }}
           artifacts: "${{ matrix.archiveName }}"
           body: |
-            This is the release of version v$VersionNumber for ${{ matrix.platform }}
+            This is the release of version v${{ env.VersionNumber }} for ${{ matrix.platform }}
         if: github.ref == 'refs/heads/main'
