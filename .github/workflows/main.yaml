@@ -61,11 +61,7 @@ jobs:
           ./gradlew createReleaseDistributable
           ${{ matrix.zipCommand }}
 
-      - name: "Print version"
-        run: |
-          echo "The version is ${{ needs.getVersion.outputs.version }}"
-
-      - name: "Tag commit and create release ${{ matrix.platform }}"
+      - name: "Tag commit and create release v${{ needs.getVersion.outputs.version }} for ${{ matrix.platform }}"
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
