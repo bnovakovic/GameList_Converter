@@ -75,6 +75,6 @@ compose.desktop {
 
 tasks.register("getVersionName") {
     doLast {
-        println(softwareVersion)
+        println("version=$softwareVersion")
     }
 }

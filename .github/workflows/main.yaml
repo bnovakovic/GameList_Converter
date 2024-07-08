@@ -22,7 +22,7 @@ jobs:
       - name: Generate env vars
         id: create-environment-variables
         run: |
-          echo "::set-output name=version::$(./gradlew getVersionName)"
+          echo "::set-output name=version::$(${{github.workspace}}/gradlew -q getVersionName)"
 
   build:
     strategy:
