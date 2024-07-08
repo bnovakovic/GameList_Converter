@@ -4,9 +4,8 @@ on:
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - main
+  release:
+    types: [created]
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
@@ -23,7 +22,7 @@ jobs:
       - name: Generate env vars
         id: create-environment-variables
         run: |
-          echo "version=1.0.7" >> "$GITHUB_OUTPUT"
+          echo "version=1.0.8" >> "$GITHUB_OUTPUT"
 
   build:
     strategy:
@@ -47,7 +46,31 @@ jobs:
     needs: getVersion
     steps:
       - uses: actions/checkout@v4
+        with:
+          # This number needs to be high enough to find previous version tags
+          fetch-depth: 15
 
-      - name: Generate env vars
+      - name: "Set up JDK 17 for ${{ matrix.platform }}"
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: 'adopt'
+
+      - name: "Build app for ${{ matrix.platform }}"
         run: |
-          echo ${{ needs.getVersion.outputs.version }}
+          ./gradlew createReleaseDistributable
+          ${{ matrix.zipCommand }}
+
+      - name: "Print version"
+        run: |
+          echo "The version is v${{ needs.getVersion.outputs.version }}"
+
+      - name: "Tag commit and create release ${{ matrix.platform }}"
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          tag: ${{ needs.getVersion.outputs.version }}
+          artifacts: "${{ matrix.archiveName }}"
+          body: |
+            This is the release of version v${{ env.PACKAGE_VERSION }} for ${{ matrix.platform }}
+        if: github.ref == 'refs/heads/main'
