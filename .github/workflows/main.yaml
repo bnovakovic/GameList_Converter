@@ -27,7 +27,7 @@ jobs:
   build:
     strategy:
       matrix:
-        platform: [windows]
+        platform: [windows, linux, macos]
         include:
           - platform: windows
             runsOn: windows-latest
@@ -60,12 +60,12 @@ jobs:
 
       - name: "Build and run tests"
         run: |
-          if ! ./gradlew build; then
-            echo "Gradle build failed. Exiting the workflow."
+          if [! ./gradlew build]; then
+            echo "Build failed. Exiting the workflow."
             exit 1
           fi
-          if ! ./gradlew allTests; then
-            echo "Gradle test failed. Exiting the workflow."
+          if [! ./gradlew allTests]; then
+            echo "Test failed. Exiting the workflow."
             exit 1
           fi        
 
