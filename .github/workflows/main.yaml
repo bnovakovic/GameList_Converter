@@ -58,6 +58,12 @@ jobs:
           ./gradlew build
           ./gradlew allTests
 
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          junit_files: build/test-results/**/*.xml
+
       - name: "Build v${{ needs.getVersion.outputs.version }} app for ${{ matrix.platform }}"
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
         run: |
