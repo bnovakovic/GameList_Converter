@@ -5,7 +5,7 @@ on:
     branches:
       - main
   release:
-    types: [published]
+    types: [created]
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
@@ -59,22 +59,13 @@ jobs:
           distribution: 'adopt'
 
       - name: "Build and run tests"
+        if: matrix.platform == 'windows'
         run: |
           ./gradlew build
           ./gradlew allTests
-        if: matrix.platform == 'windows'
 
       - name: "Build app for ${{ matrix.platform }}"
+        if: github.ref == 'refs/heads/main'
         run: |
           ./gradlew createReleaseDistributable
           ${{ matrix.zipCommand }}
-
-      - name: "Tag commit and create release v${{ env.VersionNumber }} for ${{ matrix.platform }}"
-        uses: ncipollo/release-action@v1
-        with:
-          allowUpdates: true
-          tag: ${{ env.VersionNumber }}
-          artifacts: "${{ matrix.archiveName }}"
-          body: |
-            This is the release of version v${{ env.VersionNumber }} for ${{ matrix.platform }}
-        if: github.ref == 'refs/heads/main'
