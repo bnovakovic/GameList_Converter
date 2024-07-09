@@ -65,7 +65,7 @@ jobs:
           ./gradlew allTests
 
       - name: "Build app for ${{ matrix.platform }}"
-        if: github.ref == 'refs/heads/main'
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
         run: |
           ./gradlew createReleaseDistributable
           ${{ matrix.zipCommand }}
