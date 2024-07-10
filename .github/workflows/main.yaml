@@ -57,6 +57,16 @@ jobs:
         run: |
           ./gradlew build
           ./gradlew allTests
+          ./gradlew koverXmlReport
+
+      - name: Debug path
+        shell: bash
+        run: |
+          pwd
+          ls 
+          ls -l build/
+          ls -l build/reports
+          ls -l build/reports/kover
 
       - name: Publish Unit Test Results for linux build
         uses: EnricoMi/publish-unit-test-result-action@v2

@@ -81,6 +81,6 @@ tasks.register("getVersionName") {
     }
 }
 
-tasks.withType<Test> {
+/*tasks.withType<Test> {
     finalizedBy(tasks.withType(KoverXmlReport::class.java))
-}
+}*/
