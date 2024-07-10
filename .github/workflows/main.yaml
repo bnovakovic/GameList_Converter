@@ -62,19 +62,19 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: ${{ matrix.platform == 'linux' && always() }}
         with:
-          junit_files: build/test-results/**/*.xml
+          junit_files: build/reports/**/*.xml
 
       - name: Publish Unit Test Results for macOS build
         uses: EnricoMi/publish-unit-test-result-action/macos@v2
         if: ${{ matrix.platform == 'macos' && always() }}
         with:
-          junit_files: build/test-results/**/*.xml
+          junit_files: build/reports/**/*.xml
 
       - name: Publish Unit Test Results for windows build
         uses: EnricoMi/publish-unit-test-result-action/windows@v2
         if: ${{ matrix.platform == 'windows' && always() }}
         with:
-          junit_files: build/test-results/**/*.xml
+          junit_files: build/reports/**/*.xml
 
       - name: "Build v${{ needs.getVersion.outputs.version }} app for ${{ matrix.platform }}"
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
