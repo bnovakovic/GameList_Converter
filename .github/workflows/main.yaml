@@ -55,36 +55,25 @@ jobs:
       - name: "Build and run tests"
         if: matrix.platform == 'windows'
         run: |
-          ./gradlew build
-          ./gradlew allTests
           ./gradlew koverXmlReport
-
-      - name: Debug path
-        shell: bash
-        run: |
-          pwd
-          ls 
-          ls -l build/
-          ls -l build/reports
-          ls -l build/reports/kover
 
       - name: Publish Unit Test Results for linux build
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: false # ${{ matrix.platform == 'linux' && always() }}
         with:
-          junit_files: build/reports/kover/*.xml
+          junit_files: "**/build/reports/kover/*.xml"
 
       - name: Publish Unit Test Results for macOS build
         uses: EnricoMi/publish-unit-test-result-action/macos@v2
         if: false #${{ matrix.platform == 'macos' && always() }}
         with:
-          junit_files: build/reports/kover/*.xml
+          junit_files: "**/build/reports/kover/*.xml"
 
       - name: Publish Unit Test Results for windows build
         uses: EnricoMi/publish-unit-test-result-action/windows@v2
         if: ${{ matrix.platform == 'windows' && always() }}
         with:
-          junit_files: build/reports/kover/*.xml
+          junit_files: "**/build/reports/kover/*.xml"
 
       - name: "Build v${{ needs.getVersion.outputs.version }} app for ${{ matrix.platform }}"
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
