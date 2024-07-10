@@ -58,9 +58,21 @@ jobs:
           ./gradlew build
           ./gradlew allTests
 
-      - name: Publish Unit Test Results
+      - name: Publish Unit Test Results for linux build
         uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
+        if: ${{ matrix.platform == 'linux' && always() }}
+        with:
+          junit_files: build/test-results/**/*.xml
+
+      - name: Publish Unit Test Results for macOS build
+        uses: EnricoMi/publish-unit-test-result-action/macos@v2
+        if: ${{ matrix.platform == 'macos' && always() }}
+        with:
+          junit_files: build/test-results/**/*.xml
+
+      - name: Publish Unit Test Results for windows build
+        uses: EnricoMi/publish-unit-test-result-action/windows@v2
+        if: ${{ matrix.platform == 'windows' && always() }}
         with:
           junit_files: build/test-results/**/*.xml
 
