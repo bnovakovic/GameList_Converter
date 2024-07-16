@@ -74,7 +74,7 @@ jobs:
         if: ${{ matrix.platform == 'windows' && always() }}
         with:
           files: |
-            "**/modules/ListExporter/build/test-results/desktopTest/*.xml"
+            modules/ListExporter/build/test-results/desktopTest/*.xml
 
       - name: "Build v${{ needs.getVersion.outputs.version }} app for ${{ matrix.platform }}"
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
