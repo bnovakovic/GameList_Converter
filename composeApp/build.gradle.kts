@@ -1,9 +1,11 @@
+import kotlinx.kover.gradle.plugin.dsl.tasks.KoverXmlReport
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kover)
 }
 
 val softwareVersion: String by extra { "1.0.8" }
@@ -78,3 +80,7 @@ tasks.register("getVersionName") {
         println(softwareVersion)
     }
 }
+
+/*tasks.withType<Test> {
+    finalizedBy(tasks.withType(KoverXmlReport::class.java))
+}*/
