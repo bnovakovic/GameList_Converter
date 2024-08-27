@@ -13,9 +13,9 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
 fun GameListData.toGameSystemUiModel() = GameSystemUiModel(
-    system = this.system.toSystemUiModel(this.originalPath),
+    system = this.system.toSystemUiModel(),
     games = this.games.map { it.toGameInfoUiModel(this.originalPath) },
-    path = this.originalPath
+    gameSystemDirName = this.system.systemSubDir
 )
 
 fun GameData.toGameInfoUiModel(basicPath: File): GameInfoUiModel {
@@ -38,7 +38,7 @@ fun GameData.toGameInfoUiModel(basicPath: File): GameInfoUiModel {
     )
 }
 
-fun SystemData.toSystemUiModel(systemPath: File) : SystemUiModel = SystemUiModel(this.name, systemPath, this.retroArchCoreInfo)
+fun SystemData.toSystemUiModel() : SystemUiModel = SystemUiModel(this.name, this.systemSubDir, this.retroArchCoreInfo)
 
 fun convertToReadableDate(dateString: String): String {
     try {

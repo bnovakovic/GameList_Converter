@@ -43,7 +43,7 @@ class ConvertGameListUseCaseTest {
             rightThumbnailMode = 0,
             thumbnailMatchMode = 0,
             sortMode = 0,
-            scanContentDir = testGameListData.originalPath,
+            scanContentDir = testGameListData.romsPath,
             scanFileExts = "",
             scanDatFilePath = "",
             scanSearchRecursively = true,

@@ -10,12 +10,12 @@ import java.io.File
 data class GameSystemUiModel(
     val system: SystemUiModel,
     val games: List<GameInfoUiModel>,
-    val path: File,
+    val gameSystemDirName: String,
 ) : SelectableItemUiModel(
-    text = "${system.name} (${system.systemPath.name})",
+    text = "${system.name} (${system.subdir})",
     disabledOrHiddenItem = false
 ) {
     companion object {
-        val empty = GameSystemUiModel(SystemUiModel("", File(""), RetroArchCoreInfo.empty), emptyList(), File(""))
+        val empty = GameSystemUiModel(SystemUiModel("", "", RetroArchCoreInfo.empty), emptyList(), "")
     }
 }

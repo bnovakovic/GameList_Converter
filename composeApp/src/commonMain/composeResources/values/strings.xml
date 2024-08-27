@@ -62,13 +62,14 @@
     <!--    Top menu-->
     <string name="file">File</string>
     <string name="select_roms_dir">Select ROMs directory</string>
+    <string name="select_gamelist_dir">Select gamelists directory</string>
     <string name="select_retroarch_dir">Select RetroArch directory</string>
     <string name="exit">Exit</string>
     <string name="help">Help</string>
     <string name="about">About</string>
     <string name="scan">Scan</string>
     <string name="scan_retroarch_dir">Scan RetroArch directory</string>
-    <string name="scan_roms_dir">Scan ROMs directory</string>
+    <string name="scan_roms_dir">Read gameslist files</string>
     <string name="scan_all">Scan all</string>
     <string name="language">Language</string>
     <string name="restart_required">Restart needed</string>

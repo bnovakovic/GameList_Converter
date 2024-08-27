@@ -1,5 +1,6 @@
 package app
 
+import androidx.compose.runtime.mutableStateOf
 import app.contentloader.ContentLoaderViewModel
 import app.contentloader.InfoType
 import app.contentloader.LoadingType
@@ -21,6 +22,7 @@ import menus.mainscreen.MainScreenUiModel
 import menus.mainscreen.MainWindowMenuSelection
 import screens.export.retroarch.ExportRetroArchScreenViewModel
 import screens.gamelistscreen.GameListScreenViewModel
+import java.io.File
 import java.util.Locale
 
 class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewModel() {
@@ -33,6 +35,7 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
     )
     private val appSettings: GlmSettings = GlmPreferences()
     private val contentLoader = ContentLoaderViewModel(loadGameListUseCase, loadRetroArchInfoUseCase)
+    private var romsDirectory: File? = null
 
     val mainMenuViewModel = MainScreenMenuViewModel(settings = appSettings, menuItemSelected = ::mainScreenMenuItemSelected)
     val gameListScreenViewModel = GameListScreenViewModel(
@@ -53,7 +56,8 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
         appSettings.cacheSettings()
         mainMenuViewModel.settingsUpdated()
         val retroArchDir = appSettings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
-        val romsDir = appSettings.getString(SettingsKeys.ROMS_DIRECTORY_KEY)
+        val gamesListDirectory = appSettings.getString(SettingsKeys.GAME_LIST_DIRECTORY_KEY)?.let { File(it) }
+        romsDirectory = appSettings.getString(SettingsKeys.ROMS_DIRECTORY_KEY)?.let { File(it) }
         val selectedLanguage = appSettings.getString(SettingsKeys.SELECTED_LANGUAGE_KEY)
         val inDarkMode = appSettings.getBoolean(SettingsKeys.DARK_MODE_KEY)
         inDarkMode?.let {
@@ -73,16 +77,20 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
                 )
             }
         }
-        contentLoader.loadEverything(retroArchDir, romsDir)
+        contentLoader.loadEverything(retroArchDir, gamesListDirectory)
     }
 
     private fun mainScreenMenuItemSelected(selection: MainWindowMenuSelection) {
         val retroArchDir = appSettings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
-        val romsDir = appSettings.getString(SettingsKeys.ROMS_DIRECTORY_KEY)
+        val gameListDir = appSettings.getString(SettingsKeys.GAME_LIST_DIRECTORY_KEY)?.let { File(it) }
 
         when (selection) {
             is MainWindowMenuSelection.SelectedRoms -> {
-                contentLoader.loadRomsInfo(selection.directory.toString())
+                romsDirectory = selection.directory
+            }
+
+            is MainWindowMenuSelection.SelectedGamesListsDir -> {
+                contentLoader.loadGameListInfo(selection.directory)
             }
 
             is MainWindowMenuSelection.SelectedRetroArchDirectory -> {
@@ -94,7 +102,7 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
             }
 
             is MainWindowMenuSelection.ScanRoms -> {
-                contentLoader.loadRomsInfo(romsDir)
+                contentLoader.loadGameListInfo(gameListDir)
             }
 
             is MainWindowMenuSelection.ScanRetroArchDir -> {
@@ -102,7 +110,7 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
             }
 
             is MainWindowMenuSelection.ScanAll -> {
-                contentLoader.loadEverything(retroArchDir, romsDir)
+                contentLoader.loadEverything(retroArchDir, gameListDir)
             }
 
             is MainWindowMenuSelection.LanguageSelected -> {

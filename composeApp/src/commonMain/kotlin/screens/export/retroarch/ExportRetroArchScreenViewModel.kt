@@ -259,17 +259,19 @@ class ExportRetroArchScreenViewModel(
         val uiModelValue = _uiModel.value
         val core = uiModelValue.coreInfo
         val retroArchDirectory = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
+        val romsDir = settings.getString(SettingsKeys.ROMS_DIRECTORY_KEY)
 
         execJob?.cancel()
         execJob = viewModelScope.launch {
-            if (isRunAvailable() && retroArchDirectory != null && !isCoreMissing()) {
+            if (isRunAvailable() && retroArchDirectory != null && romsDir != null && !isCoreMissing()) {
                 val systemInfo = uiModelValue.systemInfo
                 val games = systemInfo.games
                 if (games.isNotEmpty()) {
-                    val sysPath = systemInfo.path
+                    val systemSubDir = systemInfo.gameSystemDirName
+                    val romsPath = File(romsDir, systemSubDir)
                     val randomItem = games[Random.nextInt(games.size)]
                     val randomFileName = File(randomItem.romPath).name
-                    val fullRomPath = File(sysPath, randomFileName)
+                    val fullRomPath = File(romsPath, randomFileName)
                     val config = ExecConfiguration.RunRom(
                         romPath = fullRomPath.toString(),
                         coreFileName = core.filename,
@@ -338,9 +340,11 @@ class ExportRetroArchScreenViewModel(
         val uiModelValue = _uiModel.value
         val core = uiModelValue.coreInfo
         val retroArchDirectory = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
+        val romsDirectory = settings.getString(SettingsKeys.ROMS_DIRECTORY_KEY)
         val system = uiModelValue.systemInfo
         return core != CoreInfoUiModel.none &&
                 retroArchDirectory != null &&
+                romsDirectory != null &&
                 system != GameSystemUiModel.empty &&
                 system.games.isNotEmpty() &&
                 !isCoreMissing()
@@ -362,9 +366,11 @@ class ExportRetroArchScreenViewModel(
             _uiModel.value = _uiModel.value.copy(saveFileResult = PlaylistSaveProgress.SAVING)
             val uiModel = _uiModel.value
             val activeSystem = getActiveSystem()
-            val foundSystem = allGameLists.find { it.originalPath == activeSystem.path }
+            val romsDir = settings.getString(SettingsKeys.ROMS_DIRECTORY_KEY)?.let { File(it) }
+            val systemDir = romsDir?.let { File(it, activeSystem.gameSystemDirName) }
+            val foundSystem = allGameLists.find { it.originalPath == systemDir }
 
-            if (foundSystem != null) {
+            if (foundSystem != null && romsDir != null) {
                 val fullPlaylistName =
                     if (file.extension != RETRO_ARCH_LIST_EXTENSION) "${file.name}.$RETRO_ARCH_LIST_EXTENSION" else file.name
                 val selectedCore = coreListViewModel.uiModel.value.items[uiModel.selectedCore]
@@ -382,11 +388,11 @@ class ExportRetroArchScreenViewModel(
                 val config = GameListConvertConfig(
                     outputDir = uiModel.exportPath,
                     outputFileName = fullPlaylistName,
-                    gameListData = foundSystem.toExportGameListData(),
+                    gameListData = foundSystem.toExportGameListData(romsDir),
                     coreName = coreName,
                     corePath = coreFullPath,
                     addHidden = false,
-                    playlistVersion = PLAYLIST_VERSION
+                    playlistVersion = PLAYLIST_VERSION,
                 )
 
                 when (convertGameListUseCase.invoke(config)) {

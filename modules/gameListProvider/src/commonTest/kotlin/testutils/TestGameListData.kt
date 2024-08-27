@@ -60,6 +60,7 @@ val testGameListData = GameListData(
         name = "Commodore Amiga 1200",
         software = "Skraper",
         database = "ScreenScraper.fr",
+        systemSubDir = "amiga1200",
         web = "http://www.screenscraper.fr",
         RetroArchCoreInfo("puae_libretro", "Commodore - Amiga")
     )
@@ -119,6 +120,7 @@ val testGameListDataNoProvider = GameListData(
         name = "Unknown",
         software = "",
         database = "",
+        systemSubDir = "unknownFolder",
         web = "",
         RetroArchCoreInfo.empty
     )

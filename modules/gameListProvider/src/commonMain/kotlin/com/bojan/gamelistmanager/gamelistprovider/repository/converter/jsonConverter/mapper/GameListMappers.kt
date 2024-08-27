@@ -14,6 +14,7 @@ fun SystemInfoObject.toSystemData(path: File) = SystemData(
     name = gameListDirToSystemName(path.name),
     software = this.software,
     database = this.database,
+    systemSubDir = path.name,
     web = this.web,
     retroArchCoreInfo = gameListDirToDatabase(path.name)
 )

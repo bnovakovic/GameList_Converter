@@ -69,13 +69,14 @@
     <!--    Top menu-->
     <string name="file">Meni</string>
     <string name="select_roms_dir">Odaberi ROM direktorijum</string>
+    <string name="select_gamelist_dir">Odaberi gameslist direktorijum</string>
     <string name="select_retroarch_dir">Odaberi RetroArch direktorijum</string>
     <string name="exit">Izlaz</string>
     <string name="help">Pomoć</string>
     <string name="about">O programu</string>
     <string name="scan">Skeniraj</string>
     <string name="scan_retroarch_dir">Skeniraj RetroArch direktorijum</string>
-    <string name="scan_roms_dir">Skeniraj ROM direktorijum</string>
+    <string name="scan_roms_dir">Učitaj gameslist fajlove</string>
     <string name="scan_all">Skeniraj sve</string>
     <string name="language">Jezik</string>
     <string name="restart_required">Restart aplikacije neophodan</string>

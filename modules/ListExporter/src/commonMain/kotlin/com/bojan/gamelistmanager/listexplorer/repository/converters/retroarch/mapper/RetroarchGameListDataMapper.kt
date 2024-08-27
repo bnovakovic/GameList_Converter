@@ -17,7 +17,7 @@ fun ExportGameListData.toRetroArchListObject(config: GameListConvertConfig) : Re
         leftThumbnailMode = 0,
         thumbnailMatchMode = 0,
         sortMode = 0,
-        scanContentDir = this.originalPath,
+        scanContentDir = this.romsPath,
         scanFileExts = "",
         scanDatFilePath = "",
         scanSearchRecursively = true,
@@ -27,7 +27,7 @@ fun ExportGameListData.toRetroArchListObject(config: GameListConvertConfig) : Re
         items = this.games
             .filter {  gameData -> (!gameData.hidden || config.addHidden) && !gameData.name.contains(NOT_GAME_STRING)  }
             .map { gameData ->
-            gameData.toRetroArchGameItem(this.originalPath, gameData.path, config.outputFileName)
+            gameData.toRetroArchGameItem(this.romsPath, gameData.romPath, config.outputFileName)
         }
     )
 }

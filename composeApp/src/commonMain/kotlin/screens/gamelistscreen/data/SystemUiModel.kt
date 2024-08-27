@@ -8,6 +8,6 @@ import java.io.File
  */
 data class SystemUiModel (
     val name: String,
-    val systemPath: File,
+    val subdir: String,
     val retroArchCoreInfo: RetroArchCoreInfo
 )

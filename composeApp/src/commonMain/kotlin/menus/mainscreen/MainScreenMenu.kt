@@ -34,9 +34,11 @@ import gamelistconverter.composeapp.generated.resources.scan_all
 import gamelistconverter.composeapp.generated.resources.scan_retroarch_dir
 import gamelistconverter.composeapp.generated.resources.scan_roms_dir
 import gamelistconverter.composeapp.generated.resources.search_24dp
+import gamelistconverter.composeapp.generated.resources.select_gamelist_dir
 import gamelistconverter.composeapp.generated.resources.select_retroarch_dir
 import gamelistconverter.composeapp.generated.resources.select_roms_dir
 import gamelistconverter.composeapp.generated.resources.theme
+import gamelistconverter.composeapp.generated.resources.xml_icon_24
 import menus.swingchoosers.folderSwingChooser
 import menus.swingchoosers.retroArchSwingChooser
 import org.jetbrains.compose.resources.painterResource
@@ -63,13 +65,14 @@ fun FrameWindowScope.MainWindowMenuBar(
             onExitApplication = onExitApplication,
             enabled = enabled,
             romsDir = uiModel.selectedRomsDir,
+            gameListDir = uiModel.selectedGameListDir,
             retroArchDir = uiModel.selectedRetroArchDir
         )
         Scan(
             menuItemSelected = viewModel::menuSelected,
             enabled = enabled,
             retroArchDirSet = uiModel.selectedRetroArchDir != null,
-            romsDirSet = uiModel.selectedRomsDir != null
+            romsDirSet = uiModel.selectedGameListDir != null
         )
         Language(
             menuItemSelected = viewModel::menuSelected,
@@ -91,10 +94,12 @@ private fun MenuBarScope.FileMenu(
     onExitApplication: () -> Unit,
     enabled: Boolean,
     romsDir: File?,
+    gameListDir: File?,
     retroArchDir: File?
 ) {
     Menu(stringResource(Res.string.file), mnemonic = 'F', enabled = enabled) {
         val romsDirString = stringResource(Res.string.select_roms_dir)
+        val gameListDirString = stringResource(Res.string.select_gamelist_dir)
         val selectRetroArchTitle = stringResource(Res.string.select_retroarch_dir)
         Item(
             text = romsDirString,
@@ -109,6 +114,20 @@ private fun MenuBarScope.FileMenu(
             shortcut = KeyShortcut(Key.O, ctrl = true),
             mnemonic = 'O',
             icon = painterResource(Res.drawable.rom_24)
+        )
+        Item(
+            text = gameListDirString,
+            onClick = {
+                folderSwingChooser(
+                    title = gameListDirString,
+                    currentDir = gameListDir ?: getUserHome(),
+                    onFolderSelected = {
+                        menuItemSelected(MainWindowMenuSelection.SelectedGamesListsDir(it))
+                    })
+            },
+            shortcut = KeyShortcut(Key.G, ctrl = true),
+            mnemonic = 'G',
+            icon = painterResource(Res.drawable.xml_icon_24)
         )
         Item(
             text = stringResource(Res.string.select_retroarch_dir),
@@ -149,8 +168,8 @@ private fun MenuBarScope.Scan(
             text = stringResource(Res.string.scan_roms_dir),
             onClick = { menuItemSelected(MainWindowMenuSelection.ScanRoms) },
             enabled = romsDirSet,
-            mnemonic = 'O',
-            icon = painterResource(Res.drawable.rom_24)
+            mnemonic = 'G',
+            icon = painterResource(Res.drawable.xml_icon_24)
         )
         Item(
             text = stringResource(Res.string.scan_retroarch_dir),

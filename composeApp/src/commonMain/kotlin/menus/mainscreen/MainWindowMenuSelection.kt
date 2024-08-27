@@ -15,6 +15,13 @@ sealed class MainWindowMenuSelection {
     data class SelectedRoms(val directory: File) : MainWindowMenuSelection()
 
     /**
+     * User has selected GamesList directory.
+     *
+     * @param directory GamesList directory
+     */
+    data class SelectedGamesListsDir(val directory: File) : MainWindowMenuSelection()
+
+    /**
      * User has selected RetroArch directory.
      *
      * @param directory RetroArch directory.

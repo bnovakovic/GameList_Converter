@@ -56,16 +56,16 @@ class ContentLoaderViewModel(
     }
 
     /**
-     * Initiates loading of ROMs information.
+     * Initiates loading of gamelist information.
      *
-     * @param scanDir Root folder of the ROMs directory (example: E:\emulation\roms). Not the specific subdirectory of the system such as
-     * E:\emulation\roms\atari2600.
+     * @param gameListDir Root folder of the XMLs directory (example: E:\emulation\gamelists). Not the specific subdirectory of the system
+     * such as E:\emulation\gamelists\atari2600.
      */
-    fun loadRomsInfo(scanDir: String?) {
-        scanDir?.let { romsDir ->
+    fun loadGameListInfo(gameListDir: File?) {
+        if (gameListDir != null) {
             loadJob = viewModelScope.launch {
                 _uiModel.value = _uiModel.value.copy(loadingType = LoadingType.None)
-                loadRoms(scanDir)
+                loadGamelistFiles(gameListDir)
             }
         }
     }
@@ -74,14 +74,14 @@ class ContentLoaderViewModel(
      * Initiates loading of everything all together.
      *
      * @param retroArchDir RetroArch root directory (not any subdirectory inside of RetroArch)
-     * @param romsDir Root folder of the ROMs directory (example: E:\emulation\roms). Not the specific subdirectory of the system such as
-     * E:\emulation\roms\atari2600.
+     * @param gameListDir Root folder of the XMLs directory (example: E:\emulation\gamelists). Not the specific subdirectory of the system
+     * such as E:\emulation\gamelists\atari2600.
      */
-    fun loadEverything(retroArchDir: String?, romsDir: String?) {
+    fun loadEverything(retroArchDir: String?, gameListDir: File?) {
         loadJob = viewModelScope.launch {
             cancelingJob = false
-            if (romsDir != null) {
-                loadRoms(romsDir)
+            if (gameListDir != null) {
+                loadGamelistFiles(gameListDir)
             }
             if (retroArchDir != null) {
                 _uiModel.value = _uiModel.value.copy(
@@ -93,9 +93,9 @@ class ContentLoaderViewModel(
         }
     }
 
-    private suspend fun loadRoms(romsDir: String) {
+    private suspend fun loadGamelistFiles(gameListDir: File) {
         cancelingJob = false
-        val result = loadGameListUseCase.invoke(File(romsDir), channel)
+        val result = loadGameListUseCase.invoke(gameListDir, channel)
         result.onEmptyList {
             _uiModel.value = _uiModel.value.copy(infoType = InfoType.ROMS_NOT_FOUND)
         }.onSuccess {

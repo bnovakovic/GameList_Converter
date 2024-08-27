@@ -22,6 +22,7 @@ class MainScreenMenuViewModel(private val settings: GlmSettings, private val men
      */
     fun settingsUpdated() {
         _uiModel.value = MainScreenMenuUiModel(
+            selectedGameListDir = settings.getString(SettingsKeys.GAME_LIST_DIRECTORY_KEY)?.let { File(it) },
             selectedRomsDir = settings.getString(SettingsKeys.ROMS_DIRECTORY_KEY)?.let { File(it) },
             selectedRetroArchDir = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)?.let { File(it) },
             selectedLanguage = settings.getString(SettingsKeys.SELECTED_LANGUAGE_KEY) ?: ENGLISH_LANGUAGE_CODE,
@@ -31,6 +32,11 @@ class MainScreenMenuViewModel(private val settings: GlmSettings, private val men
     private fun romsDirSelected(dir: File) {
         _uiModel.value = _uiModel.value.copy(selectedRomsDir = dir)
         settings.putString(SettingsKeys.ROMS_DIRECTORY_KEY, dir.toString())
+    }
+
+    private fun gameListDirSelected(dir: File) {
+        _uiModel.value = _uiModel.value.copy(selectedGameListDir = dir)
+        settings.putString(SettingsKeys.GAME_LIST_DIRECTORY_KEY, dir.toString())
     }
 
     private fun retroArchDirSelected(dir: File) {
@@ -60,6 +66,10 @@ class MainScreenMenuViewModel(private val settings: GlmSettings, private val men
 
             is MainWindowMenuSelection.SelectedRetroArchDirectory -> {
                 retroArchDirSelected(selection.directory)
+            }
+
+            is MainWindowMenuSelection.SelectedGamesListsDir -> {
+                gameListDirSelected(selection.directory)
             }
 
             else -> {
