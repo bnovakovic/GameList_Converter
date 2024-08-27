@@ -12,9 +12,9 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
-fun GameListData.toGameSystemUiModel() = GameSystemUiModel(
+fun GameListData.toGameSystemUiModel(romsPath: File) = GameSystemUiModel(
     system = this.system.toSystemUiModel(),
-    games = this.games.map { it.toGameInfoUiModel(this.originalPath) },
+    games = this.games.map { it.toGameInfoUiModel(File(romsPath, this.system.systemSubDir)) },
     gameSystemDirName = this.system.systemSubDir
 )
 

@@ -1,6 +1,5 @@
 package app
 
-import androidx.compose.runtime.mutableStateOf
 import app.contentloader.ContentLoaderViewModel
 import app.contentloader.InfoType
 import app.contentloader.LoadingType
@@ -40,7 +39,8 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
     val mainMenuViewModel = MainScreenMenuViewModel(settings = appSettings, menuItemSelected = ::mainScreenMenuItemSelected)
     val gameListScreenViewModel = GameListScreenViewModel(
         dataSource = gameListDataSource,
-        onExport = { _uiModel.value = _uiModel.value.copy(activeScreen = ActiveScreen.EXPORT_SCREEN) }
+        onExport = { _uiModel.value = _uiModel.value.copy(activeScreen = ActiveScreen.EXPORT_SCREEN) },
+        settings = appSettings
     )
 
     val exportRetroArchScreenViewModel = ExportRetroArchScreenViewModel(

@@ -1,5 +1,7 @@
 package screens.gamelistscreen
 
+import app.settings.GlmSettings
+import app.settings.SettingsKeys
 import com.bojan.gamelistmanager.gamelistprovider.domain.interfaces.GameListRepository
 import commonui.textlist.SelectableListViewModel
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
@@ -10,6 +12,7 @@ import screens.gamelistscreen.data.GameInfoUiModel
 import screens.gamelistscreen.data.GameListScreenUiModel
 import screens.gamelistscreen.data.GameSystemUiModel
 import screens.gamelistscreen.mappers.toGameSystemUiModel
+import java.io.File
 
 /**
  * Viewmodel used to control GameList screen.
@@ -21,6 +24,7 @@ import screens.gamelistscreen.mappers.toGameSystemUiModel
 class GameListScreenViewModel(
     private val dataSource: GameListRepository,
     private val onExport: () -> Unit,
+    private val settings: GlmSettings,
     val selectableGameListViewModel: SelectableListViewModel<GameInfoUiModel> = SelectableListViewModel(),
 ) : ViewModel() {
 
@@ -31,13 +35,25 @@ class GameListScreenViewModel(
         viewModelScope.launch {
             dataSource.gameList.collect { gameList ->
                 val sorted = gameList.sortedBy { it.system.name }
-                _uiModel.value = GameListScreenUiModel(
-                    gameSystems = sorted.map { it.toGameSystemUiModel() },
-                    gameSystemDisplayList = sorted.map { it.toGameSystemUiModel().text },
-                    selectedSystem = if (sorted.isNotEmpty()) 0 else -1,
-                    selectedGame = 0,
-                    searchQuery = ""
-                )
+                val romsDir = settings.getString(SettingsKeys.ROMS_DIRECTORY_KEY)?.let { File(it) }
+                if (romsDir != null) {
+                    val converted = sorted.map { it.toGameSystemUiModel(romsDir) }
+                    _uiModel.value = GameListScreenUiModel(
+                        gameSystems = converted,
+                        gameSystemDisplayList = converted.map { it.text },
+                        selectedSystem = if (sorted.isNotEmpty()) 0 else -1,
+                        selectedGame = 0,
+                        searchQuery = ""
+                    )
+                } else {
+                    _uiModel.value = GameListScreenUiModel(
+                        gameSystems = emptyList(),
+                        gameSystemDisplayList = emptyList(),
+                        selectedSystem = if (sorted.isNotEmpty()) 0 else -1,
+                        selectedGame = 0,
+                        searchQuery = ""
+                    )
+                }
                 showFullGameList()
                 if (sorted.isNotEmpty()) {
                     systemSelected(0)

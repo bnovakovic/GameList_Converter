@@ -92,7 +92,12 @@ class ExportRetroArchScreenViewModel(
         viewModelScope.launch {
             gameListDataSource.gameList.collect { systemList ->
                 val sorted = systemList.sortedBy { it.system.name }
-                systemListViewModel.setItems(sorted.map { it.toGameSystemUiModel() })
+                val romsDir = settings.getString(SettingsKeys.ROMS_DIRECTORY_KEY)?.let { File(it) }
+                if (romsDir != null) {
+                    systemListViewModel.setItems(sorted.map { it.toGameSystemUiModel(romsDir) })
+                } else {
+                    systemListViewModel.setItems(emptyList())
+                }
                 allGameLists = sorted
                 _uiModel.value = _uiModel.value.copy(exportAllowed = shouldAllowExport(systemList.isNotEmpty()))
             }
@@ -259,10 +264,10 @@ class ExportRetroArchScreenViewModel(
         val uiModelValue = _uiModel.value
         val core = uiModelValue.coreInfo
         val retroArchDirectory = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
-        val romsDir = settings.getString(SettingsKeys.ROMS_DIRECTORY_KEY)
 
         execJob?.cancel()
         execJob = viewModelScope.launch {
+            val romsDir = settings.getString(SettingsKeys.ROMS_DIRECTORY_KEY)
             if (isRunAvailable() && retroArchDirectory != null && romsDir != null && !isCoreMissing()) {
                 val systemInfo = uiModelValue.systemInfo
                 val games = systemInfo.games
