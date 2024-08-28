@@ -72,7 +72,7 @@ fun FrameWindowScope.MainWindowMenuBar(
             menuItemSelected = viewModel::menuSelected,
             enabled = enabled,
             retroArchDirSet = uiModel.selectedRetroArchDir != null,
-            romsDirSet = uiModel.selectedGameListDir != null
+            gameListDirSet = uiModel.selectedGameListDir != null
         )
         Language(
             menuItemSelected = viewModel::menuSelected,
@@ -125,6 +125,7 @@ private fun MenuBarScope.FileMenu(
                         menuItemSelected(MainWindowMenuSelection.SelectedGamesListsDir(it))
                     })
             },
+            enabled = romsDir != null,
             shortcut = KeyShortcut(Key.G, ctrl = true),
             mnemonic = 'G',
             icon = painterResource(Res.drawable.xml_icon_24)
@@ -159,15 +160,15 @@ private fun MenuBarScope.Scan(
     menuItemSelected: (MainWindowMenuSelection) -> Unit,
     enabled: Boolean,
     retroArchDirSet: Boolean,
-    romsDirSet: Boolean
+    gameListDirSet: Boolean
 ) {
-    val anySet = retroArchDirSet || romsDirSet
+    val anySet = retroArchDirSet || gameListDirSet
 
     Menu(stringResource(Res.string.scan), mnemonic = 'S', enabled = enabled && anySet) {
         Item(
             text = stringResource(Res.string.scan_roms_dir),
             onClick = { menuItemSelected(MainWindowMenuSelection.ScanRoms) },
-            enabled = romsDirSet,
+            enabled = gameListDirSet,
             mnemonic = 'G',
             icon = painterResource(Res.drawable.xml_icon_24)
         )
