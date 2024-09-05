@@ -393,7 +393,7 @@ class ExportRetroArchScreenViewModel(
                 }
 
                 val config = GameListConvertConfig(
-                    outputDir = uiModel.exportPath,
+                    outputDir = file.parentFile,
                     outputFileName = fullPlaylistName,
                     gameListData = foundSystem.toExportGameListData(romsDir),
                     coreName = coreName,
