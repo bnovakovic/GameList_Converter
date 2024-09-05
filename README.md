@@ -48,6 +48,9 @@ The project is divided into the following modules:
 ### UI Module (commonMain)
 The UI module contains the user interface components for the application and is used as the presentation layer.
 
+### Command Executor
+The Command Executor module is responsible for executing command line instructions.
+
 ### GameListProvider
 The GameListProvider module is responsible for loading the list of objects from the `gamelist.xml` file that contain information about the games and the system that runs them. It handles the parsing and extraction of game information from the XML file.
 
@@ -73,7 +76,7 @@ To build and run the project, follow these steps:
 
 ## Contributing
 If you would like to contribute to the project, either create the pull request, or contact me in the issues section. If you decide to create pull request, please make sure to follow S.O.L.I.D. and Clean Architecture principles.
-**Contact** me before spending a lots of time on big PR's just to make sure we are on the same page for the big new feature. 
+**Contact** me by opening an issue before spending a lots of time on big PR's just to make sure we are on the same page for the big new feature. 
 
 ## License
 This project is licensed under the [Apache-2.0 license](LICENSE).
