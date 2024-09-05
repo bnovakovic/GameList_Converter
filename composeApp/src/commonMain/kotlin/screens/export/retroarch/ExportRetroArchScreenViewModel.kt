@@ -368,6 +368,7 @@ class ExportRetroArchScreenViewModel(
      * @param file File where the list should be saved.
      */
     fun exportGameList(file: File) {
+        playlistFolderSelected(file.parentFile)
         saveListJob?.cancel()
         saveListJob = viewModelScope.launch {
             _uiModel.value = _uiModel.value.copy(saveFileResult = PlaylistSaveProgress.SAVING)
