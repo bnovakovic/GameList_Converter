@@ -62,7 +62,8 @@ class ExportRetroArchScreenViewModel(
     val uiModel = _uiModel.asStateFlow()
     private var allCoreInfo: List<CoreInfoUiModel> = emptyList()
     private var allGameLists: List<GameListData> = emptyList()
-    private var execJob: Job? = null
+    private var runGameJob: Job? = null
+    private var saveListJob: Job? = null
 
     init {
         viewModelScope.launch {
@@ -265,8 +266,8 @@ class ExportRetroArchScreenViewModel(
         val core = uiModelValue.coreInfo
         val retroArchDirectory = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
 
-        execJob?.cancel()
-        execJob = viewModelScope.launch {
+        runGameJob?.cancel()
+        runGameJob = viewModelScope.launch {
             val romsDir = settings.getString(SettingsKeys.ROMS_DIRECTORY_KEY)
             if (isRunAvailable() && retroArchDirectory != null && romsDir != null && !isCoreMissing()) {
                 val systemInfo = uiModelValue.systemInfo
@@ -367,13 +368,14 @@ class ExportRetroArchScreenViewModel(
      * @param file File where the list should be saved.
      */
     fun exportGameList(file: File) {
-        viewModelScope.launch {
+        saveListJob?.cancel()
+        saveListJob = viewModelScope.launch {
             _uiModel.value = _uiModel.value.copy(saveFileResult = PlaylistSaveProgress.SAVING)
             val uiModel = _uiModel.value
             val activeSystem = getActiveSystem()
             val romsDir = settings.getString(SettingsKeys.ROMS_DIRECTORY_KEY)?.let { File(it) }
             val systemDir = romsDir?.let { File(it, activeSystem.gameSystemDirName) }
-            val foundSystem = allGameLists.find { it.originalPath == systemDir }
+            val foundSystem = allGameLists.find { it.system.systemSubDir == systemDir?.name }
 
             if (foundSystem != null && romsDir != null) {
                 val fullPlaylistName =
@@ -413,8 +415,18 @@ class ExportRetroArchScreenViewModel(
                         _uiModel.value = _uiModel.value.copy(saveFileResult = PlaylistSaveProgress.UNKNOWN_ERROR)
                     }
                 }
+            } else {
+                _uiModel.value = _uiModel.value.copy(saveFileResult = PlaylistSaveProgress.UNKNOWN_ERROR)
             }
         }
+    }
+
+    /**
+     * Cancels list export and removes the popup.
+     */
+    fun cancelListExport() {
+        saveListJob?.cancel()
+        _uiModel.value = _uiModel.value.copy(saveFileResult = PlaylistSaveProgress.NONE)
     }
 
     /**

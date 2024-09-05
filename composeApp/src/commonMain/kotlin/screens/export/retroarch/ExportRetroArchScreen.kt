@@ -37,6 +37,8 @@ import commonui.DropDownMenu
 import commonui.ErrorSurfaceText
 import commonui.InfoWithTitle
 import commonui.OkOnlyPopup
+import commonui.PopupWithCancel
+import commonui.ScanningPopup
 import commonui.SurfaceText
 import commonui.textlist.SearchableTextList
 import commonui.textlist.SelectableListViewModel
@@ -121,14 +123,14 @@ fun ExportRetroArchScreen(viewModel: ExportRetroArchScreenViewModel) {
             onRunGame = viewModel::testSelectedGame
         )
     }
-    SavingPlaylistPopup(uiModel.saveFileResult, viewModel::confirmPlaylistSaveDone)
+    SavingPlaylistPopup(uiModel.saveFileResult, viewModel::confirmPlaylistSaveDone, viewModel::cancelListExport)
 }
 
 @Composable
-fun SavingPlaylistPopup(saveProgress: PlaylistSaveProgress, onPopupConfirm: () -> Unit) {
+fun SavingPlaylistPopup(saveProgress: PlaylistSaveProgress, onPopupConfirm: () -> Unit, onCancel: () -> Unit) {
     when (saveProgress) {
         PlaylistSaveProgress.SAVING -> {
-            OkOnlyPopup(onOk = onPopupConfirm) {
+            PopupWithCancel(onCancel = onCancel) {
                 Column(modifier = Modifier.width(300.dp).height(100.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
                     SurfaceText(stringResource(Res.string.saving), modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
                     Spacer(modifier = Modifier.height(8.dp))

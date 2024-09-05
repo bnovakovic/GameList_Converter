@@ -102,3 +102,30 @@ fun OkOnlyPopup(onOk: () -> Unit, content: @Composable () -> Unit) {
         }
     }
 }
+
+/**
+ * Composable used to show simple popup where user can only click on Cancel.
+ *
+ * @param onCancel The callback used when user clicks on Cancel button.
+ * @param content Additional content to show in the popup.
+ */
+@Composable
+fun PopupWithCancel(onCancel: () -> Unit, content: @Composable () -> Unit) {
+    val focusRequester by remember { mutableStateOf(FocusRequester()) }
+    Dialog(onDismissRequest = {}) {
+        Column(
+            modifier = Modifier.clip(RoundedCornerShape(10.dp)).background(MaterialTheme.colors.surface).popupOutline().padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Spacer(modifier = Modifier.height(8.dp))
+            content()
+            Button(
+                onClick = onCancel,
+                modifier = Modifier.autoFocus(focusRequester).cancelButton(onCancel)
+            ) {
+                Text(stringResource(Res.string.cancel))
+            }
+        }
+    }
+}
