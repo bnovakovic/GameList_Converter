@@ -148,7 +148,7 @@ fun MainScreen(appViewModel: AppViewModel) {
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     SurfaceText(stringResource(Res.string.list_emtpy_tip1))
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
                     SurfaceText(stringResource(Res.string.list_emtpy_tip2))
                 }
             }

@@ -29,7 +29,7 @@
     <string name="game_name">Naziv igre</string>
     <string name="list_emtpy_title">Nijedna igra nije pronađena. Prođite kroz korake ispod, kako biste otklonili grešku.</string>
     <string name="list_emtpy_tip1">1) Odaberite direktorijum gde su direktorijumi ROM-ova. Na primer: "d:/emulation/roms". Nemojte birati direktorijum gde je specifični sistem, kao na primer "d:/emulation/roms/atari2600".</string>
-    <string name="list_emtpy_tip2">2) "gamelist.xml" mora biti u svakom poddirektorijumu sistema. Na primer: "d:/emulation/roms/atari2600/gamelist.xml", "d:/emulation/roms/fbneo/gamelist.xml", "d:/emulation/roms/nes/gamelist.xml"... itd.</string>
+    <string name="list_emtpy_tip2">2) "gamelist.xml" mora biti u svakom poddirektorijumu sistema. Na primer: "d:/emulation/gamelists/atari2600/gamelist.xml", "d:/emulation/gamelists/fbneo/gamelist.xml", "d:/emulation/gamelists/nes/gamelist.xml"... itd.</string>
 
 
     <!--    Export screen-->
