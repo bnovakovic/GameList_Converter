@@ -31,15 +31,15 @@ jobs:
         include:
           - platform: windows
             runsOn: windows-latest
-            zipCommand: 'Compress-Archive -Path composeApp\build\compose\binaries\main-release\app\GameListConverter -DestinationPath .\GameListConverter-Windows.zip'
+            zipCommand: '7z a .\GameListConverter-Windows.zip composeApp\build\compose\binaries\main-release\app\GameListConverter\*'
             archiveName: GameListConverter-Windows.zip
           - platform: linux
             runsOn: ubuntu-latest
-            zipCommand: 'tar -czf GameListConverter-Linux.tar.gz -C composeApp/build/compose/binaries/main-release/app .'
+            zipCommand: 'zip -r GameListConverter-Linux.tar.gz composeApp/build/compose/binaries/main-release/app/GameListConverter/*'
             archiveName: GameListConverter-Linux.tar.gz
           - platform: macos
             runsOn: macos-latest
-            zipCommand: 'tar -czf GameListConverter-Macos-Not-Notarized.tar.gz -C composeApp/build/compose/binaries/main-release/app .'
+            zipCommand: 'zip -r GameListConverter-Macos-Not-Notarized.tar.gz composeApp/build/compose/binaries/main-release/app/GameListConverter/*'
             archiveName: GameListConverter-Macos-Not-Notarized.tar.gz
     runs-on: ${{ matrix.runsOn }}
     needs: getVersion
