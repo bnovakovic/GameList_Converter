@@ -72,12 +72,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Upload Release Asset v${{ needs.getVersion.outputs.version }} for ${{ matrix.platform }}"
-        if: ${{ startsWith(github.ref, 'refs/tags/') }}
-        id: upload-release-asset
-        uses: basefas/upload-release-asset-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          release_id: ${{ steps.get_release.outputs.id }} # This pulls from the Get RELEASE step above, referencing its ID to get its outputs object, which include a `id`.
-          asset_path: ./${{ matrix.archiveName }}
-          asset_name: ${{ matrix.archiveName }}
+        run: |
+          gh release upload ${{ steps.get_release.outputs.tag_name }} ./${{ matrix.archiveName }}
