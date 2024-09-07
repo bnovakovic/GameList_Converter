@@ -29,13 +29,17 @@ It will not
 We will go through some basic usage of the GameList converter.
 
 === Select directories
-Before you can convert your playlists, you must select ROMs and RetroArch directory.
+Before you can convert your playlists, you must select ROMs, Gamelists and RetroArch directories.
+
+*Note*: Option to select gamelists directory will be disabled until you select ROMs directory
 
 image:Images/tutorial_01.png[title="Select directories", align=center]
 
 === Select ROM's directory
 Your first step would be to select ROMs directory. Please note, you must set root of your roms directory (for example `E:\Emulation\roms`), and not the system specific roms directory (for example `E:\Emulation\roms\atari2600`).
 
+=== Select Gamelists Directory
+Second step would be to select gamelists directory. Please note, you must set root of your gamelists directory (for example `E:\Emulation\gamelists`), and not the system specific directory (for example `E:\Emulation\gamelists\atari2600`).
 
 image:Images/tutorial_02.png[title="Select ROM directory", align=center]
 
