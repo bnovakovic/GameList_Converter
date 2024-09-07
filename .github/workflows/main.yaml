@@ -31,11 +31,11 @@ jobs:
         include:
           - platform: windows
             runsOn: windows-latest
-            zipCommand: '7z a .\GameListConverter-Windows.zip composeApp\build\compose\binaries\main-release\app\GameListConverter\*'
+            zipCommand: 'Compress-Archive -Path composeApp\build\compose\binaries\main-release\app\GameListConverter -DestinationPath .\GameListConverter-Windows.zip'
             archiveName: GameListConverter-Windows.zip
           - platform: linux
             runsOn: ubuntu-latest
-            zipCommand: 'zip -r GameListConverter-Linux.tar.gz composeApp/build/compose/binaries/main-release/app/GameListConverter/*'
+            zipCommand: 'tar -czf GameListConverter-Linux.tar.gz -C composeApp/build/compose/binaries/main-release/app .'
             archiveName: GameListConverter-Linux.tar.gz
           - platform: macos
             runsOn: macos-latest
