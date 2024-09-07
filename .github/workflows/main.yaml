@@ -1,8 +1,5 @@
 name: GameList-Converter-Publisher
 
-env:
-  PACKAGE_VERSION: 1.0.8
-
 on:
   pull_request:
     branches:
@@ -15,6 +12,18 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  getVersion:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.create-environment-variables.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate env vars
+        id: create-environment-variables
+        run: |
+          echo "version=$(${{github.workspace}}/gradlew -q getVersionName)" >> $GITHUB_OUTPUT
+
   build:
     strategy:
       matrix:
@@ -32,13 +41,10 @@ jobs:
             runsOn: macos-latest
             zipCommand: 'tar -czf GameListConverter-Macos-Not-Notarized.tar.gz -C composeApp/build/compose/binaries/main-release/app .'
             archiveName: GameListConverter-Macos-Not-Notarized.tar.gz
-
     runs-on: ${{ matrix.runsOn }}
+    needs: getVersion
     steps:
       - uses: actions/checkout@v4
-        with:
-            # This number needs to be high enough to find previous version tags
-            fetch-depth: 15
 
       - name: "Set up JDK 17 for ${{ matrix.platform }}"
         uses: actions/setup-java@v2
@@ -46,17 +52,32 @@ jobs:
           java-version: 17
           distribution: 'adopt'
 
-      - name: "Build app for ${{ matrix.platform }}"
+      - name: "Build and run tests"
+        if: matrix.platform == 'windows'
+        run: |
+          ./gradlew build
+          ./gradlew allTests
+
+      - name: "Build v${{ needs.getVersion.outputs.version }} app for ${{ matrix.platform }}"
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
         run: |
           ./gradlew createReleaseDistributable
           ${{ matrix.zipCommand }}
 
-      - name: "Tag commit and create release ${{ matrix.platform }}"
-        uses: ncipollo/release-action@v1
+      - name: Get Release
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        id: get_release
+        uses: bruceadams/get-release@v1.3.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Upload Release Asset v${{ needs.getVersion.outputs.version }} for ${{ matrix.platform }}"
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        id: upload-release-asset
+        uses: basefas/upload-release-asset-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          allowUpdates: true
-          tag: v${{ env.PACKAGE_VERSION }}
-          artifacts: "${{ matrix.archiveName }}"
-          body: |
-            This is the release of version v${{ env.PACKAGE_VERSION }} for ${{ matrix.platform }}
-        if: github.ref == 'refs/heads/main'
+          release_id: ${{ steps.get_release.outputs.id }} # This pulls from the Get RELEASE step above, referencing its ID to get its outputs object, which include a `id`.
+          asset_path: ./${{ matrix.archiveName }}
+          asset_name: ${{ matrix.archiveName }}
