@@ -27,7 +27,7 @@ jobs:
   build:
     strategy:
       matrix:
-        platform: [windows, linux, macos]
+        platform: [windows]
         include:
           - platform: windows
             runsOn: windows-latest
@@ -72,5 +72,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Upload Release Asset v${{ needs.getVersion.outputs.version }} for ${{ matrix.platform }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release upload ${{ steps.get_release.outputs.tag_name }} ./${{ matrix.archiveName }}
