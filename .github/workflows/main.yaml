@@ -27,7 +27,7 @@ jobs:
   build:
     strategy:
       matrix:
-        platform: [windows]
+        platform: [windows, linux, macos]
         include:
           - platform: windows
             runsOn: windows-latest
@@ -39,7 +39,7 @@ jobs:
             archiveName: GameListConverter-Linux.tar.gz
           - platform: macos
             runsOn: macos-latest
-            zipCommand: 'zip -r GameListConverter-Macos-Not-Notarized.tar.gz composeApp/build/compose/binaries/main-release/app/GameListConverter/*'
+            zipCommand: 'zip -r GameListConverter-Macos-Not-Notarized.tar.gz . -i composeApp/build/compose/binaries/main-release/app/GameListConverter/*'
             archiveName: GameListConverter-Macos-Not-Notarized.tar.gz
     runs-on: ${{ matrix.runsOn }}
     needs: getVersion
