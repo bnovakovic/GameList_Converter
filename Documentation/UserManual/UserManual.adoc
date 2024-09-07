@@ -8,7 +8,7 @@ GameList converter is application that converts a `gamelist.xml` file to the Ret
 
 === Prerequisites
 - Correctly structured ROM directory used for your RecalBox or Retropie
-- `gamelist.xml` *must be* in your systems root directory. For example `roms/atari2600/gamelist.xml`, `roms/fbneo/gamelist.xml`, `roms/nes/gamelist.xml`... etc.
+- Correctly structured `gameslist.xml` directory used for your RecalBox, Retropie or ES-DE. Your `gameslist.xml` can be in your ROMs dir, but you can also use separate directory for your `gameslist.xml` files. Just make sure every XML file is in separate directory named as per system you want to emulate. For example: `E:\Emulation\gamelists\atari2600`, `E:\Emulation\gamelists\atari7800`, `E:\Emulation\gamelists\mame`... etc.
 - RetroArch installed (https://www.retroarch.com)
 
 === What this program can do?
@@ -31,7 +31,9 @@ We will go through some basic usage of the GameList converter.
 === Select directories
 Before you can convert your playlists, you must select ROMs, Gamelists and RetroArch directories.
 
-*Note*: Option to select gamelists directory will be disabled until you select ROMs directory
+*Note*: If your `gameslist.xml` is in ROMs directory, then you can just select your roms dir again when using option to select gameslists directory.
+
+*Warning*: Option to select gamelists directory will be disabled until you select ROMs directory.
 
 image:Images/tutorial_01.png[title="Select directories", align=center]
 
