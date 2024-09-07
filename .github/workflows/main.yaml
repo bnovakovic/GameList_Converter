@@ -39,12 +39,16 @@ jobs:
             archiveName: GameListConverter-Linux.tar.gz
           - platform: macos
             runsOn: macos-latest
-            zipCommand: 'zip -r GameListConverter-Macos-Not-Notarized.tar.gz . -i composeApp/build/compose/binaries/main-release/app/*'
+            zipCommand: 'zip -r GameListConverter-Macos-Not-Notarized.tar.gz . -i composeApp/build/compose/binaries/main-release/app .'
             archiveName: GameListConverter-Macos-Not-Notarized.tar.gz
     runs-on: ${{ matrix.runsOn }}
     needs: getVersion
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
       - name: "Set up JDK 17 for ${{ matrix.platform }}"
         uses: actions/setup-java@v4
