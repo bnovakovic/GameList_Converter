@@ -29,6 +29,7 @@ kotlin {
             implementation(projects.commandexecutor)
             implementation(projects.utils)
             implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.coil)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

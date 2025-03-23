@@ -8,6 +8,7 @@ kotlinSerialization = "1.8.0"
 json = "20250107"
 jackson = "2.18.3"
 turbine = "1.2.0"
+coil = "3.1.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -21,6 +22,7 @@ kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serial
 org-json = { group = "org.json", name = "json", version.ref = "json" }
 jackson-xml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml", version.ref = "jackson" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }

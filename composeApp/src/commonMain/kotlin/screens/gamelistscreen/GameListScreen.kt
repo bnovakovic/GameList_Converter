@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalResourceApi::class)
+
 package screens.gamelistscreen
 
 import MAIN_SCREEN_GAME_LIST_OFFSET
@@ -18,12 +20,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -31,11 +36,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
+import coil3.compose.AsyncImagePainter
 import commonui.DropDownMenu
 import commonui.InfoText
 import commonui.InfoWithTitle
 import commonui.SurfaceText
 import commonui.textlist.SearchableTextList
+import enums.MediaLoadState
 import gamelistconverter.composeapp.generated.resources.Res
 import gamelistconverter.composeapp.generated.resources.date
 import gamelistconverter.composeapp.generated.resources.description
@@ -56,6 +64,9 @@ import gamelistconverter.composeapp.generated.resources.select_game
 import gamelistconverter.composeapp.generated.resources.select_system
 import gamelistconverter.composeapp.generated.resources.system_name
 import ktx.thinOutline
+import ktx.toMediaLoadState
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.decodeToImageBitmap
 import org.jetbrains.compose.resources.stringResource
 import screens.gamelistscreen.data.GameInfoUiModel
 import screens.gamelistscreen.data.GameSystemUiModel
@@ -230,16 +241,21 @@ private fun SystemAndImageContainer(imagePath: File?, systemInfo: GameSystemUiMo
                 .thinOutline(),
             contentAlignment = Alignment.Center
         ) {
-            var imageLoaded = false
-            imagePath?.let {
-                if (it.exists()) {
-                    val imageBitmap: ImageBitmap = loadImageBitmap(FileInputStream(it))
-                    Image(bitmap = imageBitmap, contentDescription = null, modifier = Modifier.padding(4.dp))
-                    imageLoaded = true
+            var imageLoadState by remember { mutableStateOf(MediaLoadState.LOADING) }
+            AsyncImage(
+                model = imagePath,
+                contentDescription = null,
+                onState = { imageLoadState = it.toMediaLoadState() }
+            )
+
+            when (imageLoadState) {
+                MediaLoadState.LOADING -> {
+                    CircularProgressIndicator(color = MaterialTheme.colors.primary)
                 }
-            }
-            if (!imageLoaded) {
-                SurfaceText(stringResource(Res.string.image_not_found))
+                MediaLoadState.ERROR -> {
+                    SurfaceText(stringResource(Res.string.image_not_found))
+                }
+                MediaLoadState.SUCCESS -> { /* Show nothing when image is loaded */ }
             }
         }
     }

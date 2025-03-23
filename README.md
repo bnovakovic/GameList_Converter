@@ -67,6 +67,7 @@ The RetroArchInfoLoader module is responsible for loading the RetroArch cores in
 - **[Jackson XML Converter](https://github.com/FasterXML/jackson-dataformat-xml)**: Utilized for parsing and serializing XML data using the Jackson library, allowing seamless conversion between XML and Java/Kotlin objects. Currently default option.
 - **[XML.toJSONObject Conversion](https://www.json.org/)**: Utilizes the `XML.toJSONObject` function to convert XML data to a JSON object, providing a convenient way to work with XML data and integrate it with JSON-based processing and tools. Then JSON object is converted to the appropriate Kotlin data class. Since this method uses two conversions, I decided to go for Jackson implementation. But in case you don't like it, just change the converter in AppViewModel and you should be good to go. No additional work is needed since every peace of code is already working.
 - **[ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)**: The ViewModel component, used for managing UI-related data in a lifecycle-conscious way. In this project, ViewModel is utilized specifically for desktop development, allowing data to survive configuration changes and aiding in separating the UI logic from the UI controller.
+- **[Coil](https://github.com/coil-kt/coil)**: A lightweight and efficient library designed for asynchronously loading images from the hard drive.
 
 ## Getting Started
 To build and run the project, follow these steps:
