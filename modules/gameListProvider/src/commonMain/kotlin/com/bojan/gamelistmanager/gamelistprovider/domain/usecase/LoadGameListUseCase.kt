@@ -5,7 +5,9 @@ import com.bojan.gamelistmanager.gamelistprovider.GAMELIST_FILE_NAME
 import com.bojan.gamelistmanager.gamelistprovider.domain.data.GameListData
 import com.bojan.gamelistmanager.gamelistprovider.domain.interfaces.GameListRepository
 import com.bojan.gamelistmanager.gamelistprovider.domain.interfaces.XmlConverter
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.withContext
 import java.io.File
 
 /**
@@ -25,27 +27,33 @@ class LoadGameListUseCase(private val xmlConverter: XmlConverter, private val da
      *
      * @return custom result with List of failed items. Returns [LoadReadResult.EmptyList] in case no games were found.
      */
-    suspend operator fun invoke(scanDir: File, update: Channel<Pair<String, Float>>?) : LoadReadResult {
+    suspend operator fun invoke(scanDir: File, update: Channel<Pair<String, Float>>?): LoadReadResult {
 
         val subdirs = scanDir.listFiles { file -> file.isDirectory }
         val numberOfDirs = subdirs?.size ?: -1
-        var scannedDirs = 1
+        var scannedDirs = 0
 
         val gameListContainers = mutableListOf<GameListData>()
         val failedItems = mutableListOf<File>()
-        scanDir.walk().filter { it.isDirectory && File(it.parent) == scanDir }.forEach { directory ->
-            val gameListFile = File(directory, GAMELIST_FILE_NAME)
-            if (gameListFile.exists()) {
-                try {
-                    val deserialized = xmlConverter.convertXmlToGameListItem(gameListFile)
-                    gameListContainers.add(deserialized)
-                } catch (t: Throwable) {
-                    failedItems.add(gameListFile)
+
+        withContext(Dispatchers.IO) {
+            subdirs?.forEach { romsDir ->
+                if (romsDir.isDirectory && File(romsDir.parent) == scanDir) {
+                    val gameListFile = File(romsDir, GAMELIST_FILE_NAME)
+                    if (gameListFile.exists()) {
+                        try {
+                            val deserialized = xmlConverter.convertXmlToGameListItem(gameListFile)
+                            gameListContainers.add(deserialized)
+                        } catch (t: Throwable) {
+                            failedItems.add(gameListFile)
+                        }
+                    }
+                    scannedDirs++
+                    update?.send(Pair(romsDir.toString(), calculateScanPercentage(numberOfDirs, scannedDirs)))
                 }
             }
-            update?.send(Pair(directory.toString(), calculateScanPercentage(numberOfDirs, scannedDirs)))
-            scannedDirs++
         }
+
         dataSource.clearData()
         dataSource.loadGames(gameListContainers.toList())
         return if (gameListContainers.isEmpty()) {
@@ -61,4 +69,4 @@ class LoadGameListUseCase(private val xmlConverter: XmlConverter, private val da
         } else {
             currentDir.toFloat() / dirsSize.toFloat()
         }
-    }
+}
