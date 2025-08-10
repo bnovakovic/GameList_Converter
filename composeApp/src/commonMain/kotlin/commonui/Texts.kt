@@ -22,12 +22,16 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withLink
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
@@ -166,8 +170,6 @@ fun SelectableText(
     )
 }
 
-// Thanks Stevdza San!!!
-// https://gist.github.com/stevdza-san/ff9dbec0e072d8090e1e6d16e6b73c91
 @Composable
 fun HyperlinkText(
     modifier: Modifier = Modifier,
@@ -180,48 +182,40 @@ fun HyperlinkText(
     fontSize: TextUnit = TextUnit.Unspecified
 ) {
     val annotatedString = buildAnnotatedString {
-        append(fullText)
+        var currentIndex = 0
         linkText.forEachIndexed { index, link ->
-            val startIndex = fullText.indexOf(link)
-            val endIndex = startIndex + link.length
-            addStyle(
-                style = SpanStyle(
-                    color = linkTextColor,
-                    fontSize = fontSize,
-                    fontWeight = linkTextFontWeight,
-                    textDecoration = linkTextDecoration
-                ),
-                start = startIndex,
-                end = endIndex
-            )
-            addStringAnnotation(
-                tag = "URL",
-                annotation = hyperlinks[index],
-                start = startIndex,
-                end = endIndex
-            )
+            val startIndex = fullText.indexOf(link, currentIndex)
+            if (startIndex >= 0) {
+                append(fullText.substring(currentIndex, startIndex))
+                withLink(
+                    LinkAnnotation.Url(
+                        url = hyperlinks[index],
+                        styles = TextLinkStyles(
+                            style = SpanStyle(
+                                color = linkTextColor,
+                                fontWeight = linkTextFontWeight,
+                                textDecoration = linkTextDecoration,
+                                fontSize = fontSize
+                            )
+                        )
+                    )
+                ) {
+                    append(link)
+                }
+
+                currentIndex = startIndex + link.length
+            }
         }
-        addStyle(
-            style = SpanStyle(
-                fontSize = fontSize
-            ),
-            start = 0,
-            end = fullText.length
-        )
+
+        if (currentIndex < fullText.length) {
+            append(fullText.substring(currentIndex))
+        }
     }
 
-    val uriHandler = LocalUriHandler.current
 
-    ClickableText(
-        modifier = modifier,
+    Text(
         text = annotatedString,
-        onClick = {
-            annotatedString
-                .getStringAnnotations("URL", it, it)
-                .firstOrNull()?.let { stringAnnotation ->
-                    uriHandler.openUri(stringAnnotation.item)
-                }
-        },
+        modifier = modifier,
         style = GlText.TextOnSurfaceStyle.copy(color = MaterialTheme.colorScheme.onSurface, textAlign = TextAlign.Center, fontSize = TextUnit(14.0f, TextUnitType.Sp),)
     )
 }
