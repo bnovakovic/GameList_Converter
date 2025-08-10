@@ -16,21 +16,21 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollbarAdapter
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import commonui.SelectableText
 import commonui.SurfaceText
@@ -174,25 +174,25 @@ private fun SearchFragment(currentSearchQuery: String, onSearchQuery: (String) -
     val searchQueryEmpty = currentSearchQuery.isEmpty()
     Column(modifier = Modifier.padding(start = 0.dp)) {
         SurfaceText(text = stringResource(Res.string.search))
-        Row(modifier = Modifier.thinOutline().height(35.dp), verticalAlignment = Alignment.CenterVertically) {
-            Spacer(modifier = Modifier.width(8.dp))
-            //Image(Icons.Default.Search, contentDescription = null, colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface))
-            BasicTextField(
-                value = currentSearchQuery,
-                onValueChange = onSearchQuery,
-                modifier = Modifier
-                    .weight(1.0f)
-                    .padding(8.dp),
-                textStyle = TextStyle.Default.copy(color = MaterialTheme.colorScheme.onSurface)
-            )
-
-            IconButton(onClick = { if (!searchQueryEmpty) onSearchQuery("") }, enabled = !searchQueryEmpty) {
-                Image(
-                    imageVector = Icons.Default.Clear,
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(if (searchQueryEmpty) Color.LightGray else MaterialTheme.colorScheme.onSurface)
-                )
+        OutlinedTextField(
+            value = currentSearchQuery,
+            onValueChange = onSearchQuery,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
+            leadingIcon = {
+                Image(Icons.Default.Search, contentDescription = null, colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface))
+            },
+            trailingIcon = {
+                IconButton(onClick = { if (!searchQueryEmpty) onSearchQuery("") }, enabled = !searchQueryEmpty) {
+                    Image(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+                        modifier = Modifier.alpha(if (searchQueryEmpty) 0.5f else 1.0f)
+                    )
+                }
             }
-        }
+        )
     }
 }
