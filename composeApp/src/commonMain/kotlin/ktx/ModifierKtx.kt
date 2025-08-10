@@ -12,14 +12,15 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import theme.GameListTheme
 
 @Composable
-fun Modifier.thinOutline(enabled: Boolean = true) = this.border(
-    width = 1.dp,
+fun Modifier.thinOutline(enabled: Boolean = true, cornerRadius: Dp = 2.dp, width: Dp = 1.dp) = this.border(
+    width = width,
     color = if (enabled) GameListTheme.colors.thinOutlineEnabled else GameListTheme.colors.thinOutlineDisabled,
-    shape = RoundedCornerShape(2.dp)
+    shape = RoundedCornerShape(cornerRadius)
 )
 
 @Composable

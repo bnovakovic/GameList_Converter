@@ -27,4 +27,6 @@ const val HELP_LINK = "https://github.com/bnovakovic/GameList_Converter/blob/mai
 
 const val EXPORT_SCREEN_CORE_LIST_OFFSET = 12
 const val EXPORT_SCREEN_SYSTEM_LIST_OFFSET = 11
-const val MAIN_SCREEN_GAME_LIST_OFFSET = 26
+const val MAIN_SCREEN_GAME_LIST_OFFSET = 25
+
+const val VIDEO_PLAY_DELAY = 1000L

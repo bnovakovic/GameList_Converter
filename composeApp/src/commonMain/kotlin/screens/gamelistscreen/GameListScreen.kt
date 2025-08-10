@@ -3,6 +3,7 @@
 package screens.gamelistscreen
 
 import MAIN_SCREEN_GAME_LIST_OFFSET
+import VIDEO_PLAY_DELAY
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
@@ -18,11 +19,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.VolumeOff
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -31,6 +39,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import commonui.DropDownMenu
@@ -58,6 +68,9 @@ import gamelistconverter.composeapp.generated.resources.region
 import gamelistconverter.composeapp.generated.resources.select_game
 import gamelistconverter.composeapp.generated.resources.select_system
 import gamelistconverter.composeapp.generated.resources.system_name
+import io.github.kdroidfilter.composemediaplayer.VideoPlayerSurface
+import io.github.kdroidfilter.composemediaplayer.rememberVideoPlayerState
+import kotlinx.coroutines.delay
 import ktx.thinOutline
 import ktx.toMediaLoadState
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -143,7 +156,7 @@ private fun DropdownItems(
 private fun GameAndSystemInfo(modifier: Modifier, gameInfo: GameInfoUiModel, onExportClicked: () -> Unit, systemInfo: GameSystemUiModel) {
 
     Column(modifier = Modifier.then(modifier).padding(8.dp)) {
-        SystemAndImageContainer(gameInfo.imagePath, systemInfo)
+        SystemAndImageContainer(gameInfo.imagePath, gameInfo.videoPath, systemInfo)
         Spacer(modifier = Modifier.height(4.dp))
         Row {
             InfoWithTitle(stringResource(Res.string.game_name), gameInfo.gameName, containerModifier = Modifier.weight(0.7f))
@@ -212,7 +225,7 @@ private fun GameAndSystemInfo(modifier: Modifier, gameInfo: GameInfoUiModel, onE
 }
 
 @Composable
-private fun SystemAndImageContainer(imagePath: File?, systemInfo: GameSystemUiModel) {
+private fun SystemAndImageContainer(imagePath: File?, videoPath: File?, systemInfo: GameSystemUiModel) {
     Row(modifier = Modifier.fillMaxWidth()) {
         Box(
             modifier = Modifier
@@ -235,20 +248,60 @@ private fun SystemAndImageContainer(imagePath: File?, systemInfo: GameSystemUiMo
             contentAlignment = Alignment.Center
         ) {
             var imageLoadState by remember { mutableStateOf(MediaLoadState.LOADING) }
-            AsyncImage(
-                model = imagePath,
-                contentDescription = null,
-                onState = { imageLoadState = it.toMediaLoadState() }
-            )
+            var shouldPlayVideo by remember(videoPath) { mutableStateOf(false) }
+            var videoMuted by remember { mutableStateOf(true) }
+            val playerState = rememberVideoPlayerState()
+
+            if (shouldPlayVideo && !playerState.isLoading && playerState.isPlaying && playerState.error == null) {
+                VideoPlayerSurface(
+                    playerState = playerState,
+                    modifier = Modifier.fillMaxSize().background(Color.Black)
+                ) {
+                    IconButton(
+                        onClick = { videoMuted = !videoMuted },
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(8.dp)
+                            .clip(RoundedCornerShape(25.dp))
+                            .thinOutline(cornerRadius = 25.dp, width = 2.dp)
+                    ) {
+                        val icon = if (videoMuted) Icons.AutoMirrored.Filled.VolumeOff else Icons.AutoMirrored.Filled.VolumeUp
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = null,
+                            tint = Color.LightGray,
+                        )
+                    }
+                }
+            } else {
+                AsyncImage(
+                    model = imagePath,
+                    contentDescription = null,
+                    onState = { imageLoadState = it.toMediaLoadState() }
+                )
+            }
 
             when (imageLoadState) {
                 MediaLoadState.LOADING -> {
                     CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                 }
+
                 MediaLoadState.ERROR -> {
                     SurfaceText(stringResource(Res.string.image_not_found))
                 }
-                MediaLoadState.SUCCESS -> { /* Show nothing when image is loaded */ }
+
+                MediaLoadState.SUCCESS -> { /* Show nothing when image is loaded */
+                }
+            }
+            playerState.volume = if (videoMuted) 0.0f else 1.0f
+            LaunchedEffect(videoPath) {
+                playerState.stop()
+
+                if (videoPath != null) {
+                    delay(VIDEO_PLAY_DELAY)
+                    playerState.openUri(videoPath.toString())
+                    shouldPlayVideo = true
+                }
             }
         }
     }

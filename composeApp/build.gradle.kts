@@ -31,6 +31,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.coil)
             implementation(libs.compose.material.icons)
+            implementation(libs.compose.media.player)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
