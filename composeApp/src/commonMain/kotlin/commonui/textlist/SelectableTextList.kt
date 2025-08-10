@@ -1,6 +1,7 @@
 package commonui.textlist
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.LocalScrollbarStyle
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -88,7 +89,14 @@ fun <T : SelectableItemUiModel> SelectableTextList(
                 )
             }
         }
-        VerticalScrollbar(adapter = rememberScrollbarAdapter(scrollState = listState), modifier = Modifier.width(14.dp).padding(horizontal = 2.dp, vertical = 1.dp))
+        VerticalScrollbar(
+            adapter = rememberScrollbarAdapter(scrollState = listState),
+            modifier = Modifier.width(14.dp).padding(horizontal = 2.dp, vertical = 1.dp),
+            style = LocalScrollbarStyle.current.copy(
+                unhoverColor = MaterialTheme.colorScheme.surfaceBright,
+                hoverColor = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        )
     }
 }
 
