@@ -59,7 +59,12 @@ fun ScanningPopup(text: String, percentage: Float, onCancel: () -> Unit) {
             SurfaceText(text)
             Spacer(modifier = Modifier.height(8.dp))
             if (percentage > 0.0f) {
-                LinearProgressIndicator(progress = percentage, modifier = Modifier.width(300.dp))
+                LinearProgressIndicator(
+                    modifier = Modifier.width(300.dp),
+                    progress = { percentage },
+                    drawStopIndicator = {},
+                    gapSize = 0.dp
+                )
             } else {
                 LinearProgressIndicator(modifier = Modifier.width(300.dp))
             }
