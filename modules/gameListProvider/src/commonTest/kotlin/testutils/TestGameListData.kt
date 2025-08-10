@@ -117,7 +117,7 @@ val testGameListDataNoProvider = GameListData(
     ),
     originalPath = File("src\\commonTest\\testRomsDir\\unknownFolder"),
     system = SystemData(
-        name = "Unknown",
+        name = "Unknown - unknownFolder",
         software = "",
         database = "",
         systemSubDir = "unknownFolder",
