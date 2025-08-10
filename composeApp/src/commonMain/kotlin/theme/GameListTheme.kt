@@ -1,8 +1,8 @@
 package theme
 
-import androidx.compose.material.Colors
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Typography
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
@@ -35,12 +35,12 @@ val LocalExtendedColors = staticCompositionLocalOf {
 }
 
 @Composable
-fun GameListTheme(basicColors: Colors = MaterialTheme.colors, extendedColors: ExtendedColors, content: @Composable () -> Unit) {
+fun GameListTheme(basicColors: ColorScheme = MaterialTheme.colorScheme, extendedColors: ExtendedColors, content: @Composable () -> Unit) {
     CompositionLocalProvider(LocalExtendedColors provides extendedColors) {
         MaterialTheme(
-            colors = basicColors,
-            content = content,
-            typography = Typography()
+            colorScheme = basicColors,
+            typography = Typography(),
+            content = content
         )
     }
 }

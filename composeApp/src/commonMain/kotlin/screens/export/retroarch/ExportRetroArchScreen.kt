@@ -17,13 +17,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Button
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.Button
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -95,7 +95,7 @@ import java.io.File
 fun ExportRetroArchScreen(viewModel: ExportRetroArchScreenViewModel) {
     val uiModel by viewModel.uiModel.collectAsState()
     val title = stringResource(Res.string.select_retroarch_dir)
-    Row(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.surface)) {
+    Row(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)) {
         SystemAndCoreList(
             modifier = Modifier.weight(1.0f),
             coreViewModel = viewModel.coreListViewModel,
@@ -152,7 +152,7 @@ fun SavingPlaylistPopup(saveProgress: PlaylistSaveProgress, onPopupConfirm: () -
         PlaylistSaveProgress.NO_ACCESS -> {
             OkOnlyPopup(onOk = onPopupConfirm) {
                 Column(modifier = Modifier.width(300.dp).height(100.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                    Image(imageVector = Icons.Default.Warning, contentDescription = null, colorFilter = ColorFilter.tint(MaterialTheme.colors.error))
+                    Image(imageVector = Icons.Default.Warning, contentDescription = null, colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.error))
                     Spacer(modifier = Modifier.height(8.dp))
                     SurfaceText(stringResource(Res.string.no_access), modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
                     Spacer(modifier = Modifier.height(8.dp))
@@ -163,7 +163,7 @@ fun SavingPlaylistPopup(saveProgress: PlaylistSaveProgress, onPopupConfirm: () -
         PlaylistSaveProgress.UNKNOWN_ERROR -> {
             OkOnlyPopup(onOk = onPopupConfirm) {
                 Column(modifier = Modifier.width(300.dp).height(100.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                    Image(imageVector = Icons.Default.Warning, contentDescription = null, colorFilter = ColorFilter.tint(MaterialTheme.colors.error))
+                    Image(imageVector = Icons.Default.Warning, contentDescription = null, colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.error))
                     Spacer(modifier = Modifier.height(8.dp))
                     SurfaceText(stringResource(Res.string.unknown_error), modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
                     Spacer(modifier = Modifier.height(8.dp))

@@ -13,10 +13,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuBox
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -61,6 +61,7 @@ fun DropDownMenu(
         modifier = Modifier.thinOutline(shouldBeEnabled)
     ) {
         val onlyOneItem = items.size == 1
+
         Box(
             modifier = modifier
                 .fillMaxSize()
@@ -83,7 +84,7 @@ fun DropDownMenu(
                             else
                                 360f
                         ),
-                    colorFilter = if (!shouldBeEnabled || onlyOneItem) ColorFilter.tint(GameListTheme.colors.contentDisabled) else ColorFilter.tint(MaterialTheme.colors.onSurface)
+                    colorFilter = if (!shouldBeEnabled || onlyOneItem) ColorFilter.tint(GameListTheme.colors.contentDisabled) else ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
                 )
             }
         }

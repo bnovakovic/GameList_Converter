@@ -8,10 +8,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,7 +47,7 @@ fun ScanningPopup(text: String, percentage: Float, onCancel: () -> Unit) {
             Modifier
                 .clip(RoundedCornerShape(10.dp))
                 .popupOutline()
-                .background(MaterialTheme.colors.surface)
+                .background(MaterialTheme.colorScheme.surface)
                 .width(500.dp)
                 .height(150.dp)
                 .padding(8.dp),
@@ -86,7 +86,7 @@ fun OkOnlyPopup(onOk: () -> Unit, content: @Composable () -> Unit) {
     val focusRequester by remember { mutableStateOf(FocusRequester()) }
     Dialog(onDismissRequest = {}) {
         Column(
-            modifier = Modifier.clip(RoundedCornerShape(10.dp)).background(MaterialTheme.colors.surface).popupOutline().padding(16.dp),
+            modifier = Modifier.clip(RoundedCornerShape(10.dp)).background(MaterialTheme.colorScheme.surface).popupOutline().padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -114,7 +114,7 @@ fun PopupWithCancel(onCancel: () -> Unit, content: @Composable () -> Unit) {
     val focusRequester by remember { mutableStateOf(FocusRequester()) }
     Dialog(onDismissRequest = {}) {
         Column(
-            modifier = Modifier.clip(RoundedCornerShape(10.dp)).background(MaterialTheme.colors.surface).popupOutline().padding(16.dp),
+            modifier = Modifier.clip(RoundedCornerShape(10.dp)).background(MaterialTheme.colorScheme.surface).popupOutline().padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {

@@ -16,11 +16,11 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -63,7 +63,7 @@ fun <T : SelectableItemUiModel> SelectableTextList(
 
     val itemList = uiModel.items
     val selectedItem = uiModel.selectedItem
-    Row(modifier.thinOutline().background(MaterialTheme.colors.surface)) {
+    Row(modifier.thinOutline().background(MaterialTheme.colorScheme.surface)) {
         LazyColumn(
             modifier = Modifier
                 .then(modifier)
@@ -156,7 +156,7 @@ fun <T : SelectableItemUiModel> SearchableTextList(
     SearchFragment(currentSearchQuery = uiModel.searchQuery, onSearchQuery = viewModel::search)
     Spacer(modifier = Modifier.height(4.dp))
     if (listTitle.isNotEmpty()) {
-        Text(listTitle, color = MaterialTheme.colors.onSurface)
+        Text(listTitle, color = MaterialTheme.colorScheme.onSurface)
     }
     SelectableTextList(modifier, viewModel, scrollOffset)
 }
@@ -175,14 +175,14 @@ private fun SearchFragment(currentSearchQuery: String, onSearchQuery: (String) -
                 modifier = Modifier
                     .weight(1.0f)
                     .padding(8.dp),
-                textStyle = TextStyle.Default.copy(color = MaterialTheme.colors.onSurface)
+                textStyle = TextStyle.Default.copy(color = MaterialTheme.colorScheme.onSurface)
             )
 
             IconButton(onClick = { if (!searchQueryEmpty) onSearchQuery("") }, enabled = !searchQueryEmpty) {
                 Image(
                     imageVector = Icons.Default.Clear,
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(if (searchQueryEmpty) Color.LightGray else MaterialTheme.colors.onSurface)
+                    colorFilter = ColorFilter.tint(if (searchQueryEmpty) Color.LightGray else MaterialTheme.colorScheme.onSurface)
                 )
             }
         }

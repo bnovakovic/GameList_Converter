@@ -13,7 +13,6 @@ import RETROPIE_LINK
 import RETRO_ARCH
 import SCREEN_SCRAPPER
 import SCREEN_SCRAPPER_LINK
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,7 +27,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
@@ -57,7 +55,6 @@ import ktx.thinOutline
 import org.jetbrains.compose.resources.stringResource
 import screens.export.retroarch.ExportRetroArchScreen
 import screens.gamelistscreen.GameListScreen
-import theme.GameListTheme
 import theme.GlText
 import utils.getVersion
 

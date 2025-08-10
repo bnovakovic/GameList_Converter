@@ -11,8 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -52,7 +52,7 @@ fun InfoText(text: String, modifier: Modifier = Modifier, useMarquee: Boolean = 
             value = text,
             modifier = modifier.then(additionalModifier),
             onValueChange = {},
-            textStyle = GlText.InfoTextStyle.copy(color = MaterialTheme.colors.onSurface)
+            textStyle = GlText.InfoTextStyle.copy(color = MaterialTheme.colorScheme.onSurface)
         )
 
     }
@@ -76,7 +76,7 @@ fun SurfaceText(
     Text(
         text = text,
         style = style,
-        color = MaterialTheme.colors.onSurface,
+        color = MaterialTheme.colorScheme.onSurface,
         modifier = modifier,
         textAlign = textAlign
     )
@@ -92,7 +92,7 @@ fun ErrorSurfaceText(
     Text(
         text = text,
         style = style,
-        color = MaterialTheme.colors.error,
+        color = MaterialTheme.colorScheme.error,
         modifier = modifier,
         textAlign = textAlign
     )
@@ -162,7 +162,7 @@ fun SelectableText(
             .clickable { onSelected() }
             .focusable(true)
             .fillMaxWidth(),
-        style = TextStyle(color = if (showLightText) GameListTheme.colors.listDisabledText else MaterialTheme.colors.onSurface),
+        style = TextStyle(color = if (showLightText) GameListTheme.colors.listDisabledText else MaterialTheme.colorScheme.onSurface),
     )
 }
 
@@ -173,7 +173,7 @@ fun HyperlinkText(
     modifier: Modifier = Modifier,
     fullText: String,
     linkText: List<String>,
-    linkTextColor: Color = MaterialTheme.colors.secondary,
+    linkTextColor: Color = MaterialTheme.colorScheme.secondary,
     linkTextFontWeight: FontWeight = FontWeight.Medium,
     linkTextDecoration: TextDecoration = TextDecoration.Underline,
     hyperlinks: List<String>,
@@ -222,6 +222,6 @@ fun HyperlinkText(
                     uriHandler.openUri(stringAnnotation.item)
                 }
         },
-        style = GlText.TextOnSurfaceStyle.copy(color = MaterialTheme.colors.onSurface, textAlign = TextAlign.Center, fontSize = TextUnit(14.0f, TextUnitType.Sp),)
+        style = GlText.TextOnSurfaceStyle.copy(color = MaterialTheme.colorScheme.onSurface, textAlign = TextAlign.Center, fontSize = TextUnit(14.0f, TextUnitType.Sp),)
     )
 }

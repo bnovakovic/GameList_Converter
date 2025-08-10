@@ -13,9 +13,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -59,7 +59,7 @@ fun CheckboxWithTitle(checked: Boolean, onCheckedChange: (Boolean) -> Unit, titl
 fun GlCheckbox(onCheckedChange: (Boolean) -> Unit, checked: Boolean) {
     Box(modifier = Modifier.size(20.dp).thinOutline().clickable { onCheckedChange(!checked) }.fillMaxSize()) {
         AnimatedVisibility(visible = checked, enter = scaleIn(), exit = scaleOut()) {
-            Image(Icons.Filled.Check, contentDescription = null, colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface))
+            Image(Icons.Filled.Check, contentDescription = null, colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface))
         }
     }
 }

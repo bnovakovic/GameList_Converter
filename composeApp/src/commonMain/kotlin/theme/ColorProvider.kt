@@ -1,8 +1,8 @@
 package theme
 
-import androidx.compose.material.Colors
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
@@ -33,10 +33,10 @@ fun extendedColorsProvider(inDarkMode: Boolean): ExtendedColors {
     }
 }
 
-fun basicColorProvider(inDarkMode: Boolean) : Colors {
+fun basicColorProvider(inDarkMode: Boolean) : ColorScheme {
     return if (inDarkMode) {
-        darkColors(surface = GlColors.PrimaryDark)
+        darkColorScheme(surface = GlColors.PrimaryDark, secondary = Color(0xFF0066ff))
     } else {
-        lightColors(secondary = Color.Blue)
+        lightColorScheme(surface = Color.White, secondary = Color.Blue)
     }
 }

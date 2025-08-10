@@ -18,10 +18,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -76,7 +76,7 @@ import java.io.File
 fun GameListScreen(viewModel: GameListScreenViewModel) {
     val uiModel by viewModel.uiModel.collectAsState()
     val activeSystem = uiModel.activeSystemInfo
-    Row(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.surface)) {
+    Row(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)) {
         RomsInfo(
             modifier = Modifier.weight(1.0f).fillMaxHeight(),
             viewModel = viewModel
@@ -243,7 +243,7 @@ private fun SystemAndImageContainer(imagePath: File?, systemInfo: GameSystemUiMo
 
             when (imageLoadState) {
                 MediaLoadState.LOADING -> {
-                    CircularProgressIndicator(color = MaterialTheme.colors.primary)
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                 }
                 MediaLoadState.ERROR -> {
                     SurfaceText(stringResource(Res.string.image_not_found))
