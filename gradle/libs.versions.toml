@@ -9,7 +9,7 @@ json = "20250517"
 jackson = "2.19.2"
 turbine = "1.2.1"
 coil = "3.3.0"
-materialIcons = "1.7.8"
+materialIcons = "1.7.3"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -24,7 +24,7 @@ org-json = { group = "org.json", name = "json", version.ref = "json" }
 jackson-xml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml", version.ref = "jackson" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
-compose-material-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIcons" }
+compose-material-icons = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "materialIcons" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }

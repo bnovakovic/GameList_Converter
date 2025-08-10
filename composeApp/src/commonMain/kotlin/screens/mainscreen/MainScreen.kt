@@ -23,8 +23,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -132,12 +130,6 @@ fun MainScreen(appViewModel: AppViewModel) {
         Dialogues.NO_ROMS_FOUND -> {
             OkOnlyPopup(onOk = { appViewModel.resetDialogue() }) {
                 Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-                    Image(
-                        Icons.Default.Warning,
-                        contentDescription = null,
-                        colorFilter = ColorFilter.tint(GameListTheme.colors.warning),
-                        modifier = Modifier.size(80.dp)
-                    )
                     SurfaceText(
                         stringResource(Res.string.list_emtpy_title),
                         style = GlText.TitleOnSurfaceStyle,

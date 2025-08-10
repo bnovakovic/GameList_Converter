@@ -45,11 +45,6 @@ compose.desktop {
         System.getenv("JDK_17")
         mainClass = "MainKt"
 
-        // TODO: Solves startup error with new compose configuration. Remove once issue is resolved: https://youtrack.jetbrains.com/issue/CMP-8210/java.lang.NoSuchMethodError-float-androidx.compose.ui.util.MathHelpersKt.fastCbrtfloat-is-thrown-at-runtime-on-Desktop-when
-        configurations.all {
-            exclude(group = "androidx.compose.ui", module = "ui-util")
-        }
-
         buildTypes.release.proguard {
             isEnabled.set(false)
             configurationFiles.from(File(rootDir, "proguard-rules.pro"))

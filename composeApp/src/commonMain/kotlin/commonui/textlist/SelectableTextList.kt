@@ -21,7 +21,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -169,7 +168,7 @@ private fun SearchFragment(currentSearchQuery: String, onSearchQuery: (String) -
         SurfaceText(text = stringResource(Res.string.search))
         Row(modifier = Modifier.thinOutline().height(35.dp), verticalAlignment = Alignment.CenterVertically) {
             Spacer(modifier = Modifier.width(8.dp))
-            Image(Icons.Default.Search, contentDescription = null, colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface))
+            //Image(Icons.Default.Search, contentDescription = null, colorFilter = ColorFilter.tint(MaterialTheme.colors.onSurface))
             BasicTextField(
                 value = currentSearchQuery,
                 onValueChange = onSearchQuery,
