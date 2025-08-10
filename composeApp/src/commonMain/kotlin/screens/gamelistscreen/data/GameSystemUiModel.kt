@@ -2,7 +2,6 @@ package screens.gamelistscreen.data
 
 import com.bojan.gamelistmanager.gamelistprovider.domain.data.RetroArchCoreInfo
 import commonui.textlist.SelectableItemUiModel
-import java.io.File
 
 /**
  * Model for the game system (Atari2600, NES, Genesis, MAME... etc).

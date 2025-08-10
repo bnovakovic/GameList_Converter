@@ -3,8 +3,6 @@ package screens.export.retroarch
 import screens.export.PlaylistSaveProgress
 import screens.gamelistscreen.data.CoreInfoUiModel
 import screens.gamelistscreen.data.GameSystemUiModel
-import screens.gamelistscreen.data.SystemUiModel
-import screens.gamelistscreen.mappers.Availability
 import java.io.File
 
 /**

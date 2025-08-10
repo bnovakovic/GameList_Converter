@@ -3,7 +3,6 @@ package com.bojan.gamelistmanager.listexplorer.repository.converters.retroarch
 import com.bojan.gamelistmanager.listexplorer.domain.GameListConvertConfig
 import com.bojan.gamelistmanager.listexplorer.domain.GameListConverter
 import com.bojan.gamelistmanager.listexplorer.repository.converters.retroarch.mapper.toRetroArchListObject
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 

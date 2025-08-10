@@ -209,6 +209,8 @@ fun gameListDirToSystemName(dir: String): String {
         "x68000" -> "Sharp X68000"
         "zx81" -> "ZX 81"
         "zxspectrum" -> "ZX Spectrum"
-        else -> "Unknown"
+        else -> {
+            "Unknown - $dir"
+        }
     }
 }

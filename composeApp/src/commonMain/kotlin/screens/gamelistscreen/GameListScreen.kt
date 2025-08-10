@@ -4,7 +4,6 @@ package screens.gamelistscreen
 
 import MAIN_SCREEN_GAME_LIST_OFFSET
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
@@ -24,7 +23,6 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -33,11 +31,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import coil3.compose.AsyncImagePainter
 import commonui.DropDownMenu
 import commonui.InfoText
 import commonui.InfoWithTitle
@@ -66,13 +61,11 @@ import gamelistconverter.composeapp.generated.resources.system_name
 import ktx.thinOutline
 import ktx.toMediaLoadState
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.decodeToImageBitmap
 import org.jetbrains.compose.resources.stringResource
 import screens.gamelistscreen.data.GameInfoUiModel
 import screens.gamelistscreen.data.GameSystemUiModel
 import screens.gamelistscreen.mappers.toResourceString
 import java.io.File
-import java.io.FileInputStream
 
 /**
  * Composable used to display List of systems and games.
