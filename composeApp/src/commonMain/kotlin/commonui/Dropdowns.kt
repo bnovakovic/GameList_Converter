@@ -90,15 +90,21 @@ fun DropDownMenu(
         }
 
         if (!onlyOneItem) {
-            ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+                modifier = Modifier.background(MaterialTheme.colorScheme.surfaceBright)
+            ) {
                 items.forEachIndexed { index, selected: String ->
                     DropdownMenuItem(
-                        content = { Text(text = selected) },
+                        content = { Text(text = selected, color = MaterialTheme.colorScheme.onSurface) },
                         onClick = {
                             expanded = false
                             onItemSelected(index)
                         },
-                        modifier = Modifier.height(24.dp).background(if (index == selectedValue) Color.LightGray else Color.Unspecified),
+                        modifier = Modifier
+                            .height(24.dp)
+                            .background(if (index == selectedValue) MaterialTheme.colorScheme.surfaceDim else Color.Unspecified),
                     )
                 }
             }
