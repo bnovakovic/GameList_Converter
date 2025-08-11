@@ -46,12 +46,12 @@ fun JacksonGameObject.toGameData() = GameData(
 fun JacksonGameListObject.toGameListData(gameListPath: File) = GameListData(
     games = this.game.map { it.toGameData() },
     system = this.provider?.toSystemData(gameListPath) ?: SystemData(
-        gameListDirToSystemName(gameListPath.name),
-        "",
-        "",
-        "",
-        "",
-        gameListDirToDatabase(gameListPath.name)
+        name = gameListDirToSystemName(gameListPath.name),
+        software = "",
+        database = "",
+        systemSubDir = "",
+        web = "",
+        retroArchCoreInfo = gameListDirToDatabase(gameListPath.name)
     ),
     originalPath = gameListPath
 )

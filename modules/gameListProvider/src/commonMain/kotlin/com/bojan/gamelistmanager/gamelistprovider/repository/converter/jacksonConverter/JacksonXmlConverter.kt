@@ -6,7 +6,6 @@ import com.bojan.gamelistmanager.gamelistprovider.repository.converter.jacksonCo
 import com.bojan.gamelistmanager.gamelistprovider.repository.converter.jacksonConverter.serializable.JacksonGameListObject
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MapperFeature
-import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import java.io.File
 

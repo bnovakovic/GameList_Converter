@@ -8,9 +8,9 @@ import screens.gamelistscreen.data.GameInfoUiModel
 import screens.gamelistscreen.data.GameSystemUiModel
 import screens.gamelistscreen.data.SystemUiModel
 import java.io.File
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
 
 fun GameListData.toGameSystemUiModel(romsPath: File) = GameSystemUiModel(
     system = this.system.toSystemUiModel(),
@@ -41,16 +41,32 @@ fun GameData.toGameInfoUiModel(basicPath: File): GameInfoUiModel {
 fun SystemData.toSystemUiModel() : SystemUiModel = SystemUiModel(this.name, this.systemSubDir, this.retroArchCoreInfo)
 
 fun convertToReadableDate(dateString: String): String {
-    try {
-        if (dateString.isNotEmpty() && dateString != "null") {
-            val inputFormat = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss")
-            val outputFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-            val dateTime = LocalDateTime.parse(dateString, inputFormat)
-            return dateTime.format(outputFormat)
-        }
-    } catch (e: DateTimeParseException) {
-        e.printStackTrace()
-        return ""
+    if (dateString.isBlank() || dateString.equals("null", ignoreCase = true)) return ""
+
+    val outputFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+
+    val dateTimeFormats = listOf(
+        "yyyyMMdd'T'HHmmss",
+        "yyyy-MM-dd'T'HH:mm:ss",
+        "yyyy-MM-dd HH:mm:ss",
+        "yyyyMMddHHmmss"
+    )
+
+    val dateFormats = listOf(
+        "yyyyMMdd",
+        "yyyy-MM-dd"
+    )
+
+    fun tryParseDateTime(): String? = dateTimeFormats.firstNotNullOfOrNull { pattern ->
+        runCatching { LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern(pattern)).format(outputFormat) }.getOrNull()
     }
-    return ""
+
+    fun tryParseDate(): String? = dateFormats.firstNotNullOfOrNull { pattern ->
+        runCatching { LocalDate.parse(dateString, DateTimeFormatter.ofPattern(pattern)).format(outputFormat) }.getOrNull()
+    }
+
+    return tryParseDateTime()
+        ?: tryParseDate()
+        ?: dateString.takeIf { it.length == 4 && it.all(Char::isDigit) }
+        ?: ""
 }
