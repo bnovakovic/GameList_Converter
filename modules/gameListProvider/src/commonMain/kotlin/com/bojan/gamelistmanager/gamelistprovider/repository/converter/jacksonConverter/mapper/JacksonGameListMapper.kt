@@ -12,10 +12,10 @@ import java.io.File
 
 fun JacksonSystemInfoObject.toSystemData(path: File) = SystemData(
     name = gameListDirToSystemName(path.name),
-    software = this.software,
-    database = this.database,
+    software = this.software ?: "",
+    database = this.database ?: "",
     systemSubDir = path.name,
-    web = this.web,
+    web = this.web ?: "",
     retroArchCoreInfo = gameListDirToDatabase(path.name)
 )
 

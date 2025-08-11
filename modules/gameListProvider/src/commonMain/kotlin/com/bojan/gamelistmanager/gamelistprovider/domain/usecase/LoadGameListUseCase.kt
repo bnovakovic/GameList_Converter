@@ -46,6 +46,7 @@ class LoadGameListUseCase(private val xmlConverter: XmlConverter, private val da
                             gameListContainers.add(deserialized)
                         } catch (t: Throwable) {
                             failedItems.add(gameListFile)
+                            t.printStackTrace()
                         }
                     }
                     scannedDirs++

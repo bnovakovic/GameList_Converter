@@ -5,6 +5,8 @@ import com.bojan.gamelistmanager.gamelistprovider.domain.interfaces.XmlConverter
 import com.bojan.gamelistmanager.gamelistprovider.repository.converter.jacksonConverter.mapper.toGameListData
 import com.bojan.gamelistmanager.gamelistprovider.repository.converter.jacksonConverter.serializable.JacksonGameListObject
 import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.MapperFeature
+import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import java.io.File
 
@@ -15,8 +17,12 @@ class JacksonXmlConverter : XmlConverter {
     override suspend fun convertXmlToGameListItem(xmlPath: File): GameListData {
         val stringToParse = xmlPath.readText()
 
-        val mapper = XmlMapper()
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        val mapper = XmlMapper
+            .builder()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
+            .build()
+
         val converted: JacksonGameListObject = mapper.readValue(stringToParse, JacksonGameListObject::class.java)
 
         return converted.toGameListData(xmlPath.parentFile)

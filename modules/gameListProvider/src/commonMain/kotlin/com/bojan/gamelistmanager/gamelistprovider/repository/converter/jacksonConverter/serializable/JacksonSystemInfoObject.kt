@@ -6,11 +6,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class JacksonSystemInfoObject(
     @JacksonXmlProperty(localName = "System")
-    val system: String,
+    val system: String?,
     @JacksonXmlProperty(localName = "software")
-    val software: String,
+    val software: String?,
     @JacksonXmlProperty(localName = "database")
-    val database: String,
+    val database: String?,
     @JacksonXmlProperty(localName = "web")
-    val web: String
+    val web: String?
 )
