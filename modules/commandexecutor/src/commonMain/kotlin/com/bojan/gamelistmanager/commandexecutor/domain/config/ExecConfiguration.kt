@@ -1,16 +1,14 @@
 package com.bojan.gamelistmanager.commandexecutor.domain.config
 
 /**
- * Configuration for executing command line command.
+ * Sealed interface for the command execution configuration.
  */
-sealed class ExecConfiguration {
-
+sealed interface ExecConfiguration {
     /**
-     * Runs selected ROM with specific core in RetroArch.
-     *
-     * @param romPath Path to the ROM.
-     * @param coreFileName Filename of the core.
-     * @param retroArchDir RetroArch path.
+     * Configuration for running a ROM with RetroArch.
+     * @param romPath The full path to the ROM file.
+     * @param coreFullPath The full path to the RetroArch core file (.so, .dll, etc.).
+     * @param retroArchExecutablePath The path or command for the RetroArch executable.
      */
-    data class RunRom(val romPath: String, val coreFileName: String, val retroArchDir: String) : ExecConfiguration()
+    data class RunRom(val romPath: String, val coreFullPath: String, val retroArchExecutablePath: String) : ExecConfiguration
 }

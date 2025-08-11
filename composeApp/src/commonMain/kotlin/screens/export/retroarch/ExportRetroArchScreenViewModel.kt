@@ -9,7 +9,6 @@ import app.settings.SettingsKeys
 import com.bojan.gamelistconverter.utils.getCoreExtension
 import com.bojan.gamelistconverter.utils.getUserHome
 import com.bojan.gamelistmanager.commandexecutor.domain.ExecuteCommandUseCase
-import com.bojan.gamelistmanager.commandexecutor.domain.config.ExecConfiguration
 import com.bojan.gamelistmanager.commandexecutor.repository.ProcessBuilderExecutor
 import com.bojan.gamelistmanager.gamelistprovider.domain.data.GameListData
 import com.bojan.gamelistmanager.gamelistprovider.domain.interfaces.GameListRepository
@@ -18,6 +17,7 @@ import com.bojan.gamelistmanager.listexplorer.domain.GameListConvertConfig
 import com.bojan.gamelistmanager.listexplorer.domain.PlayListWriteResult
 import com.bojan.gamelistmanager.listexplorer.repository.converters.retroarch.RetroArchListConverter
 import com.bojan.gamelistmanager.retroarchinfoloader.domain.interfaces.RetroArchInfoDataRepository
+import com.bojan.gamelistmanager.commandexecutor.domain.config.ExecConfiguration
 import commonui.textlist.SelectableListViewModel
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.Dispatchers
@@ -201,6 +201,19 @@ class ExportRetroArchScreenViewModel(
         return standardCorePath
     }
 
+    private fun findRetroArchExecutable(): String? {
+        val retroArchDirectory = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY) ?: return null
+        val osName = System.getProperty("os.name").lowercase()
+
+        return if (osName.contains("win")) {
+            // On Windows, assume it's in the selected directory
+            File(retroArchDirectory, "retroarch.exe").absolutePath
+        } else {
+            // For Linux and macOS, assume 'retroarch' is in the system's PATH.
+            "retroarch"
+        }
+    }
+
     private fun isCoreMissing(): Boolean {
         val coreList = coreListViewModel.uiModel.value.items
         val index = coreListViewModel.uiModel.value.selectedItem
@@ -283,29 +296,33 @@ class ExportRetroArchScreenViewModel(
     fun testSelectedGame() {
         val uiModelValue = _uiModel.value
         val core = uiModelValue.coreInfo
-        val retroArchDirectory = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
 
         runGameJob?.cancel()
         runGameJob = viewModelScope.launch {
             val romsDir = settings.getString(SettingsKeys.ROMS_DIRECTORY_KEY)
-            if (isRunAvailable() && retroArchDirectory != null && romsDir != null && !isCoreMissing()) {
-                val systemInfo = uiModelValue.systemInfo
-                val games = systemInfo.games
-                if (games.isNotEmpty()) {
-                    val systemSubDir = systemInfo.gameSystemDirName
-                    val romsPath = File(romsDir, systemSubDir)
-                    val randomItem = games[Random.nextInt(games.size)]
-                    val randomFileName = File(randomItem.romPath).name
-                    val fullRomPath = File(romsPath, randomFileName)
-                    val config = ExecConfiguration.RunRom(
-                        romPath = fullRomPath.toString(),
-                        coreFileName = core.filename,
-                        retroArchDir = retroArchDirectory
-                    )
-                    val result = withContext(Dispatchers.IO) {
-                        executeCommandUseCase.invoke(config)
+            if (isRunAvailable() && romsDir != null && !isCoreMissing()) {
+                val corePath = findCorePath(core)
+                val executablePath = findRetroArchExecutable()
+
+                if (corePath != null && executablePath != null) {
+                    val systemInfo = uiModelValue.systemInfo
+                    val games = systemInfo.games
+                    if (games.isNotEmpty()) {
+                        val systemSubDir = systemInfo.gameSystemDirName
+                        val romsPath = File(romsDir, systemSubDir)
+                        val randomItem = games[Random.nextInt(games.size)]
+                        val randomFileName = File(randomItem.romPath).name
+                        val fullRomPath = File(romsPath, randomFileName)
+                        val config = ExecConfiguration.RunRom(
+                            romPath = fullRomPath.absolutePath,
+                            coreFullPath = corePath.absolutePath,
+                            retroArchExecutablePath = executablePath
+                        )
+                        val result = withContext(Dispatchers.IO) {
+                            executeCommandUseCase.invoke(config)
+                        }
+                        _uiModel.value = _uiModel.value.copy(executeResult = result)
                     }
-                    _uiModel.value = _uiModel.value.copy(executeResult = result)
                 }
             }
         }
