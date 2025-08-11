@@ -252,7 +252,7 @@ fun gameListDirToSystemName(dir: String): String {
         "xrick" -> "Rick Dangerous"
         "zxspectrum" -> "ZX Spectrum"
         else -> {
-            "Unknown - $dir"
+            "Unsupported - $dir"
         }
     }
 }
