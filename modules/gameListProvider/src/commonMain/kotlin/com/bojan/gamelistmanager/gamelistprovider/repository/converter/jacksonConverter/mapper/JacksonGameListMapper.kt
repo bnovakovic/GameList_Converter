@@ -12,10 +12,10 @@ import java.io.File
 
 fun JacksonSystemInfoObject.toSystemData(path: File) = SystemData(
     name = gameListDirToSystemName(path.name),
-    software = this.software,
-    database = this.database,
+    software = this.software ?: "",
+    database = this.database ?: "",
     systemSubDir = path.name,
-    web = this.web,
+    web = this.web ?: "",
     retroArchCoreInfo = gameListDirToDatabase(path.name)
 )
 
@@ -46,12 +46,12 @@ fun JacksonGameObject.toGameData() = GameData(
 fun JacksonGameListObject.toGameListData(gameListPath: File) = GameListData(
     games = this.game.map { it.toGameData() },
     system = this.provider?.toSystemData(gameListPath) ?: SystemData(
-        gameListDirToSystemName(gameListPath.name),
-        "",
-        "",
-        "",
-        "",
-        gameListDirToDatabase(gameListPath.name)
+        name = gameListDirToSystemName(gameListPath.name),
+        software = "",
+        database = "",
+        systemSubDir = gameListPath.name,
+        web = "",
+        retroArchCoreInfo = gameListDirToDatabase(gameListPath.name)
     ),
     originalPath = gameListPath
 )

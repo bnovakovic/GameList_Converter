@@ -45,6 +45,8 @@ class LoadGameListUseCase(private val xmlConverter: XmlConverter, private val da
                             val deserialized = xmlConverter.convertXmlToGameListItem(gameListFile)
                             gameListContainers.add(deserialized)
                         } catch (t: Throwable) {
+                            println("ERROR: Failed to parse ${gameListFile.absolutePath}")
+                            t.printStackTrace()
                             failedItems.add(gameListFile)
                         }
                     }
