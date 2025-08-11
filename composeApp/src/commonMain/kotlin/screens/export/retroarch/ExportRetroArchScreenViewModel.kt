@@ -182,23 +182,19 @@ class ExportRetroArchScreenViewModel(
 
         val coreFileName = "${coreInfo.filename}.${getCoreExtension()}"
 
-        // Standard path (e.g., /retroarch/cores)
-        val standardCoresDir = File(retroArchDirectory, RETRO_ARCH_CORES_SUBDIR)
-        val standardCorePath = File(standardCoresDir, coreFileName)
-        if (standardCorePath.exists()) {
-            return standardCorePath
-        }
+        // List of common relative paths for core files
+        val potentialCorePaths = listOf(
+            RETRO_ARCH_CORES_SUBDIR, // "cores"
+            "libretro"
+        )
 
-        // Alternative path for Linux (e.g., /retroarch/libretro)
-        val alternativeCoresDir = File(retroArchDirectory, "libretro")
-        val alternativeCorePath = File(alternativeCoresDir, coreFileName)
-        if (alternativeCorePath.exists()) {
-            return alternativeCorePath
-        }
+        val foundCore = potentialCorePaths
+            .map { File(File(retroArchDirectory, it), coreFileName) }
+            .firstOrNull { it.exists() }
 
-        // If not found in either path, return the default path for playlist generation.
+        // If a core is found, return it. Otherwise, return the default path for playlist generation.
         // The playlist requires a path, even if the core file doesn't exist yet.
-        return standardCorePath
+        return foundCore ?: File(File(retroArchDirectory, RETRO_ARCH_CORES_SUBDIR), coreFileName)
     }
 
     private fun findRetroArchExecutable(): String? {
