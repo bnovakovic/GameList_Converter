@@ -12,6 +12,8 @@ fun gameListDirToDatabase(dir: String): RetroArchCoreInfo {
         "3do" -> RetroArchCoreInfo("opera_libretro","The 3DO Company - 3DO")
         "64dd" -> RetroArchCoreInfo("parallel_n64_libretro", "Nintendo - Nintendo 64DD")
         "amiga1200" -> RetroArchCoreInfo("puae_libretro", "Commodore - Amiga")
+        "amiga4000" -> RetroArchCoreInfo("puae_libretro", "")
+        "amiga500" -> RetroArchCoreInfo("puae_libretro", "")
         "amiga600" -> RetroArchCoreInfo("puae_libretro", "Commodore - Amiga")
         "amigacd32" -> RetroArchCoreInfo("fsuae_libretro", "Commodore - Amiga")
         "amigacdtv" -> RetroArchCoreInfo("fsuae_libretro", "Commodore - Amiga")
@@ -136,6 +138,8 @@ fun gameListDirToSystemName(dir: String): String {
         "3do" -> "The 3DO Interactive Multiplayer"
         "64dd" -> "Nintendo 64 Disk Drive"
         "amiga1200" -> "Commodore Amiga 1200"
+        "amiga4000" -> "Amiga 4000"
+        "amiga500" -> "Amiga 500"
         "amiga600" -> "Commodore Amiga 600"
         "amigacd32" -> "Commodore Amiga CD 32"
         "amigacdtv" -> "Commodore Amiga CD TV"

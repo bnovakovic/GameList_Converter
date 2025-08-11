@@ -49,7 +49,7 @@ fun JacksonGameListObject.toGameListData(gameListPath: File) = GameListData(
         name = gameListDirToSystemName(gameListPath.name),
         software = "",
         database = "",
-        systemSubDir = "",
+        systemSubDir = gameListPath.name,
         web = "",
         retroArchCoreInfo = gameListDirToDatabase(gameListPath.name)
     ),
