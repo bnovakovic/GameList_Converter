@@ -18,6 +18,7 @@ fun gameListDirToDatabase(dir: String): RetroArchCoreInfo {
         "amstradcpc" -> RetroArchCoreInfo( "cap32_libretro", "Amstrad - CPC")
         "apple2" -> RetroArchCoreInfo.empty
         "apple2gs" -> RetroArchCoreInfo.empty
+        "arduboy" -> RetroArchCoreInfo("ardens_libretro", "Arduboy Inc - Arduboy")
         "atari2600" -> RetroArchCoreInfo( "stella_libretro", "Atari - 2600")
         "atari5200" -> RetroArchCoreInfo( "a5200_libretro", "Atari - 5200")
         "atari7800" -> RetroArchCoreInfo( "prosystem_libretro", "Atari - 7800")
@@ -25,9 +26,12 @@ fun gameListDirToDatabase(dir: String): RetroArchCoreInfo {
         "atarist" -> RetroArchCoreInfo( "hatari_libretro","Atari - ST")
         "bbcmicro" -> RetroArchCoreInfo.empty
         "bk" -> RetroArchCoreInfo( "bk_libretro", "BK-0011")
-        "c64" -> RetroArchCoreInfo( "vice_x64_libretro", "Commodore - 64")
+        "c64" -> RetroArchCoreInfo("vice_x64_libretro", "Commodore - 64")
+        "c128" -> RetroArchCoreInfo("vice_x128_libretro", "Commodore - 64")
+        "cannonball" -> RetroArchCoreInfo("cannonball_libretro", "Cannonball")
         "channelf" -> RetroArchCoreInfo( "freechaf_libretro", "Fairchild - Channel F")
         "colecovision" -> RetroArchCoreInfo( "bluemsx_libretro", "Coleco - ColecoVision")
+        "cplus4" -> RetroArchCoreInfo( "vice_xplus4_libretro", "Commodore - Plus-4")
         "daphne" -> RetroArchCoreInfo( "daphne_libretro", "")
         "dos" -> RetroArchCoreInfo( "dosbox_core_libretro", "DOS")
         "dreamcast" -> RetroArchCoreInfo( "flycast_libretro", "Sega - Dreamcast")
@@ -35,43 +39,53 @@ fun gameListDirToDatabase(dir: String): RetroArchCoreInfo {
         "fbneo" -> RetroArchCoreInfo( "fbneo_libretro", "FBNeo - Arcade Games")
         "fds" -> RetroArchCoreInfo( "nestopia_libretro", "Nintendo - Family Computer Disk System")
         "gamegear" -> RetroArchCoreInfo( "picodrive_libretro", "Sega - Game Gear")
+        "gb2players" -> RetroArchCoreInfo( "tgbdual_libretro", "Nintendo - Game Boy")
         "gb" -> RetroArchCoreInfo( "mgba_libretro", "Nintendo - Game Boy")
         "gba" -> RetroArchCoreInfo( "mgba_libretro", "Nintendo - Game Boy Advance")
+        "gbc2players" -> RetroArchCoreInfo( "tgbdual_libretro", "Nintendo - Game Boy Color")
         "gbc" -> RetroArchCoreInfo( "mgba_libretro", "Nintendo - Game Boy Color")
+        "gameandwatch",
         "gw" -> RetroArchCoreInfo( "gw_libretro", "Handheld Electronic Game")
         "gx4000" -> RetroArchCoreInfo( "cap32_libretro", "Amstrad - GX4000")
         "intellivision" -> RetroArchCoreInfo( "freeintv_libretro", "Mattel - Intellivision")
+        "jaguar" -> RetroArchCoreInfo("virtualjaguar_libretro", "Atari - Jaguar")
         "lowresnx" -> RetroArchCoreInfo( "lowresnx_libretro", "LowRes NX")
         "lutro" -> RetroArchCoreInfo( "lutro_libretro", "Lutro")
         "lynx" -> RetroArchCoreInfo( "handy_libretro", "Atari - Lynx")
         "mame" -> RetroArchCoreInfo( "mame2003_plus_libretro", "MAME")
-        "mastersystem" -> RetroArchCoreInfo( "picodrive_libretro", "Sega - Master System - Mark III")
-        "megadrive" -> RetroArchCoreInfo( "picodrive_libretro", "Sega - Mega Drive - Genesis")
+        "mastersystem" -> RetroArchCoreInfo("picodrive_libretro", "Sega - Master System - Mark III")
+        "megadrive" -> RetroArchCoreInfo("picodrive_libretro", "Sega - Mega Drive - Genesis")
+        "megaduck" -> RetroArchCoreInfo("sameduck_libretro", "")
         "moonlight" -> RetroArchCoreInfo( "moonlight_libretro", "")
+        "mrboom" -> RetroArchCoreInfo("mrboom_libretro", "MrBoom")
         "msx1" -> RetroArchCoreInfo( "bluemsx_libretro", "Microsoft - MSX")
         "msx2" -> RetroArchCoreInfo( "bluemsx_libretro", "Microsoft - MSX2")
+        "msx2+" -> RetroArchCoreInfo( "fmsx_libretro", "Microsoft - MSX2")
         "msxturbor" -> RetroArchCoreInfo( "bluemsx_libretro", "")
         "multivision" -> RetroArchCoreInfo( "gearsystem_libretro", "")
-        "n64" -> RetroArchCoreInfo( "parallel_n64_libretro", "Nintendo - Nintendo 64")
-        "naomi" -> RetroArchCoreInfo( "flycast_libretro", "Sega - Naomi")
-        "naomigd" -> RetroArchCoreInfo( "flycast_libretro", "")
-        "neogeo" -> RetroArchCoreInfo( "fbneo_libretro", "SNK - Neo Geo")
+        "n64" -> RetroArchCoreInfo("parallel_n64_libretro", "Nintendo - Nintendo 64")
+        "nds" -> RetroArchCoreInfo("melonds_libretro", "Nintendo - Nintendo DS")
+        "naomi" -> RetroArchCoreInfo("flycast_libretro", "Sega - Naomi")
+        "naomigd" -> RetroArchCoreInfo("flycast_libretro", "")
+        "neogeo" -> RetroArchCoreInfo("fbneo_libretro", "SNK - Neo Geo")
         "neogeocd" -> RetroArchCoreInfo( "neocd_libretro", "SNK - Neo Geo CD")
-        "nes" -> RetroArchCoreInfo( "nestopia_libretro", "Nintendo - Nintendo Entertainment System")
-        "ngp" -> RetroArchCoreInfo( "mednafen_ngp_libretro", "SNK - Neo Geo Pocket")
-        "ngpc" -> RetroArchCoreInfo( "mednafen_ngp_libretro", "SNK - Neo Geo Pocket Color")
-        "o2em" -> RetroArchCoreInfo( "o2em_libretro", "Magnavox - Odyssey2")
+        "nes" -> RetroArchCoreInfo("nestopia_libretro", "Nintendo - Nintendo Entertainment System")
+        "ngp" -> RetroArchCoreInfo("mednafen_ngp_libretro", "SNK - Neo Geo Pocket")
+        "ngpc" -> RetroArchCoreInfo("mednafen_ngp_libretro", "SNK - Neo Geo Pocket Color")
+        "o2em" -> RetroArchCoreInfo("o2em_libretro", "Magnavox - Odyssey2")
         "openbor" -> RetroArchCoreInfo.empty
         "oricatmos" -> RetroArchCoreInfo.empty
-        "palm" -> RetroArchCoreInfo( "mu_libretro", "")
-        "pc88" -> RetroArchCoreInfo( "quasi88_libretro", "NEC - PC-8001 - PC-8801")
-        "pc98" -> RetroArchCoreInfo( "np2kai_libretro", "NEC - PC-98")
-        "pcengine" -> RetroArchCoreInfo( "mednafen_pce_libretro", "NEC - PC Engine - TurboGrafx 16")
-        "pcenginecd" -> RetroArchCoreInfo( "mednafen_pce_libretro", "NEC - PC Engine CD - TurboGrafx-CD")
-        "pcv2" -> RetroArchCoreInfo( "mednafen_wswan_libretro", "")
+        "palm" -> RetroArchCoreInfo("mu_libretro", "")
+        "pc88" -> RetroArchCoreInfo("quasi88_libretro", "NEC - PC-8001 - PC-8801")
+        "pc98" -> RetroArchCoreInfo("np2kai_libretro", "NEC - PC-98")
+        "pcengine" -> RetroArchCoreInfo("mednafen_pce_libretro", "NEC - PC Engine - TurboGrafx 16")
+        "pcenginecd" -> RetroArchCoreInfo("mednafen_pce_libretro", "NEC - PC Engine CD - TurboGrafx-CD")
+        "pcv2" -> RetroArchCoreInfo("mednafen_wswan_libretro", "")
+        "pet" -> RetroArchCoreInfo("vice_xpet_libretro", "Commodore - PET")
         "pico8" -> RetroArchCoreInfo( "retro8_libretro", "PICO8")
         "pokemini" -> RetroArchCoreInfo( "pokemini_libretro", "Nintendo - Pokemon Mini")
         "ports" -> RetroArchCoreInfo.empty
+        "prboom" -> RetroArchCoreInfo("prboom_libretro", "DOOM")
         "psp" -> RetroArchCoreInfo( "ppsspp_libretro", "Sony - PlayStation Portable")
         "psx" -> RetroArchCoreInfo( "pcsx_rearmed_libretro", "Sony - PlayStation")
         "ps2" -> RetroArchCoreInfo( "play_libretro", "Sony - PlayStation 2")
@@ -82,18 +96,22 @@ fun gameListDirToDatabase(dir: String): RetroArchCoreInfo {
         "sega32x" -> RetroArchCoreInfo( "picodrive_libretro", "Sega - 32X")
         "segacd" -> RetroArchCoreInfo( "picodrive_libretro", "Sega - Mega-CD - Sega CD")
         "sg1000" -> RetroArchCoreInfo( "genesis_plus_gx_libretro", "Sega - SG-1000")
+        "sgb" -> RetroArchCoreInfo("mgba_libretro", "")
         "snes" -> RetroArchCoreInfo( "snes9x_libretro", "Nintendo - Super Nintendo Entertainment System")
         "solarus" -> RetroArchCoreInfo.empty
         "spectravideo" -> RetroArchCoreInfo( "bluemsx_libretro", "Spectravideo - SVI-318 - SVI-328")
         "sufami" -> RetroArchCoreInfo( "snes9x_libretro", "Nintendo - Sufami Turbo")
+        "superbroswar" -> RetroArchCoreInfo( "superbroswar_libretro", "")
         "supergrafx" -> RetroArchCoreInfo( "mednafen_supergrafx_libretro", "NEC - PC Engine SuperGrafx")
         "supervision" -> RetroArchCoreInfo( "potator_libretro", "Watara - Supervision")
         "thomson" -> RetroArchCoreInfo( "theodore_libretro", "Thomson - MOTO")
         "ti994a" -> RetroArchCoreInfo.empty
         "tic80" -> RetroArchCoreInfo( "tic80_libretro", "TIC-80")
         "trs80coco" -> RetroArchCoreInfo.empty
+        "tyrquake" -> RetroArchCoreInfo("tyrquake_libretro", "Quake")
         "uzebox" -> RetroArchCoreInfo( "uzem_libretro", "Uzebox")
         "vectrex" -> RetroArchCoreInfo( "vecx_libretro", "GCE - Vectrex")
+        "c20",
         "vic20" -> RetroArchCoreInfo( "vice_xvic_libretro", "Commodore - VIC-20")
         "videopacplus" -> RetroArchCoreInfo( "o2em_libretro", "Philips - Videopac+")
         "virtualboy" -> RetroArchCoreInfo( "mednafen_vb_libretro", "Nintendo - Virtual Boy")
@@ -102,6 +120,7 @@ fun gameListDirToDatabase(dir: String): RetroArchCoreInfo {
         "x1" -> RetroArchCoreInfo( "x1_libretro", "Sharp - X1")
         "x68000" -> RetroArchCoreInfo( "px68k_libretro", "Sharp - X68000")
         "zx81" -> RetroArchCoreInfo( "81_libretro", "Sinclair - ZX 81")
+        "xrick" -> RetroArchCoreInfo("xrick_libretro", "Rick Dangerous")
         "zxspectrum" -> RetroArchCoreInfo( "fuse_libretro", "Sinclair - ZX Spectrum")
         else -> RetroArchCoreInfo.empty
     }
@@ -123,16 +142,20 @@ fun gameListDirToSystemName(dir: String): String {
         "amstradcpc" -> "Amstrad CPC"
         "apple2" -> "Apple II"
         "apple2gs" -> "Apple II GS"
+        "arduboy" -> "Arduboy"
         "atari2600" -> "Atari 2600"
         "atari5200" -> "Atari 5200"
-         "atari7800" -> "Atari 7800"
+        "atari7800" -> "Atari 7800"
         "atari800" -> "Atari 8-bit"
         "atarist" -> "Atari ST"
         "bbcmicro" -> "Acorn BBC Micro"
         "bk" -> "Elektronika BK"
         "c64" -> "Commodore 64"
+        "c128" -> "Commodore - C128 (VICE x128)"
+        "cannonball" -> "Cannonball"
         "channelf" -> "Fairchild Channel F"
         "colecovision" -> "ColecoVision"
+        "cplus4" -> "Commodore - Plus-4"
         "daphne" -> "Daphne (Arcade system)"
         "dos" -> "DOS"
         "dreamcast" -> "Sega Dreamcast"
@@ -141,24 +164,32 @@ fun gameListDirToSystemName(dir: String): String {
         "fbneo" -> "FBNeo - Arcade Games"
         "fds" -> "Nintendo - Family Computer Disk System"
         "gamegear" -> "Sega - Game Gear"
+        "gb2players" -> "Nintendo Game Boy - 2 Players"
         "gb" -> "Nintendo Game Boy"
         "gba" -> "Nintendo Game Boy Advance"
+        "gbc2players" -> "Nintendo Game Boy Color - 2 Players"
         "gbc" -> "Nintendo Game Boy Color"
+        "gameandwatch",
         "gw" -> "Handheld Electronic Game"
         "gx4000" -> "Amstrad GX4000"
         "intellivision" -> "Mattel Intellivision"
+        "jaguar" -> "Atari - Jaguar"
         "lowresnx" -> "LowRes NX"
         "lutro" -> "Lutro"
         "lynx" -> "Atari - Lynx"
         "mame" -> "MAME"
         "mastersystem" -> "Sega Master System"
         "megadrive" -> "Sega Mega Drive - Genesis"
-        "moonlight" -> "Moonlight "
+        "megaduck" -> "Mega Duck"
+        "moonlight" -> "Moonlight"
+        "mrboom" -> "Mr. Boom"
         "msx1" -> "Microsoft MSX"
         "msx2" -> "Microsoft MSX2"
+        "msx2+" -> "Microsoft MSX2+"
         "msxturbor" -> "MSXturboR"
         "multivision" -> "Othello Multivision"
         "n64" -> "Nintendo 64"
+        "nds" -> "Nintendo DS"
         "naomi" -> "Sega Naomi"
         "naomigd" -> "Sega NAOMI GD-ROM System"
         "neogeo" -> "SNK Neo Geo"
@@ -175,9 +206,11 @@ fun gameListDirToSystemName(dir: String): String {
         "pcengine" -> "PC Engine - TurboGrafx 16"
         "pcenginecd" -> "PC Engine CD - TurboGrafx-CD"
         "pcv2" -> "Pocket Challenge v2"
+        "pet" -> "Commodore PET"
         "pico8" -> "PICO-8"
         "pokemini" -> "Nintendo Pokemon Mini"
         "ports" -> "Ports"
+        "prboom" -> "PrBoom"
         "psp" -> "Sony PlayStation Portable"
         "psx" -> "Sony PlayStation"
         "ps2" -> "Sony PlayStation 2"
@@ -188,18 +221,22 @@ fun gameListDirToSystemName(dir: String): String {
         "sega32x" -> "Sega 32X"
         "segacd" -> "Sega Mega-CD - Sega CD"
         "sg1000" -> "Sega SG-1000"
+        "sgb" -> "Nintendo Super Game Boy"
         "snes" -> "Super Nintendo Entertainment System - Super Famicom"
         "solarus" -> "Solarus"
         "spectravideo" -> "Spectravideo SVI-318 - SVI-328"
         "sufami" -> "Sufami Turbo"
+        "superbroswar" -> "Super Mario War"
         "supergrafx" -> "PC Engine SuperGrafx"
         "supervision" -> "Watara Supervision"
         "thomson" -> "Thomson MOTO"
         "ti994a" -> "TI-99/4A"
         "tic80" -> "TIC-80"
         "trs80coco" -> "TRS-80 Color Computer"
+        "tyrquake" -> "Quake"
         "uzebox" -> "Uzebox"
         "vectrex" -> "GCE Vectrex"
+        "c20",
         "vic20" -> "Commodore VIC-20"
         "videopacplus" -> "Philips Videopac+"
         "virtualboy" -> "Nintendo Virtual Boy"
@@ -208,6 +245,7 @@ fun gameListDirToSystemName(dir: String): String {
         "x1" -> "Sharp X1"
         "x68000" -> "Sharp X68000"
         "zx81" -> "ZX 81"
+        "xrick" -> "Rick Dangerous"
         "zxspectrum" -> "ZX Spectrum"
         else -> {
             "Unknown - $dir"
