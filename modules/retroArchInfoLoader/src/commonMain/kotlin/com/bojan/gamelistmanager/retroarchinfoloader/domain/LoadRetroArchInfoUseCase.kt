@@ -18,13 +18,28 @@ class LoadRetroArchInfoUseCase(private val reader: RetroArchInfoReader, private 
      */
     suspend operator fun invoke(retroArchDir: File) {
         dataSource.clearData()
-        val infoDir = File(retroArchDir, INFO_SUBDIRECTORY)
+        val infoDir = findInfoDirectory(retroArchDir)
         if (infoDir.exists()) {
             val fileList = infoDir.listFiles { file -> file.isFile && file.extension == INFO_FILE_EXTENSION }
             fileList?.let {
                 dataSource.loadInfoList(reader.readInfo(it.toList()))
             }
         }
+    }
+
+    private fun findInfoDirectory(retroArchDir: File): File {
+        // List of common relative paths for the 'info' directory
+        val potentialInfoPaths = listOf(
+            "info",
+            "libretro/info",
+            "cores/info",
+            "assets/info"
+        )
+
+        return potentialInfoPaths
+            .map { File(retroArchDir, it) }
+            .firstOrNull { it.exists() && it.isDirectory }
+            ?: File(retroArchDir, INFO_SUBDIRECTORY) // Fallback to the default
     }
 
     companion object {

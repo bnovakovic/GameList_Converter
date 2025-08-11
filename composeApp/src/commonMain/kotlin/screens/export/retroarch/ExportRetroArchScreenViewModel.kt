@@ -176,21 +176,40 @@ class ExportRetroArchScreenViewModel(
         }
     }
 
-    private fun isCoreMissing(): Boolean {
-        val uiModel = coreListViewModel.uiModel.value
+    private fun findCorePath(coreInfo: CoreInfoUiModel): File? {
+        val retroArchDirectory = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY) ?: return null
+        if (coreInfo == CoreInfoUiModel.none) return null
 
-        val retroArchDirectory = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
-        if (retroArchDirectory != null) {
-            val coreList = uiModel.items
-            val index = uiModel.selectedItem
-            if (coreList.size > index) {
-                val coreInfo = coreList[index]
-                val coresDir = File(retroArchDirectory, RETRO_ARCH_CORES_SUBDIR)
-                val fullCorePath = File(coresDir, "${coreInfo.filename}.${getCoreExtension()}")
-                return !fullCorePath.exists() && coreInfo != CoreInfoUiModel.none
-            }
+        val coreFileName = "${coreInfo.filename}.${getCoreExtension()}"
+
+        // Standard path (e.g., /retroarch/cores)
+        val standardCoresDir = File(retroArchDirectory, RETRO_ARCH_CORES_SUBDIR)
+        val standardCorePath = File(standardCoresDir, coreFileName)
+        if (standardCorePath.exists()) {
+            return standardCorePath
         }
-        return false
+
+        // Alternative path for Linux (e.g., /retroarch/libretro)
+        val alternativeCoresDir = File(retroArchDirectory, "libretro")
+        val alternativeCorePath = File(alternativeCoresDir, coreFileName)
+        if (alternativeCorePath.exists()) {
+            return alternativeCorePath
+        }
+
+        // If not found in either path, return the default path for playlist generation.
+        // The playlist requires a path, even if the core file doesn't exist yet.
+        return standardCorePath
+    }
+
+    private fun isCoreMissing(): Boolean {
+        val coreList = coreListViewModel.uiModel.value.items
+        val index = coreListViewModel.uiModel.value.selectedItem
+        if (coreList.size <= index) return false
+        val coreInfo = coreList[index]
+        if (coreInfo == CoreInfoUiModel.none) return false
+
+        val corePath = findCorePath(coreInfo)
+        return corePath != null && !corePath.exists()
     }
 
     private fun selectedCore(index: Int) {
@@ -383,14 +402,11 @@ class ExportRetroArchScreenViewModel(
                     if (file.extension != RETRO_ARCH_LIST_EXTENSION) "${file.name}.$RETRO_ARCH_LIST_EXTENSION" else file.name
                 val selectedCore = coreListViewModel.uiModel.value.items[uiModel.selectedCore]
 
-                val retroArchDirectory = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
-                val corePath = File(retroArchDirectory, RETRO_ARCH_CORES_SUBDIR)
-
                 var coreName: String? = null
                 var coreFullPath: File? = null
                 if (selectedCore != CoreInfoUiModel.none) {
                     coreName = selectedCore.displayName
-                    coreFullPath = File(corePath, "${selectedCore.filename}.${getCoreExtension()}")
+                    coreFullPath = findCorePath(selectedCore)
                 }
 
                 val config = GameListConvertConfig(
