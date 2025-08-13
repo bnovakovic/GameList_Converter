@@ -8,9 +8,13 @@ sealed class ExecConfiguration {
     /**
      * Runs selected ROM with specific core in RetroArch.
      *
-     * @param romPath Path to the ROM.
-     * @param coreFileName Filename of the core.
-     * @param retroArchDir RetroArch path.
+     * @param romPath path to the ROM.
+     * @param retroArchDir retroArch path.
+     * @param corePath core full path.
      */
-    data class RunRom(val romPath: String, val coreFileName: String, val retroArchDir: String) : ExecConfiguration()
+    data class RunRom(
+        val romPath: String,
+        val retroArchDir: String,
+        val corePath: String
+    ) : ExecConfiguration()
 }

@@ -1,5 +1,4 @@
 const val RETRO_ARCH_LIST_SUBDIR = "playlists"
-const val RETRO_ARCH_CORES_SUBDIR = "cores"
 const val RETRO_ARCH_LIST_EXTENSION = "lpl"
 const val PLAYLIST_VERSION = "1.5"
 

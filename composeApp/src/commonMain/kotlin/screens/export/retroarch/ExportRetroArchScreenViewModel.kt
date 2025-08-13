@@ -1,12 +1,10 @@
 package screens.export.retroarch
 
 import PLAYLIST_VERSION
-import RETRO_ARCH_CORES_SUBDIR
 import RETRO_ARCH_LIST_EXTENSION
 import RETRO_ARCH_LIST_SUBDIR
 import app.settings.GlmSettings
 import app.settings.SettingsKeys
-import com.bojan.gamelistconverter.utils.getCoreExtension
 import com.bojan.gamelistconverter.utils.getUserHome
 import com.bojan.gamelistmanager.commandexecutor.domain.ExecuteCommandUseCase
 import com.bojan.gamelistmanager.commandexecutor.domain.config.ExecConfiguration
@@ -17,6 +15,8 @@ import com.bojan.gamelistmanager.listexplorer.domain.ConvertGameListUseCase
 import com.bojan.gamelistmanager.listexplorer.domain.GameListConvertConfig
 import com.bojan.gamelistmanager.listexplorer.domain.PlayListWriteResult
 import com.bojan.gamelistmanager.listexplorer.repository.converters.retroarch.RetroArchListConverter
+import com.bojan.gamelistmanager.retroarchinfoloader.domain.CORE_PATH_SETTINGS_KEY
+import com.bojan.gamelistmanager.retroarchinfoloader.domain.ProvideCoreFullPathUseCase
 import com.bojan.gamelistmanager.retroarchinfoloader.domain.interfaces.RetroArchInfoDataRepository
 import commonui.textlist.SelectableListViewModel
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
@@ -39,7 +39,7 @@ import kotlin.random.Random
 /**
  * ViewModel of the export RetroArch list screen.
  *
- * @param coreInfoDataSource DataSource for the core information.
+ * @param retroArchInfoDataSource DataSource for the core information.
  * @param gameListDataSource DataSource for the game list.
  * @param settings User settings.
  * @param onBack The callback invoked when user wants to go back.
@@ -48,12 +48,13 @@ import kotlin.random.Random
  * @param coreListViewModel ViewModel for the core list.
  */
 class ExportRetroArchScreenViewModel(
-    coreInfoDataSource: RetroArchInfoDataRepository,
+    retroArchInfoDataSource: RetroArchInfoDataRepository,
     gameListDataSource: GameListRepository,
     private val settings: GlmSettings,
     private val onBack: () -> Unit,
     private val convertGameListUseCase: ConvertGameListUseCase = ConvertGameListUseCase(RetroArchListConverter()),
     private val executeCommandUseCase: ExecuteCommandUseCase = ExecuteCommandUseCase(ProcessBuilderExecutor()),
+    private val corePathUseCase: ProvideCoreFullPathUseCase = ProvideCoreFullPathUseCase(),
     val systemListViewModel: SelectableListViewModel<GameSystemUiModel> = SelectableListViewModel(),
     val coreListViewModel: SelectableListViewModel<CoreInfoUiModel> = SelectableListViewModel(),
 ) : ViewModel() {
@@ -62,12 +63,13 @@ class ExportRetroArchScreenViewModel(
     val uiModel = _uiModel.asStateFlow()
     private var allCoreInfo: List<CoreInfoUiModel> = emptyList()
     private var allGameLists: List<GameListData> = emptyList()
+    private var retroArchSettings: Map<String, String> = emptyMap()
     private var runGameJob: Job? = null
     private var saveListJob: Job? = null
 
     init {
         viewModelScope.launch {
-            coreInfoDataSource.infoList.collect { infoList ->
+            retroArchInfoDataSource.infoList.collect { infoList ->
                 val converted = infoList.map { it.toCoreInfoUiModel() }
                 val allCoresSorted = listOf(CoreInfoUiModel.none) + converted.sortedBy { it.text }
                 coreListViewModel.setItems(allCoresSorted)
@@ -90,6 +92,13 @@ class ExportRetroArchScreenViewModel(
                 displayCoreListForCurrentSystem()
             }
         }
+
+        viewModelScope.launch {
+            retroArchInfoDataSource.settings.collect { loadedSettings ->
+                retroArchSettings = loadedSettings
+            }
+        }
+
         viewModelScope.launch {
             gameListDataSource.gameList.collect { systemList ->
                 val sorted = systemList.sortedBy { it.system.name }
@@ -185,8 +194,7 @@ class ExportRetroArchScreenViewModel(
             val index = uiModel.selectedItem
             if (coreList.size > index) {
                 val coreInfo = coreList[index]
-                val coresDir = File(retroArchDirectory, RETRO_ARCH_CORES_SUBDIR)
-                val fullCorePath = File(coresDir, "${coreInfo.filename}.${getCoreExtension()}")
+                val fullCorePath = corePathUseCase(retroArchDirectory, retroArchSettings[CORE_PATH_SETTINGS_KEY], coreInfo.filename)
                 return !fullCorePath.exists() && coreInfo != CoreInfoUiModel.none
             }
         }
@@ -272,6 +280,7 @@ class ExportRetroArchScreenViewModel(
             if (isRunAvailable() && retroArchDirectory != null && romsDir != null && !isCoreMissing()) {
                 val systemInfo = uiModelValue.systemInfo
                 val games = systemInfo.games
+                val corePath = corePathUseCase(retroArchDirectory, retroArchSettings[CORE_PATH_SETTINGS_KEY], core.filename)
                 if (games.isNotEmpty()) {
                     val systemSubDir = systemInfo.gameSystemDirName
                     val romsPath = File(romsDir, systemSubDir)
@@ -280,8 +289,8 @@ class ExportRetroArchScreenViewModel(
                     val fullRomPath = File(romsPath, randomFileName)
                     val config = ExecConfiguration.RunRom(
                         romPath = fullRomPath.toString(),
-                        coreFileName = core.filename,
-                        retroArchDir = retroArchDirectory
+                        retroArchDir = retroArchDirectory,
+                        corePath = corePath.toString()
                     )
                     val result = withContext(Dispatchers.IO) {
                         executeCommandUseCase.invoke(config)
@@ -384,13 +393,11 @@ class ExportRetroArchScreenViewModel(
                 val selectedCore = coreListViewModel.uiModel.value.items[uiModel.selectedCore]
 
                 val retroArchDirectory = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
-                val corePath = File(retroArchDirectory, RETRO_ARCH_CORES_SUBDIR)
-
                 var coreName: String? = null
                 var coreFullPath: File? = null
-                if (selectedCore != CoreInfoUiModel.none) {
+                if (retroArchDirectory != null && selectedCore != CoreInfoUiModel.none) {
                     coreName = selectedCore.displayName
-                    coreFullPath = File(corePath, "${selectedCore.filename}.${getCoreExtension()}")
+                    coreFullPath = corePathUseCase(retroArchDirectory, retroArchSettings[CORE_PATH_SETTINGS_KEY], selectedCore.filename)
                 }
 
                 val config = GameListConvertConfig(

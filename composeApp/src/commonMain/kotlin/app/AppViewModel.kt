@@ -45,7 +45,7 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
 
     val exportRetroArchScreenViewModel = ExportRetroArchScreenViewModel(
         settings = appSettings,
-        coreInfoDataSource = coreInfoDataSource,
+        retroArchInfoDataSource = coreInfoDataSource,
         gameListDataSource = gameListDataSource,
         onBack = { _uiModel.value = _uiModel.value.copy(activeScreen = ActiveScreen.GAME_LIST_SCREEN) }
     )
