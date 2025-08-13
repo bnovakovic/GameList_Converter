@@ -1,5 +1,6 @@
 package com.bojan.gamelistmanager.retroarchinfoloader.domain
 
+import com.bojan.gamelistconverter.utils.resolveHomePath
 import com.bojan.gamelistmanager.retroarchinfoloader.domain.data.RetroArchInfoData
 import com.bojan.gamelistmanager.retroarchinfoloader.domain.interfaces.RetroArchInfoDataRepository
 import com.bojan.gamelistmanager.retroarchinfoloader.domain.interfaces.RetroArchInfoReader
@@ -54,7 +55,7 @@ class LoadRetroArchInfoUseCase(private val reader: RetroArchInfoReader, private 
                 val subDir = infoFilesDirFromSettings.substringAfter(SETTINGS_LOCAL_PATH_PREFIX)
                 return File(retroArchDir, subDir)
             } else {
-                return File(infoFilesDirFromSettings)
+                return File(infoFilesDirFromSettings.resolveHomePath())
             }
         }
 

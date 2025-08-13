@@ -39,9 +39,20 @@ fun getExecutableExtension() : String = when(getOs()) {
     JvmOs.WINDOWS -> { WINDOWS_EXECUTABLE_EXTENSION }
 }
 
+fun String.resolveHomePath(): String {
+    return when {
+        this.startsWith(LINUX_MAC_HOME_SYMBOL) -> this.replace(LINUX_MAC_HOME_SYMBOL, getUserHome().toString())
+        this.startsWith(WINDOWS_HOME_PATTERN) -> this.replace(WINDOWS_HOME_PATTERN, getUserHome().toString())
+        else -> this
+    }
+}
+
+
 const val SO_EXTENSION = "so"
 const val DLL_EXTENSION = "dll"
 const val DYLIB_EXTENSION = "dylib"
 const val WINDOWS_EXECUTABLE_EXTENSION = "exe"
 const val MACOS_EXECUTABLE_EXTENSION = "app"
 const val LINUX_EXECUTABLE_EXTENSION = "sh"
+const val LINUX_MAC_HOME_SYMBOL = "~"
+const val WINDOWS_HOME_PATTERN = "%USERPROFILE%"

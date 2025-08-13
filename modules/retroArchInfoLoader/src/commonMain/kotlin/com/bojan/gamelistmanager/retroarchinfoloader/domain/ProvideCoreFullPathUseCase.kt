@@ -1,6 +1,7 @@
 package com.bojan.gamelistmanager.retroarchinfoloader.domain
 
 import com.bojan.gamelistconverter.utils.getCoreExtension
+import com.bojan.gamelistconverter.utils.resolveHomePath
 import java.io.File
 
 /**
@@ -22,7 +23,7 @@ class ProvideCoreFullPathUseCase {
                 val coresPath = File(retroArchDir, coresPathInSettings.substringAfter(SETTINGS_LOCAL_PATH_PREFIX))
                 return File(coresPath, coreFile)
             } else {
-                return File(coresPathInSettings, coreFile)
+                return File(coresPathInSettings.resolveHomePath(), coreFile)
             }
         }
         val coresDir = File(retroArchDir, RETRO_ARCH_CORES_SUBDIR)
