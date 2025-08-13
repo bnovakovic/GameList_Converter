@@ -14,10 +14,22 @@ interface RetroArchInfoDataRepository {
     val infoList: StateFlow<List<RetroArchInfoData>>
 
     /**
+     * A [StateFlow] containing all retroarch settings from the retroarch.cfg file
+     */
+    val settings: StateFlow<Map<String, String>>
+
+    /**
      * Loads the provided list of core info items into the repository.
      * @param infoList The list of core information to be loaded.
      */
     fun loadInfoList(infoList: List<RetroArchInfoData>)
+
+
+    /**
+     * Loads retroarch.cfg file and parses all of it's configuration
+     * @param settings all retroarch settings.
+     */
+    fun loadRetroArchCfg(settings: Map<String, String>)
 
     /**
      * Clears the data stored in the repository.
