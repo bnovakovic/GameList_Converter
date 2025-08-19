@@ -386,7 +386,7 @@ class ExportRetroArchScreenViewModel(
         }
 
         val result = executeCommandUseCase.invoke(ExecConfiguration.FindRetroArchPath)
-        if (result.code.exitCodeOk()) {
+        if (result.code.exitCodeOk() && result.output.endsWith(".${getExecutableExtension()}")) {
             retroArchExecutablePath = File(result.output)
         }
     }
