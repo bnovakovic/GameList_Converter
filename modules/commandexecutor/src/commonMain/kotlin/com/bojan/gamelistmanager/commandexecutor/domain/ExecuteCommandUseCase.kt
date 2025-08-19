@@ -1,11 +1,10 @@
 package com.bojan.gamelistmanager.commandexecutor.domain
 
 import com.bojan.gamelistconverter.utils.JvmOs
-import com.bojan.gamelistconverter.utils.getCoreExtension
+import com.bojan.gamelistconverter.utils.exitCodeOk
 import com.bojan.gamelistconverter.utils.getExecutableExtension
 import com.bojan.gamelistconverter.utils.getOs
 import com.bojan.gamelistmanager.commandexecutor.domain.config.ExecConfiguration
-import java.io.File
 
 /**
  * UseCase that executes command with arguments.
@@ -37,9 +36,11 @@ class ExecuteCommandUseCase(private val executor: CommandExecutor) {
                     JvmOs.WINDOWS -> "where"
                 }
                 val pathInfo = executor.executeCommand(listOf(prefix, RETRO_ARCH_EXECUTABLE))
-                val executable = "$RETRO_ARCH_EXECUTABLE.${getExecutableExtension()}"
-                if (!pathInfo.output.endsWith(executable)) {
-                    return CommandResult(pathInfo.code, pathInfo.output + executable)
+                if (pathInfo.code.exitCodeOk()) {
+                    val executable = "$RETRO_ARCH_EXECUTABLE.${getExecutableExtension()}"
+                    if (!pathInfo.output.endsWith(executable)) {
+                        return CommandResult(pathInfo.code, pathInfo.output + executable)
+                    }
                 }
                 return pathInfo
             }

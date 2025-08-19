@@ -9,4 +9,5 @@ kotlin {
 dependencies {
     commonMainImplementation(projects.utils)
     commonMainImplementation(libs.kotlinx.coroutines.core)
+    commonTestImplementation(libs.junit)
 }

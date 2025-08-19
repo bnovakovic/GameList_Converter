@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.bojan.gamelistconverter.utils.exitCodeOk
 import commonui.CheckboxWithTitle
 import commonui.DropDownMenu
 import commonui.ErrorSurfaceText
@@ -130,7 +131,11 @@ fun SavingPlaylistPopup(saveProgress: PlaylistSaveProgress, onPopupConfirm: () -
     when (saveProgress) {
         PlaylistSaveProgress.SAVING -> {
             PopupWithCancel(onCancel = onCancel) {
-                Column(modifier = Modifier.width(300.dp).height(100.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                Column(
+                    modifier = Modifier.width(300.dp).height(100.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
                     SurfaceText(stringResource(Res.string.saving), modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
                     Spacer(modifier = Modifier.height(8.dp))
                     LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
@@ -140,10 +145,22 @@ fun SavingPlaylistPopup(saveProgress: PlaylistSaveProgress, onPopupConfirm: () -
 
         PlaylistSaveProgress.DONE -> {
             OkOnlyPopup(onOk = onPopupConfirm) {
-                Column(modifier = Modifier.width(300.dp).height(100.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                    Image(imageVector = Icons.Default.CheckCircle, contentDescription = null, colorFilter = ColorFilter.tint(GameListTheme.colors.accept))
+                Column(
+                    modifier = Modifier.width(300.dp).height(100.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Image(
+                        imageVector = Icons.Default.CheckCircle,
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(GameListTheme.colors.accept)
+                    )
                     Spacer(modifier = Modifier.height(8.dp))
-                    SurfaceText(stringResource(Res.string.playlist_save_done), modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+                    SurfaceText(
+                        stringResource(Res.string.playlist_save_done),
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
                     Spacer(modifier = Modifier.height(8.dp))
                 }
             }
@@ -151,8 +168,16 @@ fun SavingPlaylistPopup(saveProgress: PlaylistSaveProgress, onPopupConfirm: () -
 
         PlaylistSaveProgress.NO_ACCESS -> {
             OkOnlyPopup(onOk = onPopupConfirm) {
-                Column(modifier = Modifier.width(300.dp).height(100.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                    Image(imageVector = Icons.Default.Warning, contentDescription = null, colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.error))
+                Column(
+                    modifier = Modifier.width(300.dp).height(100.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Image(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.error)
+                    )
                     Spacer(modifier = Modifier.height(8.dp))
                     SurfaceText(stringResource(Res.string.no_access), modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
                     Spacer(modifier = Modifier.height(8.dp))
@@ -162,8 +187,16 @@ fun SavingPlaylistPopup(saveProgress: PlaylistSaveProgress, onPopupConfirm: () -
 
         PlaylistSaveProgress.UNKNOWN_ERROR -> {
             OkOnlyPopup(onOk = onPopupConfirm) {
-                Column(modifier = Modifier.width(300.dp).height(100.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                    Image(imageVector = Icons.Default.Warning, contentDescription = null, colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.error))
+                Column(
+                    modifier = Modifier.width(300.dp).height(100.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Image(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.error)
+                    )
                     Spacer(modifier = Modifier.height(8.dp))
                     SurfaceText(stringResource(Res.string.unknown_error), modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
                     Spacer(modifier = Modifier.height(8.dp))
@@ -185,7 +218,12 @@ fun SystemAndCoreList(
     onChangeShowAllCores: (Boolean) -> Unit
 ) {
     Column(modifier = Modifier.then(modifier).fillMaxHeight().padding(8.dp)) {
-        SearchableTextList(Modifier.weight(1.0f), systemViewModel, EXPORT_SCREEN_SYSTEM_LIST_OFFSET, stringResource(Res.string.select_system))
+        SearchableTextList(
+            Modifier.weight(1.0f),
+            systemViewModel,
+            EXPORT_SCREEN_SYSTEM_LIST_OFFSET,
+            stringResource(Res.string.select_system)
+        )
         Spacer(modifier = Modifier.height(8.dp))
         SearchableTextList(Modifier.weight(1.0f), coreViewModel, EXPORT_SCREEN_CORE_LIST_OFFSET, stringResource(Res.string.select_core))
         Spacer(modifier = Modifier.height(8.dp))
@@ -307,10 +345,10 @@ fun InfoAndControls(
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
-        val execText = when (uiModel.executeResult) {
-            0 -> { "" }
-            -1 -> { "" }
-            else -> { stringResource(Res.string.error_running_retroarch) }
+        val execText = if (uiModel.executeResult.exitCodeOk()) {
+            ""
+        } else {
+            stringResource(Res.string.error_running_retroarch)
         }
         ErrorSurfaceText(execText)
         Row {

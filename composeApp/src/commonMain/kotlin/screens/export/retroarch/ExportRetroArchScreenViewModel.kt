@@ -6,6 +6,7 @@ import RETRO_ARCH_LIST_EXTENSION
 import RETRO_ARCH_LIST_SUBDIR
 import app.settings.GlmSettings
 import app.settings.SettingsKeys
+import com.bojan.gamelistconverter.utils.exitCodeOk
 import com.bojan.gamelistconverter.utils.getExecutableExtension
 import com.bojan.gamelistconverter.utils.getUserHome
 import com.bojan.gamelistmanager.commandexecutor.domain.ExecuteCommandUseCase
@@ -385,11 +386,8 @@ class ExportRetroArchScreenViewModel(
         }
 
         val result = executeCommandUseCase.invoke(ExecConfiguration.FindRetroArchPath)
-        when (result.code) {
-            0,
-            -1 -> {
-                retroArchExecutablePath = File(result.output)
-            }
+        if (result.code.exitCodeOk()) {
+            retroArchExecutablePath = File(result.output)
         }
     }
 
