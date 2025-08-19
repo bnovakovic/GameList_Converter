@@ -36,7 +36,12 @@ class ExecuteCommandUseCase(private val executor: CommandExecutor) {
                     JvmOs.LINUX -> "which"
                     JvmOs.WINDOWS -> "where"
                 }
-                return executor.executeCommand(listOf(prefix, RETRO_ARCH_EXECUTABLE))
+                val pathInfo = executor.executeCommand(listOf(prefix, RETRO_ARCH_EXECUTABLE))
+                val executable = "$RETRO_ARCH_EXECUTABLE.${getExecutableExtension()}"
+                if (!pathInfo.output.endsWith(executable)) {
+                    return CommandResult(pathInfo.code, pathInfo.output + executable)
+                }
+                return pathInfo
             }
         }
     }
