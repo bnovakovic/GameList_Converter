@@ -19,6 +19,7 @@ const val KMP_NAME = "Kotlin Multiplatfrom (KMP)"
 const val RECALBOX = "Recalbox"
 const val RETROPIE = "Retropie"
 const val RETRO_ARCH = "RetroArch"
+const val RETRO_ARCH_EXECUTABLE = "retroarch"
 const val SCREEN_SCRAPPER = "Screen Scrapper"
 const val GAME_LIST_EDITOR = "GameList Editor"
 

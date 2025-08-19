@@ -11,5 +11,5 @@ interface CommandExecutor {
      * @param args List of arguments for the command.
      * @return Exit value of the process. 0 means normal termination.
      */
-    suspend fun executeCommand(args: List<String>) : Int
+    suspend fun executeCommand(args: List<String>) : CommandResult
 }
