@@ -1,8 +1,6 @@
 package com.bojan.gamelistmanager.commandexecutor.domain
 
 import com.bojan.gamelistconverter.utils.JvmOs
-import com.bojan.gamelistconverter.utils.exitCodeOk
-import com.bojan.gamelistconverter.utils.getExecutableExtension
 import com.bojan.gamelistconverter.utils.getOs
 import com.bojan.gamelistmanager.commandexecutor.domain.config.ExecConfiguration
 
@@ -26,7 +24,7 @@ class ExecuteCommandUseCase(private val executor: CommandExecutor) {
                 val exePath = execConfig.retroArchExecutablePath.toString()
                 val param = LIBERTO_FILE_ARGUMENT
                 val gamePath = execConfig.romPath
-                return executor.executeCommand(listOf(exePath, param, execConfig.corePath, gamePath))
+                return executor.executeCommand(listOf(exePath, param, execConfig.corePath.toString(), gamePath.toString()))
             }
 
             is ExecConfiguration.FindRetroArchPath -> {
@@ -35,14 +33,7 @@ class ExecuteCommandUseCase(private val executor: CommandExecutor) {
                     JvmOs.LINUX -> "which"
                     JvmOs.WINDOWS -> "where"
                 }
-                val pathInfo = executor.executeCommand(listOf(prefix, RETRO_ARCH_EXECUTABLE))
-                if (pathInfo.code.exitCodeOk()) {
-                    val executable = "$RETRO_ARCH_EXECUTABLE.${getExecutableExtension()}"
-                    if (!pathInfo.output.endsWith(executable)) {
-                        return CommandResult(pathInfo.code, pathInfo.output + executable)
-                    }
-                }
-                return pathInfo
+                return executor.executeCommand(listOf(prefix, RETRO_ARCH_EXECUTABLE))
             }
         }
     }

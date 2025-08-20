@@ -293,9 +293,9 @@ class ExportRetroArchScreenViewModel(
                     val randomFileName = File(randomItem.romPath).name
                     val fullRomPath = File(romsPath, randomFileName)
                     val config = ExecConfiguration.RunRom(
-                        romPath = fullRomPath.toString(),
+                        romPath = fullRomPath,
                         retroArchExecutablePath = executablePath,
-                        corePath = corePath.toString()
+                        corePath = corePath
                     )
                     val result = withContext(Dispatchers.IO) {
                         executeCommandUseCase.invoke(config)
@@ -386,8 +386,8 @@ class ExportRetroArchScreenViewModel(
         }
 
         val result = executeCommandUseCase.invoke(ExecConfiguration.FindRetroArchPath)
-        if (result.code.exitCodeOk() && result.output.endsWith(".${getExecutableExtension()}")) {
-            retroArchExecutablePath = File(result.output)
+        if (result.code.exitCodeOk() && File(result.output).exists()) {
+            retroArchExecutablePath = File(RETRO_ARCH_EXECUTABLE)
         }
     }
 

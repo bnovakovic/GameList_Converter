@@ -15,9 +15,9 @@ sealed class ExecConfiguration {
      * @param corePath core full path.
      */
     data class RunRom(
-        val romPath: String,
+        val romPath: File,
         val retroArchExecutablePath: File,
-        val corePath: String
+        val corePath: File
     ) : ExecConfiguration()
 
     data object FindRetroArchPath : ExecConfiguration()
