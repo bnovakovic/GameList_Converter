@@ -47,6 +47,7 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
         settings = appSettings,
         retroArchInfoDataSource = coreInfoDataSource,
         gameListDataSource = gameListDataSource,
+        mainScreenMenuUiModel = mainMenuViewModel.uiModel,
         onBack = { _uiModel.value = _uiModel.value.copy(activeScreen = ActiveScreen.GAME_LIST_SCREEN) }
     )
     private val _uiModel = MutableStateFlow(MainScreenUiModel())
@@ -54,7 +55,7 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
 
     init {
         appSettings.cacheSettings()
-        mainMenuViewModel.settingsUpdated()
+        mainMenuViewModel.loadSettings()
         val retroArchDir = appSettings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
         val gamesListDirectory = appSettings.getString(SettingsKeys.GAME_LIST_DIRECTORY_KEY)?.let { File(it) }
         romsDirectory = appSettings.getString(SettingsKeys.ROMS_DIRECTORY_KEY)?.let { File(it) }
@@ -120,7 +121,7 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
 
             is MainWindowMenuSelection.UseDarkMode -> {
                 appSettings.putBoolean(SettingsKeys.DARK_MODE_KEY, selection.useDark)
-                mainMenuViewModel.settingsUpdated()
+                mainMenuViewModel.loadSettings()
                 _uiModel.value = _uiModel.value.copy(inDarkMode = selection.useDark)
             }
         }

@@ -20,7 +20,7 @@ class MainScreenMenuViewModel(private val settings: GlmSettings, private val men
     /**
      * Updates the UI model with user settings.
      */
-    fun settingsUpdated() {
+    fun loadSettings() {
         _uiModel.value = MainScreenMenuUiModel(
             selectedGameListDir = settings.getString(SettingsKeys.GAME_LIST_DIRECTORY_KEY)?.let { File(it) },
             selectedRomsDir = settings.getString(SettingsKeys.ROMS_DIRECTORY_KEY)?.let { File(it) },

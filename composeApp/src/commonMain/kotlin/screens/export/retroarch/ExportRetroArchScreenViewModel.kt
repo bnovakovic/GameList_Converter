@@ -26,9 +26,11 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import menus.mainscreen.MainScreenMenuUiModel
 import screens.export.PlaylistSaveProgress
 import screens.export.retroarch.mapper.toExportGameListData
 import screens.gamelistscreen.data.CoreInfoUiModel
@@ -46,6 +48,7 @@ import kotlin.random.Random
  * @param gameListDataSource DataSource for the game list.
  * @param settings User settings.
  * @param onBack The callback invoked when user wants to go back.
+ * @param mainScreenMenuUiModel UI model used to track when settings have changed.
  * @param convertGameListUseCase UseCase used to convert the game list to RetroArch list.
  * @param systemListViewModel ViewModel for the system list.
  * @param coreListViewModel ViewModel for the core list.
@@ -55,6 +58,7 @@ class ExportRetroArchScreenViewModel(
     gameListDataSource: GameListRepository,
     private val settings: GlmSettings,
     private val onBack: () -> Unit,
+    private val mainScreenMenuUiModel: StateFlow<MainScreenMenuUiModel>,
     private val convertGameListUseCase: ConvertGameListUseCase = ConvertGameListUseCase(RetroArchListConverter()),
     private val executeCommandUseCase: ExecuteCommandUseCase = ExecuteCommandUseCase(ProcessBuilderExecutor()),
     private val corePathUseCase: ProvideCoreFullPathUseCase = ProvideCoreFullPathUseCase(),
@@ -70,6 +74,7 @@ class ExportRetroArchScreenViewModel(
     private var runGameJob: Job? = null
     private var saveListJob: Job? = null
     private var retroArchExecutablePath: File? = null
+    private var triedToLoadRetroarchFolder = false
 
     init {
         viewModelScope.launch {
@@ -78,8 +83,7 @@ class ExportRetroArchScreenViewModel(
                 val allCoresSorted = listOf(CoreInfoUiModel.none) + converted.sortedBy { it.text }
                 coreListViewModel.setItems(allCoresSorted)
                 allCoreInfo = allCoresSorted
-                setRetroArchExecutablePath()
-                val userPlaylistFolder = settings.getString(SettingsKeys.PLAYLIST_CUSTOM_DIR_KEY)
+                val userPlaylistFolder =  settings.getString(SettingsKeys.PLAYLIST_CUSTOM_DIR_KEY)
                 if (userPlaylistFolder != null) {
                     _uiModel.value =
                         _uiModel.value.copy(exportPath = File(userPlaylistFolder), exportAllowed = shouldAllowExport(infoList.isNotEmpty()))
@@ -128,9 +132,27 @@ class ExportRetroArchScreenViewModel(
                 selectedCore(it.selectedItem)
             }
         }
+
+        viewModelScope.launch {
+            mainScreenMenuUiModel.collect {
+                setRetroArchExecutablePath(it.selectedRetroArchDir)
+            }
+        }
     }
 
     private fun selectedSystem(index: Int) {
+        // Fallback logic just in case mainScreenMenuUiModel is not updated on the start. Will execute only once. Avoid doing it when index
+        // is 0 as it is initial state that happens before mainScreenMenuUiModel update, so it would always trigger.
+        // Technically should never execute.
+        if (index != 0 && !triedToLoadRetroarchFolder) {
+            settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)?.let {
+                viewModelScope.launch {
+                    println("Fallback to loading retroarch as it seems that initial load has not been done")
+                    setRetroArchExecutablePath(File(it))
+                }
+            }
+        }
+
         _uiModel.value = _uiModel.value.copy(selectedSystem = index)
         displayCoreListForCurrentSystem()
         val coreList = coreListViewModel.uiModel.value.items
@@ -375,8 +397,8 @@ class ExportRetroArchScreenViewModel(
         return systemList[systemUiModel.selectedItem]
     }
 
-    private suspend fun setRetroArchExecutablePath() {
-        val retroArchPathInSettings = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
+    private suspend fun setRetroArchExecutablePath(retroArchPathInSettings: File?) {
+        triedToLoadRetroarchFolder = true
         if (retroArchPathInSettings != null) {
             val fullPath = File(retroArchPathInSettings, "$RETRO_ARCH_EXECUTABLE.${getExecutableExtension()}")
             if (fullPath.exists()) {
