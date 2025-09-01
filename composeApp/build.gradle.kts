@@ -1,12 +1,11 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import java.io.ByteArrayOutputStream
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
 }
-
-val softwareVersion: String by extra { "1.0.11" }
 
 kotlin {
     jvm("desktop")
@@ -36,6 +35,20 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
         }
+    }
+}
+
+val softwareVersion: String by lazy {
+    try {
+        val stdout = ByteArrayOutputStream()
+        exec {
+            commandLine("git", "describe", "--tags", "--abbrev=0")
+            standardOutput = stdout
+            isIgnoreExitValue = true
+        }
+        stdout.toString().removePrefix("v").trim().ifEmpty { "0.0.0" }
+    } catch (e: Exception) {
+        "0.0.0"
     }
 }
 
