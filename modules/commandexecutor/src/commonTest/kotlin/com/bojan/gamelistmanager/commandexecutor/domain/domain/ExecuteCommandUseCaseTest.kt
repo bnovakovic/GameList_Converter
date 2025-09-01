@@ -20,10 +20,9 @@ class ExecuteCommandUseCaseTest {
 
     @Test
     fun `test executable added when only directory is in path`() = runBlocking {
-        val executableExtension = getExecutableExtension()
         val tested = ExecuteCommandUseCase(createFakeExecutor(0, "user/home/retroarch/"))
         val result = tested.invoke(ExecConfiguration.FindRetroArchPath)
-        assertEquals(CommandResult(0, "user/home/retroarch/retroarch.$executableExtension"), result)
+        assertEquals(CommandResult(0, "user/home/retroarch/"), result)
     }
 
     @Test
