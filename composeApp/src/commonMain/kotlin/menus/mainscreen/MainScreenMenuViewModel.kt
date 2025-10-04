@@ -5,7 +5,6 @@ import app.settings.GlmSettings
 import app.settings.SettingsKeys
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import java.io.File
 
 /**
  * ViewModel used to handle MainScreen menu.
@@ -22,30 +21,9 @@ class MainScreenMenuViewModel(private val settings: GlmSettings, private val men
      */
     fun loadSettings() {
         _uiModel.value = MainScreenMenuUiModel(
-            selectedGameListDir = settings.getString(SettingsKeys.GAME_LIST_DIRECTORY_KEY)?.let { File(it) },
-            selectedRomsDir = settings.getString(SettingsKeys.ROMS_DIRECTORY_KEY)?.let { File(it) },
-            selectedRetroArchDir = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)?.let { File(it) },
             selectedLanguage = settings.getString(SettingsKeys.SELECTED_LANGUAGE_KEY) ?: ENGLISH_LANGUAGE_CODE,
             inDarkMode = settings.getBoolean(SettingsKeys.DARK_MODE_KEY) ?: false
         )
-    }
-    private fun romsDirSelected(dir: File) {
-        _uiModel.value = _uiModel.value.copy(selectedRomsDir = dir)
-        settings.putString(SettingsKeys.ROMS_DIRECTORY_KEY, dir.toString())
-    }
-
-    private fun gameListDirSelected(dir: File) {
-        _uiModel.value = _uiModel.value.copy(selectedGameListDir = dir)
-        settings.putString(SettingsKeys.GAME_LIST_DIRECTORY_KEY, dir.toString())
-    }
-
-    private fun retroArchDirSelected(dir: File) {
-        _uiModel.value = _uiModel.value.copy(selectedRetroArchDir = dir)
-        settings.putString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY, dir.toString())
-    }
-
-    private fun languageSelected(languageCode: String) {
-        _uiModel.value = _uiModel.value.copy(selectedLanguage = languageCode)
     }
 
     /**
@@ -60,21 +38,23 @@ class MainScreenMenuViewModel(private val settings: GlmSettings, private val men
                 languageSelected(languageCode = selection.locale)
             }
 
-            is MainWindowMenuSelection.SelectedRoms -> {
-                romsDirSelected(selection.directory)
-            }
-
-            is MainWindowMenuSelection.SelectedRetroArchDirectory -> {
-                retroArchDirSelected(selection.directory)
-            }
-
-            is MainWindowMenuSelection.SelectedGamesListsDir -> {
-                gameListDirSelected(selection.directory)
-            }
-
             else -> {
                 // not handled here
             }
         }
+    }
+
+    /**
+     * returns true when RetroArch directory is set, false when it's not.
+     */
+    fun isRetroArchDirSet() = settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY) != null
+
+    /**
+     * returns true when game list directory is set, false when it's not.
+     */
+    fun isGameListDirSet() = settings.getString(SettingsKeys.GAME_LIST_DIRECTORY_KEY) != null
+
+    private fun languageSelected(languageCode: String) {
+        _uiModel.value = _uiModel.value.copy(selectedLanguage = languageCode)
     }
 }

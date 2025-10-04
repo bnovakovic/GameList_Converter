@@ -1,32 +1,14 @@
 package menus.mainscreen
 
-import java.io.File
-
 /**
  * Represents all possible menu options.
  */
 sealed class MainWindowMenuSelection {
 
     /**
-     * User has selected ROMs directory.
-     *
-     * @param directory ROMs directory.
+     * User has selected directory setup menu
      */
-    data class SelectedRoms(val directory: File) : MainWindowMenuSelection()
-
-    /**
-     * User has selected GamesList directory.
-     *
-     * @param directory GamesList directory
-     */
-    data class SelectedGamesListsDir(val directory: File) : MainWindowMenuSelection()
-
-    /**
-     * User has selected RetroArch directory.
-     *
-     * @param directory RetroArch directory.
-     */
-    data class SelectedRetroArchDirectory(val directory: File) : MainWindowMenuSelection()
+    data object DirectorySetup : MainWindowMenuSelection()
 
     /**
      * User has selected About menu option.

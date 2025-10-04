@@ -84,6 +84,7 @@
     <string name="theme">Tema</string>
     <string name="dark">Tamna</string>
     <string name="light">Svetla</string>
+    <string name="directories_setup">Podešavanje direktorijuma</string>
 
     <!--    Swing choosers-->
     <string name="overwrite_message">Fajl već postoji. Da li želiš da ga prebrišeš?</string>

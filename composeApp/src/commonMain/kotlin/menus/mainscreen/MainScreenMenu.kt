@@ -14,11 +14,11 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.MenuBar
 import androidx.compose.ui.window.MenuBarScope
-import com.bojan.gamelistconverter.utils.getUserHome
 import gamelistconverter.composeapp.generated.resources.Res
 import gamelistconverter.composeapp.generated.resources.about
 import gamelistconverter.composeapp.generated.resources.about_24dp
 import gamelistconverter.composeapp.generated.resources.dark
+import gamelistconverter.composeapp.generated.resources.directories_setup
 import gamelistconverter.composeapp.generated.resources.exit
 import gamelistconverter.composeapp.generated.resources.exit_24dp
 import gamelistconverter.composeapp.generated.resources.file
@@ -34,16 +34,10 @@ import gamelistconverter.composeapp.generated.resources.scan_all
 import gamelistconverter.composeapp.generated.resources.scan_retroarch_dir
 import gamelistconverter.composeapp.generated.resources.scan_roms_dir
 import gamelistconverter.composeapp.generated.resources.search_24dp
-import gamelistconverter.composeapp.generated.resources.select_gamelist_dir
-import gamelistconverter.composeapp.generated.resources.select_retroarch_dir
-import gamelistconverter.composeapp.generated.resources.select_roms_dir
 import gamelistconverter.composeapp.generated.resources.theme
 import gamelistconverter.composeapp.generated.resources.xml_icon_24
-import menus.swingchoosers.folderSwingChooser
-import menus.swingchoosers.retroArchSwingChooser
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import java.io.File
 
 /**
  * Menu bar for the main screen.
@@ -64,15 +58,12 @@ fun FrameWindowScope.MainWindowMenuBar(
             menuItemSelected = viewModel::menuSelected,
             onExitApplication = onExitApplication,
             enabled = enabled,
-            romsDir = uiModel.selectedRomsDir,
-            gameListDir = uiModel.selectedGameListDir,
-            retroArchDir = uiModel.selectedRetroArchDir
         )
         Scan(
             menuItemSelected = viewModel::menuSelected,
             enabled = enabled,
-            retroArchDirSet = uiModel.selectedRetroArchDir != null,
-            gameListDirSet = uiModel.selectedGameListDir != null
+            retroArchDirSet = viewModel.isRetroArchDirSet(),
+            gameListDirSet = viewModel.isGameListDirSet()
         )
         Language(
             menuItemSelected = viewModel::menuSelected,
@@ -93,57 +84,15 @@ private fun MenuBarScope.FileMenu(
     menuItemSelected: (MainWindowMenuSelection) -> Unit,
     onExitApplication: () -> Unit,
     enabled: Boolean,
-    romsDir: File?,
-    gameListDir: File?,
-    retroArchDir: File?
 ) {
     Menu(stringResource(Res.string.file), mnemonic = 'F', enabled = enabled) {
-        val romsDirString = stringResource(Res.string.select_roms_dir)
-        val gameListDirString = stringResource(Res.string.select_gamelist_dir)
-        val selectRetroArchTitle = stringResource(Res.string.select_retroarch_dir)
+        val dirsString = stringResource(Res.string.directories_setup)
         Item(
-            text = romsDirString,
-            onClick = {
-                folderSwingChooser(
-                    title = romsDirString,
-                    currentDir = romsDir ?: getUserHome(),
-                    onFolderSelected = {
-                        menuItemSelected(MainWindowMenuSelection.SelectedRoms(it))
-                    })
-            },
-            shortcut = KeyShortcut(Key.O, ctrl = true),
-            mnemonic = 'O',
+            text = dirsString,
+            onClick = { menuItemSelected(MainWindowMenuSelection.DirectorySetup) },
+            shortcut = KeyShortcut(Key.D, ctrl = true),
+            mnemonic = 'D',
             icon = painterResource(Res.drawable.rom_24)
-        )
-        Item(
-            text = gameListDirString,
-            onClick = {
-                folderSwingChooser(
-                    title = gameListDirString,
-                    currentDir = gameListDir ?: getUserHome(),
-                    onFolderSelected = {
-                        menuItemSelected(MainWindowMenuSelection.SelectedGamesListsDir(it))
-                    })
-            },
-            enabled = romsDir != null,
-            shortcut = KeyShortcut(Key.G, ctrl = true),
-            mnemonic = 'G',
-            icon = painterResource(Res.drawable.xml_icon_24)
-        )
-        Item(
-            text = stringResource(Res.string.select_retroarch_dir),
-            onClick = {
-                retroArchSwingChooser(
-                    onFolderSelected = {
-                        menuItemSelected(MainWindowMenuSelection.SelectedRetroArchDirectory(it))
-                    },
-                    currentDir = retroArchDir ?: getUserHome(),
-                    title = selectRetroArchTitle
-                )
-            },
-            shortcut = KeyShortcut(Key.R, ctrl = true),
-            mnemonic = 'R',
-            icon = painterResource(Res.drawable.retroarch)
         )
         Item(
             text = stringResource(Res.string.exit),

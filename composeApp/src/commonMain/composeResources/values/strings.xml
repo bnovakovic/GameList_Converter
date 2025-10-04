@@ -77,6 +77,7 @@
     <string name="theme">Theme</string>
     <string name="dark">Dark</string>
     <string name="light">Light</string>
+    <string name="directories_setup">Directories setup</string>
 
     <!--    About dialogue-->
     <string name="about_version">Version: %1$s</string>

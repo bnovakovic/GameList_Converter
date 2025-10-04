@@ -133,11 +133,11 @@ class ExportRetroArchScreenViewModel(
             }
         }
 
-        viewModelScope.launch {
+/*        viewModelScope.launch { TODO Handle retroarch directory change
             mainScreenMenuUiModel.collect {
                 setRetroArchExecutablePath(it.selectedRetroArchDir)
             }
-        }
+        }*/
     }
 
     private fun selectedSystem(index: Int) {

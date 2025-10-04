@@ -3,6 +3,7 @@ package app
 import app.contentloader.ContentLoaderViewModel
 import app.contentloader.InfoType
 import app.contentloader.LoadingType
+import app.model.GameListDirectories
 import app.settings.GlmPreferences
 import app.settings.GlmSettings
 import app.settings.SettingsKeys
@@ -86,16 +87,8 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
         val gameListDir = appSettings.getString(SettingsKeys.GAME_LIST_DIRECTORY_KEY)?.let { File(it) }
 
         when (selection) {
-            is MainWindowMenuSelection.SelectedRoms -> {
-                romsDirectory = selection.directory
-            }
-
-            is MainWindowMenuSelection.SelectedGamesListsDir -> {
-                contentLoader.loadGameListInfo(selection.directory)
-            }
-
-            is MainWindowMenuSelection.SelectedRetroArchDirectory -> {
-                contentLoader.loadRetroArchInformation(selection.directory.toString())
+            is MainWindowMenuSelection.DirectorySetup -> {
+                _uiModel.value = _uiModel.value.copy(dialogue = Dialogues.DIR_SETUP)
             }
 
             is MainWindowMenuSelection.About -> {
@@ -153,8 +146,21 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
         _uiModel.value = _uiModel.value.copy(dialogue = Dialogues.NONE)
         contentLoader.resetInfoType()
     }
+
+    fun getDirectoryInformation(): GameListDirectories = GameListDirectories(
+        romsDir = File(appSettings.getString(SettingsKeys.ROMS_DIRECTORY_KEY) ?: ""),
+        gameListDir = File(appSettings.getString(SettingsKeys.GAME_LIST_DIRECTORY_KEY) ?: ""),
+        retroArchDir = File(appSettings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY) ?: "")
+    )
+
+    fun directoriesSet(directories: GameListDirectories) {
+        appSettings.putString(SettingsKeys.ROMS_DIRECTORY_KEY, directories.romsDir.path)
+        appSettings.putString(SettingsKeys.GAME_LIST_DIRECTORY_KEY, directories.gameListDir.path)
+        appSettings.putString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY, directories.retroArchDir.path)
+        resetDialogue()
+    }
 }
 
 enum class ActiveScreen { GAME_LIST_SCREEN, EXPORT_SCREEN }
 
-enum class Dialogues { ABOUT, RESTART, NONE, NO_ROMS_FOUND }
+enum class Dialogues { ABOUT, RESTART, NONE, NO_ROMS_FOUND, DIR_SETUP }

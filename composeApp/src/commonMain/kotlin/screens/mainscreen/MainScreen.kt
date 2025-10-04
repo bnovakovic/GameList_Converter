@@ -37,6 +37,7 @@ import app.Dialogues
 import app.contentloader.LoadingType
 import commonui.HyperlinkText
 import commonui.OkOnlyPopup
+import commonui.PopupWithDirectoryPickers
 import commonui.ScanningPopup
 import commonui.SurfaceText
 import gamelistconverter.composeapp.generated.resources.Res
@@ -138,6 +139,16 @@ fun MainScreen(appViewModel: AppViewModel) {
                     SurfaceText(stringResource(Res.string.list_emtpy_tip2))
                 }
             }
+        }
+
+        Dialogues.DIR_SETUP -> {
+            PopupWithDirectoryPickers(
+                onCancel = { appViewModel.resetDialogue() },
+                onConfirm = {
+                    appViewModel.directoriesSet(it)
+                },
+                currentValues = appViewModel.getDirectoryInformation()
+            )
         }
 
         Dialogues.NONE -> {
