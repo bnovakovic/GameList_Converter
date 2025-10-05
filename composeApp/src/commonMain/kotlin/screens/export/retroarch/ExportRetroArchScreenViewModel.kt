@@ -357,16 +357,6 @@ class ExportRetroArchScreenViewModel(
         )
     }
 
-    fun retroArchDirectoryUpdated(retroArchPath: File?) {
-        viewModelScope.launch {
-            setRetroArchExecutablePath(retroArchPath)
-            _uiModel.value = _uiModel.value.copy(
-                isRunAvailable = isRunAvailable(),
-                coreMissing = isCoreMissing()
-            )
-        }
-    }
-
     private fun shouldAllowExport(attempt: Boolean): Boolean {
         val coreListUiModel = coreListViewModel.uiModel.value
         val gameListUiModel = systemListViewModel.uiModel.value

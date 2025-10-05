@@ -44,12 +44,12 @@ class ContentLoaderViewModel(
      *
      * @param retroArchDir RetroArch root directory (not any subdirectory inside of RetroArch)
      */
-    fun loadRetroArchInformation(retroArchDir: String?) {
+    fun loadRetroArchInformation(retroArchDir: File?) {
         retroArchDir?.let { retroDir ->
             loadJob = viewModelScope.launch {
                 cancelingJob = false
                 _uiModel.value = _uiModel.value.copy(loadingType = LoadingType.RetroArch)
-                loadRetroArchInfoUseCase.invoke(File(retroDir))
+                loadRetroArchInfoUseCase.invoke(retroDir)
                 _uiModel.value = _uiModel.value.copy(loadingType = LoadingType.None)
             }
         }
@@ -77,7 +77,7 @@ class ContentLoaderViewModel(
      * @param gameListDir Root folder of the XMLs directory (example: E:\emulation\gamelists). Not the specific subdirectory of the system
      * such as E:\emulation\gamelists\atari2600.
      */
-    fun loadEverything(retroArchDir: String?, gameListDir: File?) {
+    fun loadEverything(retroArchDir: File?, gameListDir: File?) {
         loadJob = viewModelScope.launch {
             cancelingJob = false
             if (gameListDir != null) {
@@ -87,7 +87,7 @@ class ContentLoaderViewModel(
                 _uiModel.value = _uiModel.value.copy(
                     loadingType = LoadingType.RetroArch,
                 )
-                loadRetroArchInfoUseCase.invoke(File(retroArchDir))
+                loadRetroArchInfoUseCase.invoke(retroArchDir)
             }
             _uiModel.value = _uiModel.value.copy(loadingType = LoadingType.None)
         }

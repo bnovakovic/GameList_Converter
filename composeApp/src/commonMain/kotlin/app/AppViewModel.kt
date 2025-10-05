@@ -56,7 +56,7 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
     init {
         appSettings.cacheSettings()
         mainMenuViewModel.loadSettings()
-        val retroArchDir = appSettings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
+        val retroArchDir = appSettings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)?.let { File(it) }
         val gamesListDirectory = appSettings.getString(SettingsKeys.GAME_LIST_DIRECTORY_KEY)?.let { File(it) }
         romsDirectory = appSettings.getString(SettingsKeys.ROMS_DIRECTORY_KEY)?.let { File(it) }
         val selectedLanguage = appSettings.getString(SettingsKeys.SELECTED_LANGUAGE_KEY)
@@ -82,7 +82,7 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
     }
 
     private fun mainScreenMenuItemSelected(selection: MainWindowMenuSelection) {
-        val retroArchDir = appSettings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
+        val retroArchDir = appSettings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)?.let { File(it) }
         val gameListDir = appSettings.getString(SettingsKeys.GAME_LIST_DIRECTORY_KEY)?.let { File(it) }
 
         when (selection) {
@@ -153,10 +153,17 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
     )
 
     fun directoriesSet(directories: GameListDirectories) {
+        val previousGameListValue = appSettings.getString(SettingsKeys.GAME_LIST_DIRECTORY_KEY)
+        val previousRetroArchValue = appSettings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)
+
         appSettings.putString(SettingsKeys.ROMS_DIRECTORY_KEY, directories.romsDir.path)
         appSettings.putString(SettingsKeys.GAME_LIST_DIRECTORY_KEY, directories.gameListDir.path)
         appSettings.putString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY, directories.retroArchDir.path)
-        exportRetroArchScreenViewModel.retroArchDirectoryUpdated(directories.retroArchDir)
+
+        if (previousRetroArchValue != directories.retroArchDir.path || previousGameListValue != directories.gameListDir.path) {
+            contentLoader.loadEverything(retroArchDir = directories.retroArchDir, gameListDir = directories.gameListDir)
+        }
+
         resetDialogue()
     }
 }
