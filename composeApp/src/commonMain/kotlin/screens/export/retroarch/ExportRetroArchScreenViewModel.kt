@@ -26,11 +26,9 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import menus.mainscreen.MainScreenMenuUiModel
 import screens.export.PlaylistSaveProgress
 import screens.export.retroarch.mapper.toExportGameListData
 import screens.gamelistscreen.data.CoreInfoUiModel
@@ -48,8 +46,9 @@ import kotlin.random.Random
  * @param gameListDataSource DataSource for the game list.
  * @param settings User settings.
  * @param onBack The callback invoked when user wants to go back.
- * @param mainScreenMenuUiModel UI model used to track when settings have changed.
  * @param convertGameListUseCase UseCase used to convert the game list to RetroArch list.
+ * @param executeCommandUseCase UseCase used to execute command.
+ * @param corePathUseCase Use case used to provide core path.
  * @param systemListViewModel ViewModel for the system list.
  * @param coreListViewModel ViewModel for the core list.
  */
@@ -58,7 +57,6 @@ class ExportRetroArchScreenViewModel(
     gameListDataSource: GameListRepository,
     private val settings: GlmSettings,
     private val onBack: () -> Unit,
-    private val mainScreenMenuUiModel: StateFlow<MainScreenMenuUiModel>,
     private val convertGameListUseCase: ConvertGameListUseCase = ConvertGameListUseCase(RetroArchListConverter()),
     private val executeCommandUseCase: ExecuteCommandUseCase = ExecuteCommandUseCase(ProcessBuilderExecutor()),
     private val corePathUseCase: ProvideCoreFullPathUseCase = ProvideCoreFullPathUseCase(),
@@ -83,7 +81,7 @@ class ExportRetroArchScreenViewModel(
                 val allCoresSorted = listOf(CoreInfoUiModel.none) + converted.sortedBy { it.text }
                 coreListViewModel.setItems(allCoresSorted)
                 allCoreInfo = allCoresSorted
-                val userPlaylistFolder =  settings.getString(SettingsKeys.PLAYLIST_CUSTOM_DIR_KEY)
+                val userPlaylistFolder = settings.getString(SettingsKeys.PLAYLIST_CUSTOM_DIR_KEY)
                 if (userPlaylistFolder != null) {
                     _uiModel.value =
                         _uiModel.value.copy(exportPath = File(userPlaylistFolder), exportAllowed = shouldAllowExport(infoList.isNotEmpty()))
@@ -132,12 +130,6 @@ class ExportRetroArchScreenViewModel(
                 selectedCore(it.selectedItem)
             }
         }
-
-/*        viewModelScope.launch { TODO Handle retroarch directory change
-            mainScreenMenuUiModel.collect {
-                setRetroArchExecutablePath(it.selectedRetroArchDir)
-            }
-        }*/
     }
 
     private fun selectedSystem(index: Int) {
@@ -147,7 +139,7 @@ class ExportRetroArchScreenViewModel(
         if (index != 0 && !triedToLoadRetroarchFolder) {
             settings.getString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY)?.let {
                 viewModelScope.launch {
-                    println("Fallback to loading retroarch as it seems that initial load has not been done")
+                    println("Fallback to loading RetroArch as it seems that initial load has not been done")
                     setRetroArchExecutablePath(File(it))
                 }
             }
@@ -363,6 +355,16 @@ class ExportRetroArchScreenViewModel(
             isRunAvailable = isRunAvailable(),
             executeResult = ExportRetroArchScreenUiModel.execResultNone
         )
+    }
+
+    fun retroArchDirectoryUpdated(retroArchPath: File?) {
+        viewModelScope.launch {
+            setRetroArchExecutablePath(retroArchPath)
+            _uiModel.value = _uiModel.value.copy(
+                isRunAvailable = isRunAvailable(),
+                coreMissing = isCoreMissing()
+            )
+        }
     }
 
     private fun shouldAllowExport(attempt: Boolean): Boolean {

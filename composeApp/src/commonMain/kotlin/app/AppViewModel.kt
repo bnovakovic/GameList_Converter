@@ -48,7 +48,6 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
         settings = appSettings,
         retroArchInfoDataSource = coreInfoDataSource,
         gameListDataSource = gameListDataSource,
-        mainScreenMenuUiModel = mainMenuViewModel.uiModel,
         onBack = { _uiModel.value = _uiModel.value.copy(activeScreen = ActiveScreen.GAME_LIST_SCREEN) }
     )
     private val _uiModel = MutableStateFlow(MainScreenUiModel())
@@ -157,6 +156,7 @@ class AppViewModel(private val onRequestApplicationClose: () -> Unit) : ViewMode
         appSettings.putString(SettingsKeys.ROMS_DIRECTORY_KEY, directories.romsDir.path)
         appSettings.putString(SettingsKeys.GAME_LIST_DIRECTORY_KEY, directories.gameListDir.path)
         appSettings.putString(SettingsKeys.RETRO_ARCH_DIRECTORY_KEY, directories.retroArchDir.path)
+        exportRetroArchScreenViewModel.retroArchDirectoryUpdated(directories.retroArchDir)
         resetDialogue()
     }
 }
