@@ -37,6 +37,7 @@ import gamelistconverter.composeapp.generated.resources.browse_button_symbol
 import gamelistconverter.composeapp.generated.resources.cancel
 import gamelistconverter.composeapp.generated.resources.ok
 import gamelistconverter.composeapp.generated.resources.scanning
+import gamelistconverter.composeapp.generated.resources.select_gamelist_dir
 import gamelistconverter.composeapp.generated.resources.select_retroarch_dir
 import gamelistconverter.composeapp.generated.resources.select_roms_dir
 import ktx.autoFocus
@@ -219,19 +220,46 @@ fun PopupWithDirectoryPickers(
     ) {
         val romsDirTitle = stringResource(Res.string.select_roms_dir)
         val retroArchDirTitle = stringResource(Res.string.select_retroarch_dir)
-        val gameListDirTitle = stringResource(Res.string.select_retroarch_dir)
-        InputTextWithBrowse(
+        val gameListDirTitle = stringResource(Res.string.select_gamelist_dir)
+        ReadOnlyInputTextWithBrowse(
             title = romsDirTitle,
             text = romsPath.path,
-            onTextChanged = {},
-            onBrowseClick = { folderSwingChooser(title = romsDirTitle, currentDir = romsPath, onFolderSelected = { romsPath = it }) },
+            onBrowseClick = {
+                folderSwingChooser(
+                    title = romsDirTitle,
+                    currentDir = romsPath,
+                    onFolderSelected = {
+                        romsPath = it
+                        if (gamesListPath.path == "") {
+                            gamesListPath = it
+                        }
+                    }
+                )
+            },
             onCancel = onCancel,
         )
         Spacer(modifier = Modifier.height(16.dp))
-        InputTextWithBrowse(
+        ReadOnlyInputTextWithBrowse(
+            title = gameListDirTitle,
+            text = gamesListPath.path,
+            onBrowseClick = {
+                folderSwingChooser(
+                    title = gameListDirTitle,
+                    currentDir = gamesListPath,
+                    onFolderSelected = {
+                        gamesListPath = it
+                        if (romsPath.path == "") {
+                            romsPath = it
+                        }
+                    }
+                )
+            },
+            onCancel = onCancel,
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        ReadOnlyInputTextWithBrowse(
             title = retroArchDirTitle,
             text = retroArchPath.path,
-            onTextChanged = { },
             onBrowseClick = {
                 folderSwingChooser(
                     title = retroArchDirTitle,
@@ -240,27 +268,13 @@ fun PopupWithDirectoryPickers(
             },
             onCancel = onCancel,
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        InputTextWithBrowse(
-            title = gameListDirTitle,
-            text = gamesListPath.path,
-            onTextChanged = { },
-            onBrowseClick = {
-                folderSwingChooser(
-                    title = gameListDirTitle,
-                    currentDir = gamesListPath,
-                    onFolderSelected = { gamesListPath = it })
-            },
-            onCancel = onCancel,
-        )
     }
 }
 
 @Composable
-private fun InputTextWithBrowse(
+private fun ReadOnlyInputTextWithBrowse(
     title: String,
     text: String,
-    onTextChanged: (String) -> Unit,
     onBrowseClick: () -> Unit,
     onCancel: () -> Unit,
 ) {
@@ -273,7 +287,7 @@ private fun InputTextWithBrowse(
         ) {
             BasicTextField(
                 value = text,
-                onValueChange = onTextChanged,
+                onValueChange = {},
                 singleLine = true,
                 readOnly = true,
                 modifier = Modifier
