@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
+<meta name="generator" content="Asciidoctor 2.0.23">
 <title>GameList Converter User Manual</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -140,7 +140,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #content::before{content:none}
 #header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
 #header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
-#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
 #header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
 #header .details span:first-child{margin-left:-.125em}
 #header .details span.email a{color:rgba(0,0,0,.85)}
@@ -162,6 +162,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #toctitle{color:#7a2518;font-size:1.2em}
 @media screen and (min-width:768px){#toctitle{font-size:1.375em}
 body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
 #toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
 #toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
 #toc.toc2>ul{font-size:.9em;margin-bottom:0}
@@ -327,7 +328,7 @@ a.image{text-decoration:none;display:inline-block}
 a.image object{pointer-events:none}
 sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
 sup.footnote a,sup.footnoteref a{text-decoration:none}
-sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
 #footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
 #footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
 #footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
@@ -432,6 +433,118 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
+<style>
+/*! Asciidoctor Tabs | Copyright (c) 2018-present Dan Allen | MIT License */
+.tabs {
+    margin-bottom: 1.25em;
+}
+
+.tablist > ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tablist > ul li {
+    align-items: center;
+    background-color: #fff;
+    cursor: pointer;
+    display: flex;
+    font-weight: bold;
+    line-height: 1.5;
+    padding: 0.25em 1em;
+    position: relative;
+}
+
+.tablist > ul li:focus-visible {
+    outline: none;
+}
+
+.tablist.ulist,
+.tablist.ulist > ul li {
+    margin: 0;
+}
+
+.tablist.ulist > ul li + li {
+    margin-left: 0.25em;
+}
+
+.tabs .tablist li::after {
+    content: "";
+    display: block;
+    height: 1px;
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+}
+
+.tabs.is-loading .tablist li:not(:first-child),
+.tabs:not(.is-loading) .tablist li:not(.is-selected) {
+    background-color: #f5f5f5;
+}
+
+.tabs.is-loading .tablist li:first-child::after,
+.tabs:not(.is-loading) .tablist li.is-selected::after {
+    background-color: #fff;
+}
+
+/*
+.tabs:not(.is-loading) .tablist li,
+.tabs:not(.is-loading) .tablist li::after {
+  transition: background-color 200ms ease-in-out;
+}
+*/
+
+.tablist > ul p {
+    line-height: inherit;
+    margin: 0;
+}
+
+.tabpanel {
+    background-color: #fff;
+    padding: 1.25em;
+}
+
+.tablist > ul li,
+.tabpanel {
+    border: 1px solid #dcdcdc;
+}
+
+.tablist > ul li {
+    border-bottom: 0;
+}
+
+.tabs.is-loading .tabpanel + .tabpanel,
+.tabs:not(.is-loading) .tabpanel.is-hidden {
+    display: none;
+}
+
+.tabpanel > :first-child {
+    margin-top: 0;
+}
+
+/* #content is a signature of the Asciidoctor standalone HTML output */
+#content .tabpanel > :last-child,
+#content .tabpanel > :last-child > :last-child,
+#content .tabpanel > :last-child > :last-child > li:last-child > :last-child {
+    margin-bottom: 0;
+}
+
+.tablecontainer {
+    overflow-x: auto;
+}
+
+#content .tablecontainer {
+    margin-bottom: 1.25em;
+}
+
+#content .tablecontainer > table.tableblock {
+    margin-bottom: 0;
+}
+</style>
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
@@ -449,9 +562,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_using_gamelist_converter">Using GameList converter</a>
 <ul class="sectlevel2">
 <li><a href="#_select_directories">Select directories</a></li>
-<li><a href="#_select_roms_directory">Select ROM&#8217;s directory</a></li>
-<li><a href="#_select_retroarch_directory">Select RetroArch directory</a></li>
+<li><a href="#_directories_setup_screen">Directories setup screen</a></li>
+<li><a href="#_opening_export_screen">Opening Export Screen</a></li>
 <li><a href="#_select_system_and_core">Select system and core</a></li>
+<li><a href="#_testing_selected_system_and_core">Testing selected system and core</a></li>
 <li><a href="#_showing_all_cores">Showing all cores</a></li>
 <li><a href="#_selecting_playlist">Selecting playlist</a></li>
 <li><a href="#_saving_the_playlist">Saving the playlist</a></li>
@@ -474,6 +588,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul>
 <li>
 <p>Correctly structured ROM directory used for your RecalBox or Retropie</p>
+</li>
+<li>
+<p>Correctly structured <code>gameslist.xml</code> directory used for your RecalBox, Retropie or ES-DE. Your <code>gameslist.xml</code> can be in your ROMs dir, but you can also use separate directory for your <code>gameslist.xml</code> files. Just make sure every XML file is in separate directory named as per system you want to emulate. For example: <code>E:\Emulation\gamelists\atari2600</code>, <code>E:\Emulation\gamelists\atari7800</code>, <code>E:\Emulation\gamelists\mame</code>&#8230;&#8203; etc.</p>
 </li>
 <li>
 <p>RetroArch installed (<a href="https://www.retroarch.com" class="bare">https://www.retroarch.com</a>)</p>
@@ -530,22 +647,31 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="_select_directories">Select directories</h3>
 <div class="paragraph">
-<p>Before you can convert your playlists, you must select ROMs and RetroArch directory.</p>
+<p>Before you can convert your playlists, you must select ROMs, Gamelists and RetroArch directories.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="Images/tutorial_01.png" alt="tutorial 01" title="Select directories"></span></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_select_roms_directory">Select ROM&#8217;s directory</h3>
+<h3 id="_directories_setup_screen">Directories setup screen</h3>
 <div class="paragraph">
 <p>Your first step would be to select ROMs directory. Please note, you must set root of your roms directory (for example <code>E:\Emulation\roms</code>), and not the system specific roms directory (for example <code>E:\Emulation\roms\atari2600</code>).</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="Images/tutorial_02.png" alt="tutorial 02" title="Select ROM directory"></span></p>
+<p>Second step would be to select gamelists directory. Please note, you must set root of your gamelists directory (for example <code>E:\Emulation\gamelists</code>), and not the system specific directory (for example <code>E:\Emulation\gamelists\atari2600</code>). This will autofill when you select ROMs directory, but you can change it in case your <code>gamelist.xml</code> files are stored somewhere else.</p>
+</div>
+<div class="paragraph">
+<p>Final step would be to select RetroArch directory. Even though this is not mandatory, it is highly recommended since it will help you select appropriate list name, and core for your playlist. Please select root directory of your RetroArch, and not the Playlist directory.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="Images/tutorial_02.png" alt="tutorial 02" title="Select directories"></span></p>
 </div>
 <div class="paragraph">
 <p>Then, wait for all system&#8217;s to load. Depending on how many systems you have, it can take time. After everything is loaded, you should see dropdown list of the systems, and list of the games for every system.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="Images/tutorial_03.png" alt="tutorial 03" title="Loading playlists"></span></p>
 </div>
 <div class="paragraph">
 <p><strong>Note</strong>: Hidden games will show in different color.</p>
@@ -554,22 +680,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><strong>No games?</strong>: If you don&#8217;t see any systems and games, please make sure you have selected correct directory that contains subdirectory of your systems. Something similar to what is shown in the image above.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="Images/tutorial_03.png" alt="tutorial 03" title="ROMs loaded"></span></p>
-</div>
-<div class="paragraph">
 <p>If it still does not work, please raise the issue in our GitHub.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_select_retroarch_directory">Select RetroArch directory</h3>
+<h3 id="_opening_export_screen">Opening Export Screen</h3>
 <div class="paragraph">
-<p>Second step would be to select RetroArch directory. Even though this is not mandatory, it is highly recommended since it will help you select appropriate list name, and core for your playlist. Please select root directory of your RetroArch, and not the Playlist directory.</p>
+<p>After everything is loaded, you should see dropdown list of the systems, and list of the games for every system. This screen is preview only which will help you confirm that everything is loaded correctly.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="Images/tutorial_04.png" alt="tutorial 04" title="Select RetroArch directory"></span></p>
+<p>You can now click on <code>Export</code> button to start the export process.</p>
 </div>
 <div class="paragraph">
-<p>After this is done, you can click on button to continue to the export screen.</p>
+<p><span class="image"><img src="Images/tutorial_04.png" alt="tutorial 04" title="Game Lists Loaded"></span></p>
 </div>
 </div>
 <div class="sect2">
@@ -588,6 +711,27 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="Images/tutorial_05.png" alt="tutorial 05" title="Select export options"></span></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_testing_selected_system_and_core">Testing selected system and core</h3>
+<div class="paragraph">
+<p>Before you save playlist, you can test if combination of selected core and system works. You can use <code>Test game</code> button. Please note that you will be unable to choose which game is to be tested. Random game from the list will be selected. So, if one game does not work, try again. Maybe it&#8217;s just a ROM issue. If test fails, you will see the message in the UI letting you know execution failed. RetroArch directory must be selected in order for this functionality to work.</p>
+</div>
+<div class="paragraph">
+<p>Q: Why can&#8217;t I pick which game to test?</p>
+</div>
+<div class="paragraph">
+<p>A: Because I would have to bring whole game list in this UI, which will take a lots of space unnecessarily. If advanced tests are needed, then it can be done through RetroArch directly.</p>
+</div>
+<div class="paragraph">
+<p>Q: Test button is disabled</p>
+</div>
+<div class="paragraph">
+<p>A: Either you haven&#8217;t selected RetroArch directory, core is missing in RetroArch, System is not supported in RetroArch or game list is empty.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="Images/tutorial_10.png" alt="tutorial 10" title="Test core and system"></span></p>
 </div>
 </div>
 <div class="sect2">
@@ -639,8 +783,137 @@ GameList Converter will do this automatically when you start it, so this probabl
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-06-22 17:15:15 +0200
+Last updated 2025-10-06 23:00:50 +0200
 </div>
 </div>
+<script>
+;(function () { /*! Asciidoctor Tabs | Copyright (c) 2018-present Dan Allen | MIT License */
+  'use strict'
+
+  var config = (document.currentScript || {}).dataset || {}
+  var forEach = Array.prototype.forEach
+
+  init(document.querySelectorAll('.tabs'))
+
+  function init (tabsBlocks) {
+    if (!tabsBlocks.length) return
+    forEach.call(tabsBlocks, function (tabs) {
+      var syncIds = tabs.classList.contains('is-sync') ? {} : undefined
+      var tablist = tabs.querySelector('.tablist ul')
+      tablist.setAttribute('role', 'tablist')
+      var start
+      forEach.call(tablist.querySelectorAll('li'), function (tab, idx) {
+        tab.tabIndex = -1
+        tab.setAttribute('role', tab.classList.add('tab') || 'tab')
+        var id, anchor, syncId
+        if (!(id = tab.id) && (anchor = tab.querySelector('a[id]'))) {
+          id = tab.id = anchor.parentNode.removeChild(anchor).id
+        }
+        var panel = id && tabs.querySelector('.tabpanel[aria-labelledby~="' + id + '"]')
+        if (!panel) return idx ? undefined : toggleSelected(tab, true) // invalid state
+        syncIds && (((syncId = tab.textContent.trim()) in syncIds) ? (syncId = undefined) : true) &&
+        (syncIds[(tab.dataset.syncId = syncId)] = tab)
+        idx || (syncIds && (start = { tab: tab, panel: panel })) ? toggleHidden(panel, true) : toggleSelected(tab, true)
+        tab.setAttribute('aria-controls', panel.id)
+        panel.setAttribute('role', 'tabpanel')
+        var onClick = syncId === undefined ? activateTab : activateTabSync
+        tab.addEventListener('click', onClick.bind({ tabs: tabs, tab: tab, panel: panel }))
+      })
+      if (!tabs.closest('.tabpanel')) {
+        forEach.call(tabs.querySelectorAll('.tabpanel table.tableblock'), function (table) {
+          var container = Object.assign(document.createElement('div'), { className: 'tablecontainer' })
+          table.parentNode.insertBefore(container, table).appendChild(table)
+        })
+      }
+      if (start) {
+        var syncGroupId
+        for (var i = 0, lst = tabs.classList, len = lst.length, className; i !== len; i++) {
+          if (!(className = lst.item(i)).startsWith('data-sync-group-id=')) continue
+          tabs.dataset.syncGroupId = syncGroupId = lst.remove(className) || className.slice(19).replace(/\u00a0/g, ' ')
+          break
+        }
+        if (syncGroupId === undefined) tabs.dataset.syncGroupId = syncGroupId = Object.keys(syncIds).sort().join('|')
+        var preferredSyncId = 'syncStorageKey' in config &&
+          window[(config.syncStorageScope || 'local') + 'Storage'].getItem(config.syncStorageKey + '-' + syncGroupId)
+        var tab = preferredSyncId && syncIds[preferredSyncId]
+        tab && Object.assign(start, { tab: tab, panel: document.getElementById(tab.getAttribute('aria-controls')) })
+        toggleSelected(start.tab, true) || toggleHidden(start.panel, false)
+      }
+    })
+    onHashChange()
+    toggleClassOnEach(tabsBlocks, 'is-loading', 'remove')
+    window.setTimeout(toggleClassOnEach.bind(null, tabsBlocks, 'is-loaded', 'add'), 0)
+    window.addEventListener('hashchange', onHashChange)
+  }
+
+  function activateTab (e) {
+    var tab = this.tab
+    var tabs = this.tabs || (this.tabs = tab.closest('.tabs'))
+    var panel = this.panel || (this.panel = document.getElementById(tab.getAttribute('aria-controls')))
+    querySelectorWithSiblings(tabs, '.tablist .tab', 'tab').forEach(function (el) {
+      toggleSelected(el, el === tab)
+    })
+    querySelectorWithSiblings(tabs, '.tabpanel', 'tabpanel').forEach(function (el) {
+      toggleHidden(el, el !== panel)
+    })
+    if (!this.isSync && 'syncStorageKey' in config && 'syncGroupId' in tabs.dataset) {
+      var storageKey = config.syncStorageKey + '-' + tabs.dataset.syncGroupId
+      window[(config.syncStorageScope || 'local') + 'Storage'].setItem(storageKey, tab.dataset.syncId)
+    }
+    if (!e) return
+    var loc = window.location
+    var hashIdx = loc.hash ? loc.href.indexOf('#') : -1
+    if (~hashIdx) window.history.replaceState(null, '', loc.href.slice(0, hashIdx))
+    e.preventDefault()
+  }
+
+  function activateTabSync (e) {
+    activateTab.call(this, e)
+    var thisTabs = this.tabs
+    var thisTab = this.tab
+    var initialY = thisTabs.getBoundingClientRect().y
+    forEach.call(document.querySelectorAll('.tabs'), function (tabs) {
+      if (tabs === thisTabs || tabs.dataset.syncGroupId !== thisTabs.dataset.syncGroupId) return
+      querySelectorWithSiblings(tabs, '.tablist .tab', 'tab').forEach(function (tab) {
+        if (tab.dataset.syncId === thisTab.dataset.syncId) activateTab.call({ tabs: tabs, tab: tab, isSync: true })
+      })
+    })
+    var shiftedBy = thisTabs.getBoundingClientRect().y - initialY
+    if (shiftedBy && (shiftedBy = Math.round(shiftedBy))) window.scrollBy({ top: shiftedBy, behavior: 'instant' })
+  }
+
+  function querySelectorWithSiblings (scope, selector, siblingClass) {
+    var el = scope.querySelector(selector)
+    if (!el) return []
+    var result = [el]
+    while ((el = el.nextElementSibling) && el.classList.contains(siblingClass)) result.push(el)
+    return result
+  }
+
+  function toggleClassOnEach (elements, className, method) {
+    forEach.call(elements, function (el) {
+      el.classList[method](className)
+    })
+  }
+
+  function toggleHidden (el, state) {
+    el.classList[(el.hidden = state) ? 'add' : 'remove']('is-hidden')
+  }
+
+  function toggleSelected (el, state) {
+    el.setAttribute('aria-selected', '' + state)
+    el.classList[state ? 'add' : 'remove']('is-selected')
+    el.tabIndex = state ? 0 : -1
+  }
+
+  function onHashChange () {
+    var id = window.location.hash.slice(1)
+    if (!id) return
+    var tab = document.getElementById(~id.indexOf('%') ? decodeURIComponent(id) : id)
+    if (!(tab && tab.classList.contains('tab'))) return
+    'syncId' in tab.dataset ? activateTabSync.call({ tab: tab }) : activateTab.call({ tab: tab })
+  }
+})()
+</script>
 </body>
 </html>

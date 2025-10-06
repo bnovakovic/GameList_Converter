@@ -31,36 +31,33 @@ We will go through some basic usage of the GameList converter.
 === Select directories
 Before you can convert your playlists, you must select ROMs, Gamelists and RetroArch directories.
 
-*Note*: If your `gameslist.xml` is in ROMs directory, then you can just select your roms dir again when using option to select gameslists directory.
-
-*Warning*: Option to select gamelists directory will be disabled until you select ROMs directory.
-
 image:Images/tutorial_01.png[title="Select directories", align=center]
 
-=== Select ROM's directory
+=== Directories setup screen
 Your first step would be to select ROMs directory. Please note, you must set root of your roms directory (for example `E:\Emulation\roms`), and not the system specific roms directory (for example `E:\Emulation\roms\atari2600`).
 
-=== Select Gamelists Directory
-Second step would be to select gamelists directory. Please note, you must set root of your gamelists directory (for example `E:\Emulation\gamelists`), and not the system specific directory (for example `E:\Emulation\gamelists\atari2600`).
+Second step would be to select gamelists directory. Please note, you must set root of your gamelists directory (for example `E:\Emulation\gamelists`), and not the system specific directory (for example `E:\Emulation\gamelists\atari2600`). This will autofill when you select ROMs directory, but you can change it in case your `gamelist.xml` files are stored somewhere else.
 
-image:Images/tutorial_02.png[title="Select ROM directory", align=center]
+Final step would be to select RetroArch directory. Even though this is not mandatory, it is highly recommended since it will help you select appropriate list name, and core for your playlist. Please select root directory of your RetroArch, and not the Playlist directory.
+
+image:Images/tutorial_02.png[title="Select directories", align=center]
 
 Then, wait for all system's to load. Depending on how many systems you have, it can take time. After everything is loaded, you should see dropdown list of the systems, and list of the games for every system.
+
+image:Images/tutorial_03.png[title="Loading playlists", align=center]
 
 *Note*: Hidden games will show in different color.
 
 *No games?*: If you don't see any systems and games, please make sure you have selected correct directory that contains subdirectory of your systems. Something similar to what is shown in the image above.
 
-image:Images/tutorial_03.png[title="ROMs loaded", align=center]
-
 If it still does not work, please raise the issue in our GitHub.
 
-=== Select RetroArch directory
-Second step would be to select RetroArch directory. Even though this is not mandatory, it is highly recommended since it will help you select appropriate list name, and core for your playlist. Please select root directory of your RetroArch, and not the Playlist directory.
+=== Opening Export Screen
+After everything is loaded, you should see dropdown list of the systems, and list of the games for every system. This screen is preview only which will help you confirm that everything is loaded correctly.
 
-image:Images/tutorial_04.png[title="Select RetroArch directory", align=center]
+You can now click on `Export` button to start the export process.
 
-After this is done, you can click on button to continue to the export screen.
+image:Images/tutorial_04.png[title="Game Lists Loaded", align=center]
 
 === Select system and core
 Before you can convert your `gamelist.xml`, you must select system you want to export, and core for it. In the example bellow, we have selected MAME system and Arcade (MAME) core. Core will be automatically selected when you select the system, but you should still double check that correct one is selected for you.
@@ -82,7 +79,7 @@ A: Because I would have to bring whole game list in this UI, which will take a l
 
 Q: Test button is disabled
 
-A: Either you haven't selected RetroArch director, core is missing in RetroArch, System is not supported in RetroArch or game list is empty.
+A: Either you haven't selected RetroArch directory, core is missing in RetroArch, System is not supported in RetroArch or game list is empty.
 
 image:Images/tutorial_10.png[title="Test core and system", align=center]
 
