@@ -6,8 +6,12 @@ import LANGUAGE_ENGLISH
 import LANGUAGE_SERBIAN
 import SERBIAN_LANGUAGE_CODE
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.platform.LocalUriHandler
@@ -38,6 +42,8 @@ import gamelistconverter.composeapp.generated.resources.theme
 import gamelistconverter.composeapp.generated.resources.xml_icon_24
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import java.awt.Desktop
+import java.io.File
 
 /**
  * Menu bar for the main screen.
@@ -168,6 +174,17 @@ private fun MenuBarScope.Help(
     enabled: Boolean,
 ) {
     val uriHandler = LocalUriHandler.current
+    var bytesLoaded by remember {
+        mutableStateOf(false)
+    }
+    var bytes by remember {
+        mutableStateOf(ByteArray(0))
+    }
+    LaunchedEffect(Unit) {
+        bytes = Res.readBytes("files/UserManual.pdf")
+        bytesLoaded = true
+    }
+
     Menu(stringResource(Res.string.help), mnemonic = 'H', enabled = enabled) {
         Item(
             text = stringResource(resource = Res.string.about),
@@ -178,7 +195,13 @@ private fun MenuBarScope.Help(
         Item(
             stringResource(Res.string.help),
             onClick = {
-                uriHandler.openUri(HELP_LINK)
+                if (bytesLoaded && bytes.isNotEmpty()) {
+                    val tempFile = File.createTempFile("UserManual", ".pdf")
+                    tempFile.writeBytes(bytes)
+                    Desktop.getDesktop().open(tempFile)
+                } else {
+                    uriHandler.openUri(HELP_LINK)
+                }
             },
             shortcut = KeyShortcut(Key.F1),
             mnemonic = 'H',
